@@ -11,6 +11,7 @@ import { Testimonials } from "@/components/sections/testimonials";
 import { FaqSection } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
 import { ServiceLocationGrid } from "@/components/sections/service-location-grid";
+import { StatsBand } from "@/components/sections/stats-band";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
 import {
   getService,
@@ -75,6 +76,7 @@ export default async function ServiceLandingPage({
         }}
         secondaryCta={{ label: "Pilih Lokasi", href: `/layanan/${service.slug}#lokasi` }}
       />
+      <StatsBand />
 
       <Section
         eyebrow="Keunggulan"

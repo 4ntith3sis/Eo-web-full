@@ -9,6 +9,7 @@ import { Gallery } from "@/components/sections/gallery";
 import { Hero } from "@/components/sections/hero";
 import { LocationDetailCard } from "@/components/sections/location-detail-card";
 import { PricingTable } from "@/components/sections/pricing-table";
+import { StatsBand } from "@/components/sections/stats-band";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
 import {
   getLocation,
@@ -81,6 +82,7 @@ export default async function ServiceLocationPage({
           href: `/layanan/${service.slug}/${location.slug}#harga`,
         }}
       />
+      <StatsBand />
 
       <section className="bg-surface">
         <Container className="grid gap-8 py-10 sm:py-12 lg:grid-cols-2 lg:py-16">

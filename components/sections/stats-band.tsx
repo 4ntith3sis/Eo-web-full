@@ -9,23 +9,26 @@ const stats = [
 
 export function StatsBand() {
   return (
-    <section className="relative z-10 -mt-8 sm:-mt-10 lg:-mt-12">
-      <div className="mx-auto w-full max-w-[1200px] px-6">
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-200 shadow-card lg:grid-cols-4">
+    <section className="bg-white py-8 sm:py-10">
+      <div className="mx-auto w-full max-w-[1150px] px-6">
+        <div className="grid grid-cols-2 gap-3.5 lg:grid-cols-4 lg:gap-5">
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="flex flex-col items-center justify-center gap-1.5 bg-white px-3 py-5 text-center sm:px-4 sm:py-6"
+              className="group relative flex items-center gap-3.5 rounded-2xl border border-neutral-200/80 bg-surface p-4 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:border-navy/30 hover:shadow-card sm:p-4.5"
             >
-              <span className="grid h-8 w-8 place-items-center rounded-xl bg-navy text-white shadow-soft">
-                <stat.icon className="h-4 w-4" aria-hidden />
+              <span className="absolute right-3 top-3 h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-navy text-white shadow-soft transition-transform duration-300 group-hover:scale-105">
+                <stat.icon className="h-5 w-5" aria-hidden />
               </span>
-              <strong className="font-display text-xl font-bold leading-none text-navy sm:text-2xl">
-                {stat.value}
-              </strong>
-              <span className="text-[10px] font-bold uppercase leading-tight tracking-[0.08em] text-neutral-500 sm:text-[11px]">
-                {stat.label}
-              </span>
+              <div className="min-w-0">
+                <strong className="font-display block text-xl font-bold tracking-tight text-navy sm:text-2xl">
+                  {stat.value}
+                </strong>
+                <span className="mt-0.5 block truncate text-[11px] font-bold uppercase tracking-[0.08em] text-neutral-500">
+                  {stat.label}
+                </span>
+              </div>
             </div>
           ))}
         </div>
