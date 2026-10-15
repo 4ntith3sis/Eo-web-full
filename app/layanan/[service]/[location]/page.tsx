@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { FacilitiesGrid } from "@/components/sections/facilities-grid";
 import { FaqSection } from "@/components/sections/faq";
+import { Gallery } from "@/components/sections/gallery";
 import { Hero } from "@/components/sections/hero";
 import { LocationDetailCard } from "@/components/sections/location-detail-card";
 import { PricingTable } from "@/components/sections/pricing-table";
@@ -67,6 +68,8 @@ export default async function ServiceLocationPage({
         eyebrow={`${service.title} — ${location.name}`}
         title={`${service.title} di ${location.name}`}
         description={`${location.shortDescription} ${combo.tagline}`}
+        image={combo.image}
+        imageAlt={combo.imageAlt}
         primaryCta={{
           label: "Hubungi Kami",
           href: whatsappFor(service.title, location.name, waNumber),
@@ -78,8 +81,14 @@ export default async function ServiceLocationPage({
         }}
       />
 
+      <Gallery
+        title={`Detail Kantor ${service.title} ${location.name}`}
+        description={`Foto ruang dan fasilitas ${service.title} di lokasi ${location.name}.`}
+        images={combo.gallery}
+      />
+
       <section className="bg-surface">
-        <Container className="grid gap-8 py-16 sm:py-20 lg:grid-cols-2">
+        <Container className="grid gap-8 py-10 sm:py-12 lg:grid-cols-2 lg:py-16">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-navy/70">
               Lokasi & Operasional
@@ -106,7 +115,7 @@ export default async function ServiceLocationPage({
       <div id="harga">
         <PricingTable
           title={`Harga ${service.title} ${location.name}`}
-          description="Harga contoh spesifik lokasi ini — hubungi kami untuk penawaran resmi."
+          description="Harga khusus lokasi ini — hubungi kami untuk penawaran resmi."
           plans={combo.pricing}
           topic={service.title}
           locationName={location.name}

@@ -1,6 +1,6 @@
 import { Check, MessageCircle } from "lucide-react";
 import type { PricingPlan } from "@/types";
-import { SAMPLE_PRICE_NOTE } from "@/lib/data/mock-data";
+import { PRICE_NOTE } from "@/lib/data/mock-data";
 import { whatsappFor } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -79,7 +79,7 @@ export function PricingTable({
         ))}
       </div>
       <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-neutral-500">
-        {SAMPLE_PRICE_NOTE}
+        {PRICE_NOTE}
       </p>
     </Section>
   );

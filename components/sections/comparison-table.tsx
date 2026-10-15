@@ -11,8 +11,9 @@ export function ComparisonTable({
 }) {
   return (
     <Section eyebrow="Perbandingan" title={title} description={description} tone="gray">
-      <div className="mx-auto max-w-4xl overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
-        <table className="w-full min-w-[520px] text-left text-sm">
+      <div className="mx-auto w-full min-w-0 max-w-4xl">
+        <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
+          <table className="w-full min-w-[480px] text-left text-sm">
           <thead>
             <tr className="border-b border-neutral-200 bg-navy text-white">
               <th scope="col" className="px-5 py-4 font-semibold">Fitur</th>
@@ -43,7 +44,9 @@ export function ComparisonTable({
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
+        <p className="mt-2 text-xs text-neutral-400 lg:hidden">Geser tabel ke samping untuk melihat semua kolom.</p>
       </div>
     </Section>
   );

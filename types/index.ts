@@ -5,9 +5,8 @@ export interface Location {
   address: string;
   operatingHours: string;
   email: string;
-  /** SAMPLE contact display — not a real number. */
   phoneDisplay: string;
-  /** SAMPLE WhatsApp number (wa.me format) — not a real number. */
+  /** WhatsApp number (wa.me format). */
   whatsapp: string;
 }
 
@@ -21,6 +20,9 @@ export interface Service {
   features: string[];
   icon: string;
   href: string;
+  /** Unique image URL — must not be reused across services or combos. */
+  image: string;
+  imageAlt: string;
 }
 
 export interface PricingPlan {
@@ -62,6 +64,11 @@ export interface ComparisonRow {
   typical: boolean;
 }
 
+export interface GalleryImage {
+  src: string;
+  alt: string;
+}
+
 /**
  * A unique service offering: Service + Location.
  * Pricing, facilities, FAQs, and contact belong to this combination,
@@ -77,4 +84,9 @@ export interface ServiceLocation {
   faqs: Faq[];
   /** Optional override; defaults to the location's WhatsApp number. */
   whatsapp?: string;
+  /** Unique hero image for this Service × Location page — never reused. */
+  image: string;
+  imageAlt: string;
+  /** 3 detail gallery photos for this Service × Location page — never reused. */
+  gallery: GalleryImage[];
 }

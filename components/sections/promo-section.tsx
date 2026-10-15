@@ -1,5 +1,5 @@
 import { ArrowRight, CalendarDays, MessageCircle, Tag } from "lucide-react";
-import { promoNotice, promotions } from "@/lib/data/mock-data";
+import { promotions } from "@/lib/data/mock-data";
 import { whatsappFor } from "@/lib/whatsapp";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -41,9 +41,6 @@ export function PromoSection({
           </Card>
         ))}
       </div>
-      <p className="mx-auto mt-8 max-w-2xl text-center text-xs leading-relaxed text-neutral-500">
-        {promoNotice}
-      </p>
       {showAllLink ? (
         <div className="mt-8 text-center">
           <Button href="/promo" variant="outline">

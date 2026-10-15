@@ -11,7 +11,7 @@ import { Section } from "@/components/ui/section";
 
 export function LocationSelector({
   title = "Pilih Lokasi EasyOffice",
-  description = "Tiga lokasi strategis untuk kebutuhan bisnis Anda. Pilih lokasi untuk melihat detail layanan, harga, dan fasilitas.",
+  description = "Lokasi-lokasi strategis untuk kebutuhan bisnis Anda. Pilih lokasi untuk melihat detail layanan, harga, dan fasilitas.",
 }: {
   title?: string;
   description?: string;

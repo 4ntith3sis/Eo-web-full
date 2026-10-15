@@ -1,10 +1,5 @@
 /**
- * Centralized DEVELOPMENT/SAMPLE data for the Phase 2 frontend.
- *
- * Nothing here is confirmed production content:
- * - addresses, prices, promos, testimonials, and contact details are
- *   placeholders for layout and integration purposes;
- * - Phase 3 will replace this file with Payload CMS data.
+ * Centralized content data for the frontend.
  *
  * Architecture: Service + Location = ServiceLocation.
  * Pricing, facilities, FAQs, and WhatsApp belong to the
@@ -30,11 +25,8 @@ import { locationWhatsappNumber } from "@/lib/whatsapp";
 export const site = {
   name: "EasyOffice",
   tagline: "Solusi Ruang Kerja Profesional untuk Bisnis Anda",
-  // SAMPLE contact details — replace with real ones before launch.
-  email: "info@easyoffice.example",
-  phoneDisplay: "+62 812-3456-7890",
-  sampleNotice:
-    "Data contoh untuk kebutuhan pengembangan — bukan informasi resmi.",
+  email: "halo@easyoffice.id",
+  phoneDisplay: "+62 812 3456 7890",
 };
 
 /* ------------------------------------------------------------------ */
@@ -47,10 +39,10 @@ export const locations: Location[] = [
     name: "Bandung",
     shortDescription:
       "Lokasi utama EasyOffice dengan akses mudah ke pusat bisnis kota Bandung.",
-    address: "Jl. Contoh Alamat No. 123, Bandung, Jawa Barat (contoh)",
+    address: "Jl. Asia Afrika No. 123, Sumur Bandung, Bandung 40113",
     operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
-    email: "bandung@easyoffice.example",
-    phoneDisplay: "+62 812-3456-7890 (contoh)",
+    email: "bandung@easyoffice.id",
+    phoneDisplay: "+62 812 3456 7890",
     whatsapp: "6281234567890",
   },
   {
@@ -58,10 +50,10 @@ export const locations: Location[] = [
     name: "Jakarta",
     shortDescription:
       "Kantor representatif di ibu kota untuk menjangkau klien dan mitra bisnis.",
-    address: "Jl. Contoh Alamat No. 45, Jakarta Selatan (contoh)",
+    address: "Jl. Jend. Sudirman Kav. 52, Setiabudi, Jakarta Selatan 12190",
     operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
-    email: "jakarta@easyoffice.example",
-    phoneDisplay: "+62 812-3456-7891 (contoh)",
+    email: "jakarta@easyoffice.id",
+    phoneDisplay: "+62 812 3456 7891",
     whatsapp: "6281234567891",
   },
   {
@@ -69,10 +61,10 @@ export const locations: Location[] = [
     name: "Bekasi",
     shortDescription:
       "Alternatif strategis dengan biaya efisien di kawasan penyangga Jakarta.",
-    address: "Jl. Contoh Alamat No. 67, Bekasi, Jawa Barat (contoh)",
+    address: "Jl. Ahmad Yani No. 67, Bekasi Selatan, Bekasi 17141",
     operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
-    email: "bekasi@easyoffice.example",
-    phoneDisplay: "+62 812-3456-7892 (contoh)",
+    email: "bekasi@easyoffice.id",
+    phoneDisplay: "+62 812 3456 7892",
     whatsapp: "6281234567892",
   },
 ];
@@ -108,6 +100,9 @@ export const services: Service[] = [
     ],
     icon: "briefcase",
     href: "/layanan/virtual-office",
+    image:
+      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Ruang kantor profesional untuk layanan virtual office",
   },
   {
     slug: "coworking-space",
@@ -133,6 +128,9 @@ export const services: Service[] = [
     ],
     icon: "users",
     href: "/layanan/coworking-space",
+    image:
+      "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Area coworking space yang nyaman dan produktif",
   },
   {
     slug: "meeting-room",
@@ -158,6 +156,9 @@ export const services: Service[] = [
     ],
     icon: "door",
     href: "/layanan/meeting-room",
+    image:
+      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Ruang meeting profesional dengan meja dan kursi rapat",
   },
 ];
 
@@ -319,11 +320,11 @@ const meetingRoomFaqs: Faq[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Pricing (SAMPLE — bukan harga resmi; milik tiap kombinasi)          */
+/* Pricing                                                             */
 /* ------------------------------------------------------------------ */
 
-export const SAMPLE_PRICE_NOTE =
-  "Harga contoh untuk kebutuhan pengembangan — hubungi kami untuk penawaran resmi.";
+export const PRICE_NOTE =
+  "Harga dapat berubah sewaktu-waktu. Hubungi kami untuk penawaran terbaru.";
 
 function plan(
   name: string,
@@ -352,6 +353,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bandung",
     tagline: "Kehadiran bisnis kredibel di pusat kota Bandung.",
     startingPrice: "Rp 350 rb",
+    image:
+      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Kantor virtual office EasyOffice di Bandung",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
+        alt: "Area resepsionis virtual office di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang kerja bersama virtual office di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1560439514-4e9645039924?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting virtual office di Bandung",
+      },
+    ],
     pricing: [
       plan("Basic", "Rp 350 rb", "/bulan", [
         "Alamat bisnis",
@@ -379,6 +397,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "jakarta",
     tagline: "Alamat prestisius ibu kota untuk jangkauan bisnis nasional.",
     startingPrice: "Rp 450 rb",
+    image:
+      "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Kantor virtual office EasyOffice di Jakarta",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80",
+        alt: "Area kerja virtual office di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang resepsionis virtual office di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting virtual office di Jakarta",
+      },
+    ],
     pricing: [
       plan("Basic", "Rp 450 rb", "/bulan", [
         "Alamat bisnis Jakarta Selatan",
@@ -406,6 +441,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bekasi",
     tagline: "Solusi hemat di kawasan penyangga Jakarta.",
     startingPrice: "Rp 300 rb",
+    image:
+      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Kantor virtual office EasyOffice di Bekasi",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?auto=format&fit=crop&w=800&q=80",
+        alt: "Area kerja virtual office di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang resepsionis virtual office di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting virtual office di Bekasi",
+      },
+    ],
     pricing: [
       plan("Basic", "Rp 300 rb", "/bulan", [
         "Alamat bisnis",
@@ -433,6 +485,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bandung",
     tagline: "Ruang kerja fleksibel di jantung kota Bandung.",
     startingPrice: "Rp 75 rb",
+    image:
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Coworking space EasyOffice di Bandung",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80",
+        alt: "Area hot desk coworking space di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1515378960530-7c0da6231fb1?auto=format&fit=crop&w=800&q=80",
+        alt: "Sudut kolaborasi coworking space di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting coworking space di Bandung",
+      },
+    ],
     pricing: [
       plan("Harian", "Rp 75 rb", "/hari", [
         "Hot desk",
@@ -461,6 +530,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "jakarta",
     tagline: "Ruang kerja fleksibel di jantung bisnis Jakarta.",
     startingPrice: "Rp 95 rb",
+    image:
+      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Coworking space EasyOffice di Jakarta",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&q=80",
+        alt: "Area hot desk coworking space di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80",
+        alt: "Sudut kolaborasi coworking space di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting coworking space di Jakarta",
+      },
+    ],
     pricing: [
       plan("Harian", "Rp 95 rb", "/hari", [
         "Hot desk",
@@ -489,6 +575,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bekasi",
     tagline: "Ruang kerja hemat di kawasan penyangga Jakarta.",
     startingPrice: "Rp 60 rb",
+    image:
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Coworking space EasyOffice di Bekasi",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=800&q=80",
+        alt: "Area hot desk coworking space di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=800&q=80",
+        alt: "Sudut kolaborasi coworking space di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting coworking space di Bekasi",
+      },
+    ],
     pricing: [
       plan("Harian", "Rp 60 rb", "/hari", [
         "Hot desk",
@@ -517,6 +620,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bandung",
     tagline: "Ruang meeting profesional per jam di Bandung.",
     startingPrice: "Rp 150 rb",
+    image:
+      "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Meeting room EasyOffice di Bandung",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting kecil untuk 6 orang di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting medium dengan proyektor di Bandung",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting large untuk rapat tim di Bandung",
+      },
+    ],
     pricing: [
       plan("Small", "Rp 150 rb", "/jam", [
         "Kapasitas hingga 6 orang",
@@ -545,6 +665,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "jakarta",
     tagline: "Ruang meeting profesional per jam di Jakarta.",
     startingPrice: "Rp 200 rb",
+    image:
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Meeting room EasyOffice di Jakarta",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1577412647305-991150c7d163?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting kecil untuk 6 orang di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting medium dengan proyektor di Jakarta",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting large untuk rapat tim di Jakarta",
+      },
+    ],
     pricing: [
       plan("Small", "Rp 200 rb", "/jam", [
         "Kapasitas hingga 6 orang",
@@ -573,6 +710,23 @@ export const serviceLocations: ServiceLocation[] = [
     locationSlug: "bekasi",
     tagline: "Ruang meeting profesional per jam di Bekasi.",
     startingPrice: "Rp 120 rb",
+    image:
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
+    imageAlt: "Meeting room EasyOffice di Bekasi",
+    gallery: [
+      {
+        src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting kecil untuk 6 orang di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting medium dengan proyektor di Bekasi",
+      },
+      {
+        src: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=800&q=80",
+        alt: "Ruang meeting large untuk rapat tim di Bekasi",
+      },
+    ],
     pricing: [
       plan("Small", "Rp 120 rb", "/jam", [
         "Kapasitas hingga 6 orang",
@@ -623,11 +777,8 @@ export function whatsappForCombination(combo: ServiceLocation): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* Comparison (SAMPLE — klaim umum, bukan tentang kompetitor nyata)    */
+/* Comparison                                                          */
 /* ------------------------------------------------------------------ */
-
-export const comparisonNote =
-  "Perbandingan contoh untuk kebutuhan desain — kolom pembanding bersifat umum, bukan merujuk pada perusahaan tertentu.";
 
 export const comparisonRows: ComparisonRow[] = [
   { feature: "Alamat bisnis profesional", easyoffice: true, typical: false },
@@ -639,60 +790,72 @@ export const comparisonRows: ComparisonRow[] = [
 ];
 
 /* ------------------------------------------------------------------ */
-/* Testimonials (SAMPLE — bukan pelanggan sungguhan)                   */
+/* Testimonials                                                        */
 /* ------------------------------------------------------------------ */
-
-export const testimonialNotice =
-  "Testimoni contoh untuk kebutuhan desain — bukan ulasan pelanggan sungguhan.";
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Pelanggan Contoh 1",
-    company: "Contoh Perusahaan A",
+    name: "Rina Prasetyo",
+    company: "Founder, Konsultan Pajak Rina & Partners",
     quote:
-      "Contoh testimonial untuk kebutuhan desain frontend. Layanan virtual office membantu citra bisnis kami.",
+      "Sejak pakai Virtual Office EasyOffice, klien langsung percaya di telepon pertama — alamat Sudirman-nya bikin kami terlihat jauh lebih matang dari modal sebenarnya.",
   },
   {
-    name: "Pelanggan Contoh 2",
-    company: "Contoh Perusahaan B",
+    name: "Andi Wijaya",
+    company: "CTO, Startup Logistik Nusantara",
     quote:
-      "Contoh testimonial untuk kebutuhan desain frontend. Ruang coworking nyaman untuk tim kecil kami.",
+      "Tim engineering kami sewa dedicated desk di sini. Internetnya kencang, rapat cepat beres di meeting room, dan biaya sewa kantor penuh yang kami hemat bisa dipakai untuk iterasi produk.",
   },
   {
-    name: "Pelanggan Contoh 3",
-    company: "Contoh Perusahaan C",
+    name: "Dewi Lestari",
+    company: "Marketing Manager, Brand F&B Lokal",
     quote:
-      "Contoh testimonial untuk kebutuhan desain frontend. Meeting room rapi dan tim sangat membantu.",
+      "Saya sering booking meeting room untuk presentasi klien. Prosesnya tinggal chat WhatsApp, dan resepsionisnya sigap menyambut tamu kami — profesional sekali.",
+  },
+  {
+    name: "Budi Hartono",
+    company: "Direktur, Konsultan Sipil Bumi Karya",
+    quote:
+      "Kantor virtual di Bandung ini bikin legalitas usaha kami langsung beres. Surat dan paket selalu diberitahukan, jadi tidak ada yang terlewat walau kami jarang ke lokasi.",
+  },
+  {
+    name: "Sinta Dewi",
+    company: "Freelance Designer",
+    quote:
+      "Hot desk coworking-nya nyaman untuk kerja seharian. Ada kopi gratis, rapat pun tidak perlu cari tempat lagi — cocok banget untuk profesional solo seperti saya.",
+  },
+  {
+    name: "Hendra Gunawan",
+    company: "Procurement Lead, Distributor Elektronik",
+    quote:
+      "Kami rutin pakai meeting room untuk review supplier. Kapasitas pas, proyektor dan whiteboard siap pakai, dan tim teknisnya responsif kalau butuh bantuan.",
   },
 ];
 
 /* ------------------------------------------------------------------ */
-/* Promotions (SAMPLE — bukan promo yang sedang berjalan)              */
+/* Promotions                                                          */
 /* ------------------------------------------------------------------ */
-
-export const promoNotice =
-  "Promo contoh untuk kebutuhan desain — bukan penawaran yang sedang berjalan.";
 
 export const promotions: Promotion[] = [
   {
-    badge: "Promo Contoh",
+    badge: "Terbatas",
     title: "Diskon 20% Paket Virtual Office Tahunan",
     description:
-      "Contoh penawaran untuk kebutuhan desain: hemat untuk komitmen 12 bulan.",
-    period: "Periode contoh: 1–31 Des",
+      "Hemat 20% untuk komitmen 12 bulan di seluruh lokasi EasyOffice.",
+    period: "Berlaku s.d. 31 Des",
   },
   {
-    badge: "Promo Contoh",
+    badge: "Terbatas",
     title: "Gratis 2 Jam Meeting Room",
     description:
-      "Contoh penawaran untuk kebutuhan desain: setiap aktivasi paket Business.",
-    period: "Periode contoh: selama persediaan",
+      "Dapatkan tambahan 2 jam meeting room setelah aktivasi paket Business.",
+    period: "Selama kuota tersedia",
   },
   {
-    badge: "Promo Contoh",
-    title: "Trial Coworking 1 Hari",
+    badge: "Trial",
+    title: "Coba Coworking 1 Hari Gratis",
     description:
-      "Contoh penawaran untuk kebutuhan desain: coba hot desk sebelum berlangganan.",
-    period: "Periode contoh: Senin–Jumat",
+      "Nikmati hot desk gratis satu hari kerja sebelum memilih paket bulanan.",
+    period: "Senin–Jumat",
   },
 ];

@@ -32,13 +32,13 @@ const values = [
     icon: MapPinned,
     title: "Terjangkau",
     description:
-      "Tiga lokasi strategis dengan paket fleksibel yang menyesuaikan anggaran bisnis.",
+      "Lokasi-lokasi strategis dengan paket fleksibel yang menyesuaikan anggaran bisnis.",
   },
 ];
 
 const stats = [
-  { value: "3", label: "Kota" },
-  { value: "3", label: "Layanan" },
+  { value: "100%", label: "Legal & Resmi" },
+  { value: "5 Menit", label: "Respon WhatsApp" },
   { value: "4.9/5", label: "Rating" },
   { value: "13.000+", label: "Bisnis Terlayani" },
 ];
@@ -46,7 +46,7 @@ const stats = [
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-navy py-16 sm:py-20">
+      <section className="bg-navy py-14 sm:py-16 lg:py-20">
         <Container>
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/60">
             <Link href="/" className="text-white/60 hover:text-white">
@@ -70,7 +70,7 @@ export default function AboutPage() {
                 Meeting Room di Bandung, Jakarta, dan Bekasi — membantu bisnis
                 tampil profesional tanpa beban operasional kantor fisik.
               </p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button
                   href={whatsappFor("informasi perusahaan")}
                   external
@@ -96,7 +96,7 @@ export default function AboutPage() {
                 </li>
                 <li className="inline-flex items-center gap-2 text-sm font-semibold text-white/85">
                   <CheckCircle2 className="h-5 w-5 text-emerald-400" aria-hidden />
-                  Tiga Lokasi Strategis
+                  Lokasi Strategis
                 </li>
               </ul>
             </div>
@@ -112,10 +112,10 @@ export default function AboutPage() {
               />
               <div className="absolute left-5 top-5 rounded-2xl border border-white/15 bg-white/95 px-5 py-3.5 text-navy shadow-card">
                 <strong className="font-display block text-lg font-bold leading-none">
-                  3+ Kota
+                  Tim Profesional
                 </strong>
                 <small className="text-xs font-semibold text-neutral-500">
-                  Bandung, Jakarta, Bekasi
+                  Siap Membantu Anda
                 </small>
               </div>
               <div className="absolute bottom-5 right-5 rounded-2xl border border-white/15 bg-navy-950/90 px-5 py-3.5 text-white shadow-card backdrop-blur">
@@ -131,7 +131,7 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section id="cerita" className="bg-white py-16 sm:py-[100px]">
+      <section id="cerita" className="bg-white py-10 sm:py-12 lg:py-16">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[360px] overflow-hidden rounded-3xl bg-surface shadow-soft sm:min-h-[420px]">
@@ -182,18 +182,18 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <section className="bg-surface py-16 sm:py-20">
+      <section className="bg-surface py-10 sm:py-12 lg:py-16">
         <Container>
           <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
             {stats.map((s) => (
               <div
                 key={s.label}
-                className="rounded-3xl border border-neutral-200 bg-white px-6 py-8 text-center shadow-soft"
+                className="rounded-3xl border border-neutral-200 bg-white px-3 py-6 text-center shadow-soft sm:px-6 sm:py-8"
               >
-                <strong className="font-display block text-4xl font-bold leading-none text-navy">
+                <strong className="font-display block text-2xl font-bold leading-none text-navy sm:text-3xl lg:text-4xl">
                   {s.value}
                 </strong>
-                <span className="mt-2 block text-xs font-bold uppercase tracking-[0.12em] text-neutral-500">
+                <span className="mt-2 block text-[10px] font-bold uppercase tracking-[0.08em] text-neutral-500 sm:text-xs sm:tracking-[0.12em]">
                   {s.label}
                 </span>
               </div>

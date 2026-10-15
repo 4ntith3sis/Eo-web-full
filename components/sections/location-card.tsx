@@ -1,7 +1,7 @@
+import Image from "next/image";
 import { ArrowRight, MapPin } from "lucide-react";
 import type { Location, Service, ServiceLocation } from "@/types";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
 interface LocationCardProps {
   location: Location;
@@ -15,28 +15,37 @@ interface LocationCardProps {
  */
 export function LocationCard({ location, service, combo }: LocationCardProps) {
   return (
-    <Card className="flex flex-col">
-      <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-navy text-white shadow-soft">
-        <MapPin className="h-5 w-5" aria-hidden />
-      </span>
-      <h3 className="mt-4 font-display text-xl font-bold uppercase tracking-wide text-navy">
-        {location.name}
-      </h3>
-      <p className="mt-1 text-sm font-medium text-neutral-500">{service.title}</p>
-      <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">
-        {combo.tagline}
-      </p>
-      <p className="mt-4 text-sm text-neutral-500">
-        Mulai dari{" "}
-        <span className="font-display text-lg font-bold text-navy">{combo.startingPrice}</span>
-        {combo.pricing[0]?.period}*
-      </p>
-      <div className="mt-5">
-        <Button href={`/layanan/${service.slug}/${location.slug}`} fullWidth>
-          Lihat Detail
-          <ArrowRight className="h-4 w-4" aria-hidden />
-        </Button>
+    <div className="flex flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card">
+      <div className="relative h-44 w-full">
+        <Image
+          src={combo.image}
+          alt={combo.imageAlt}
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover"
+        />
+        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-navy/90 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white backdrop-blur">
+          <MapPin className="h-3.5 w-3.5" aria-hidden />
+          {location.name}
+        </span>
       </div>
-    </Card>
+      <div className="flex flex-1 flex-col p-7 sm:p-8">
+        <p className="text-sm font-medium text-neutral-500">{service.title}</p>
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">
+          {combo.tagline}
+        </p>
+        <p className="mt-4 text-sm text-neutral-500">
+          Mulai dari{" "}
+          <span className="font-display text-lg font-bold text-navy">{combo.startingPrice}</span>
+          {combo.pricing[0]?.period}*
+        </p>
+        <div className="mt-5">
+          <Button href={`/layanan/${service.slug}/${location.slug}`} fullWidth>
+            Lihat Detail
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

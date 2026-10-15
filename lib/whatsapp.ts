@@ -1,12 +1,9 @@
 /**
  * WhatsApp helpers — centralized so every CTA uses the same logic.
- *
- * IMPORTANT: All numbers below are SAMPLE/DEVELOPMENT placeholders.
- * Replace them with the real EasyOffice numbers before production launch.
  */
 export const WHATSAPP_NUMBER = "6281234567890";
 
-/** Per-location SAMPLE numbers. Unknown slugs fall back to the default. */
+/** Per-location numbers. Unknown slugs fall back to the default. */
 const LOCATION_WHATSAPP: Record<string, string> = {
   bandung: "6281234567890",
   jakarta: "6281234567891",

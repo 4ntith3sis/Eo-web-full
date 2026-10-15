@@ -29,7 +29,7 @@ export function Section({
 }: SectionProps) {
   const dark = tone === "navy";
   return (
-    <section id={id} className={cn(tones[tone], "py-16 sm:py-[100px]", className)}>
+    <section id={id} className={cn(tones[tone], "py-10 sm:py-12 lg:py-16", className)}>
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           {eyebrow ? (
@@ -58,7 +58,7 @@ export function Section({
             </p>
           ) : null}
         </div>
-        <div className="mt-12 sm:mt-14">{children}</div>
+        <div className="mt-10 min-w-0 sm:mt-12">{children}</div>
       </Container>
     </section>
   );

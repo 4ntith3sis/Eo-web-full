@@ -29,20 +29,20 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section className="bg-white py-16 sm:py-[100px]">
+    <section className="bg-white py-10 sm:py-12 lg:py-16">
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <p className="inline-flex items-center rounded-full border border-navy/15 bg-navy/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-navy">
             Cara Sewa
           </p>
-          <h2 className="font-display mt-4 text-3xl font-bold tracking-tight text-navy sm:text-4xl">
+          <h2 className="font-display mt-3 text-3xl font-bold tracking-tight text-navy sm:text-4xl">
             Cara Kerja EasyOffice
           </h2>
           <p className="mt-4 text-base leading-relaxed text-neutral-600 sm:text-lg">
             Proses sederhana untuk mulai menggunakan layanan ruang kerja profesional kami.
           </p>
         </div>
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
             <div
               key={s.step}

@@ -10,11 +10,17 @@ interface HeroProps {
   description: string;
   primaryCta: { label: string; href: string; external?: boolean };
   secondaryCta?: { label: string; href: string };
+  /** Custom hero image URL — overrides the default. */
+  image?: string;
+  imageAlt?: string;
   visual?: ReactNode;
 }
 
+const defaultHeroImage =
+  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80";
+
 const defaultTrustItems = [
-  "3 Lokasi Strategis",
+  "Lokasi Strategis",
   "Alamat Bisnis Prestisius",
   "Layanan Profesional",
   "Harga Fleksibel",
@@ -26,11 +32,13 @@ export function Hero({
   description,
   primaryCta,
   secondaryCta,
+  image,
+  imageAlt,
   visual,
 }: HeroProps) {
   return (
     <section className="bg-navy">
-      <Container className="grid items-center gap-12 py-20 sm:py-24 lg:grid-cols-2 lg:gap-16">
+      <Container className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:py-20">
         <div>
           {eyebrow ? (
             <p className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-white/80">
@@ -43,7 +51,7 @@ export function Hero({
           <p className="mt-6 max-w-[570px] text-base leading-relaxed text-white/70 sm:text-lg">
             {description}
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <Button
               href={primaryCta.href}
               external={primaryCta.external}
@@ -66,7 +74,7 @@ export function Hero({
               </Button>
             ) : null}
           </div>
-          <ul className="mt-9 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+          <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
             {defaultTrustItems.map((item) => (
               <li
                 key={item}
@@ -82,8 +90,8 @@ export function Hero({
           {visual ?? (
             <div className="relative min-h-[420px] overflow-hidden rounded-3xl border border-white/10 shadow-card lg:min-h-[520px]">
               <Image
-                src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80"
-                alt="Ruang kerja EasyOffice"
+                src={image ?? defaultHeroImage}
+                alt={imageAlt ?? "Ruang kerja EasyOffice"}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"

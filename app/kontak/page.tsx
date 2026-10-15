@@ -53,7 +53,7 @@ const quickCards = [
 export default function ContactPage() {
   return (
     <>
-      <section className="bg-navy py-16 sm:py-20">
+      <section className="bg-navy py-14 sm:py-16 lg:py-20">
         <Container>
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/60">
             <Link href="/" className="text-white/60 hover:text-white">
@@ -75,7 +75,7 @@ export default function ContactPage() {
             </p>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {quickCards.map((card) => (
               <article
                 key={card.eyebrow}
@@ -109,7 +109,7 @@ export default function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-surface py-16 sm:py-[100px]">
+      <section className="bg-surface py-10 sm:py-12 lg:py-16">
         <Container>
           <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="rounded-3xl border border-neutral-200 bg-white p-8 shadow-soft sm:p-10">

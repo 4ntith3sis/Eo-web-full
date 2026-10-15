@@ -23,7 +23,7 @@ export function MobileNav({ onNavigate }: { onNavigate: () => void }) {
                 type="button"
                 onClick={() => setExpanded(expanded === item.label ? null : item.label)}
                 aria-expanded={expanded === item.label}
-                className="flex w-full items-center justify-between py-3 text-sm font-medium text-neutral-800"
+                className="flex w-full items-center justify-between py-3.5 text-sm font-medium text-neutral-800"
               >
                 {item.label}
                 <ChevronDown
@@ -41,7 +41,7 @@ export function MobileNav({ onNavigate }: { onNavigate: () => void }) {
                       <Link
                         href={child.href}
                         onClick={onNavigate}
-                        className="block py-2.5 text-sm text-neutral-700 hover:text-navy"
+                        className="block py-4 text-sm text-neutral-700 hover:text-navy"
                       >
                         {child.label}
                       </Link>
@@ -55,7 +55,7 @@ export function MobileNav({ onNavigate }: { onNavigate: () => void }) {
               <Link
                 href={item.href}
                 onClick={onNavigate}
-                className="block py-3 text-sm font-medium text-neutral-800 hover:text-navy"
+                className="block py-3.5 text-sm font-medium text-neutral-800 hover:text-navy"
               >
                 {item.label}
               </Link>

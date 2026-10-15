@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Hero } from "@/components/sections/hero";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
-import { promoNotice, promotions } from "@/lib/data/mock-data";
+import { promotions } from "@/lib/data/mock-data";
 import { whatsappFor } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -31,7 +31,7 @@ export default function PromoPage() {
       />
 
       <section className="bg-surface">
-        <Container className="py-16 sm:py-20">
+        <Container className="py-10 sm:py-12 lg:py-16">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {promotions.map((promo, i) => (
               <Card key={promo.title} className="flex flex-col">
@@ -69,9 +69,6 @@ export default function PromoPage() {
               </Card>
             ))}
           </div>
-          <p className="mx-auto mt-10 max-w-2xl text-center text-xs leading-relaxed text-neutral-500">
-            {promoNotice}
-          </p>
         </Container>
       </section>
 

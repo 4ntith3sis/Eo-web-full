@@ -43,7 +43,7 @@ export function Header() {
                   onClick={() => setDropOpen((v) => !v)}
                   aria-haspopup="true"
                   aria-expanded={dropOpen}
-                  className="inline-flex items-center gap-1 text-[0.95rem] font-semibold text-navy/70 transition-colors hover:text-navy"
+                  className="inline-flex items-center gap-1 pb-1 text-[0.95rem] font-semibold text-navy/70 transition-colors hover:text-navy"
                 >
                   {item.label}
                   <ChevronDown

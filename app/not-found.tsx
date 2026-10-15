@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/container";
 
 export default function NotFound() {
   return (
-    <Container className="py-24 text-center sm:py-32">
+    <Container className="py-16 text-center sm:py-24">
       <p className="text-sm font-semibold uppercase tracking-widest text-navy/60">
         404
       </p>

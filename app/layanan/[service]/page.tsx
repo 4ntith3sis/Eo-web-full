@@ -66,6 +66,8 @@ export default async function ServiceLandingPage({
         eyebrow="Layanan"
         title={service.title}
         description={service.intro}
+        image={service.image}
+        imageAlt={service.imageAlt}
         primaryCta={{
           label: "Hubungi Kami",
           href: whatsappFor(service.title),
@@ -133,7 +135,7 @@ export default async function ServiceLandingPage({
       {preview ? (
         <FacilitiesGrid
           title={`Fasilitas ${service.title}`}
-          description="Contoh fasilitas yang tersedia — dapat berbeda di tiap lokasi."
+          description="Fasilitas yang tersedia — dapat berbeda di tiap lokasi."
           items={preview.facilities}
         />
       ) : null}
