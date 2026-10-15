@@ -13,6 +13,8 @@ interface HeroProps {
   /** Custom hero image URL — overrides the default. */
   image?: string;
   imageAlt?: string;
+  /** Label shown on the overlay badge (bottom of hero image). Defaults to service tagline. */
+  imageLabel?: string;
   visual?: ReactNode;
 }
 
@@ -34,6 +36,7 @@ export function Hero({
   secondaryCta,
   image,
   imageAlt,
+  imageLabel,
   visual,
 }: HeroProps) {
   return (
@@ -102,7 +105,7 @@ export function Hero({
                 <div>
                   <p className="text-sm font-bold">EasyOffice</p>
                   <p className="text-xs text-white/60">
-                    Virtual Office • Coworking • Meeting Room
+                    {imageLabel ?? "Virtual Office • Coworking • Meeting Room"}
                   </p>
                 </div>
               </div>

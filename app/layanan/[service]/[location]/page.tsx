@@ -70,6 +70,7 @@ export default async function ServiceLocationPage({
         description={`${location.shortDescription} ${combo.tagline}`}
         image={combo.image}
         imageAlt={combo.imageAlt}
+        imageLabel={service.title}
         primaryCta={{
           label: "Hubungi Kami",
           href: whatsappFor(service.title, location.name, waNumber),
@@ -79,12 +80,6 @@ export default async function ServiceLocationPage({
           label: "Lihat Harga",
           href: `/layanan/${service.slug}/${location.slug}#harga`,
         }}
-      />
-
-      <Gallery
-        title={`Detail Kantor ${service.title} ${location.name}`}
-        description={`Foto ruang dan fasilitas ${service.title} di lokasi ${location.name}.`}
-        images={combo.gallery}
       />
 
       <section className="bg-surface">
@@ -122,6 +117,12 @@ export default async function ServiceLocationPage({
           whatsappNumber={waNumber}
         />
       </div>
+
+      <Gallery
+        title={`Detail Kantor ${service.title} ${location.name}`}
+        description={`Foto ruang dan fasilitas ${service.title} di lokasi ${location.name}.`}
+        images={combo.gallery}
+      />
 
       <FacilitiesGrid
         title={`Fasilitas di ${location.name}`}
