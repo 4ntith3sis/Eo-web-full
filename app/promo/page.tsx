@@ -22,6 +22,8 @@ export default function PromoPage() {
         eyebrow="Penawaran"
         title="Promo EasyOffice"
         description="Penawaran spesial untuk membantu Anda memulai dengan biaya lebih hemat. Klaim penawaran melalui WhatsApp."
+        image="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80"
+        imageAlt="Grafik perencanaan bisnis dan kalkulasi promo layanan EasyOffice"
         primaryCta={{
           label: "Klaim via WhatsApp",
           href: whatsappFor("promo"),
