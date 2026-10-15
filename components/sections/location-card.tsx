@@ -34,10 +34,13 @@ export function LocationCard({ location, service, combo }: LocationCardProps) {
         <p className="mt-3 flex-1 text-sm leading-relaxed text-neutral-600">
           {combo.tagline}
         </p>
+        <p className="mt-3 flex items-start gap-2 text-xs leading-relaxed text-neutral-500">
+          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-navy" aria-hidden />
+          <span>{location.address}</span>
+        </p>
         <p className="mt-4 text-sm text-neutral-500">
           Mulai dari{" "}
           <span className="font-display text-lg font-bold text-navy">{combo.startingPrice}</span>
-          {combo.pricing[0]?.period}*
         </p>
         <div className="mt-5">
           <Button href={`/layanan/${service.slug}/${location.slug}`} fullWidth>
