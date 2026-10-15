@@ -105,7 +105,9 @@ export function Hero({
                 <div>
                   <p className="text-sm font-bold">EasyOffice</p>
                   <p className="text-xs text-white/60">
-                    {imageLabel ?? "Virtual Office • Coworking • Meeting Room"}
+                    <span className="tracking-wide">
+                      {imageLabel ?? "Virtual Office \u00a0•\u00a0 Coworking \u00a0•\u00a0 Meeting Room"}
+                    </span>
                   </p>
                 </div>
               </div>
