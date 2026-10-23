@@ -4,6 +4,7 @@ import { FacilitiesGrid } from "@/components/sections/facilities-grid";
 import { allFacilities } from "@/lib/data/mock-data";
 import { Hero } from "@/components/sections/hero";
 import { HowItWorks } from "@/components/sections/how-it-works";
+import { PromoSection } from "@/components/sections/promo-section";
 import { ServicesOverview } from "@/components/sections/services-overview";
 import { StatsBand } from "@/components/sections/stats-band";
 import { Testimonials } from "@/components/sections/testimonials";
@@ -34,6 +35,7 @@ export default function Home() {
         title="Mengapa Pilih EasyOffice?"
         description="Fasilitas lengkap untuk mendukung produktivitas dan citra profesional bisnis Anda."
       />
+      <PromoSection />
       <ServicesOverview tone="gray" />
       <HowItWorks />
       <ComparisonTable

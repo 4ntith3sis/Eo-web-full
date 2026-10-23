@@ -35,7 +35,7 @@ export function FacilitiesGrid({
   items?: Facility[];
 }) {
   return (
-    <Section eyebrow="Fasilitas" title={title} description={description} tone={tone}>
+    <Section eyebrow="Keunggulan" title={title} description={description} tone={tone}>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((f) => {
           const Icon = icons[f.icon] ?? Wifi;

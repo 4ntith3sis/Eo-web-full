@@ -15,6 +15,7 @@ interface ButtonProps {
   type?: "button" | "submit";
   onClick?: () => void;
   fullWidth?: boolean;
+  "aria-label"?: string;
 }
 
 const variants: Record<Variant, string> = {
@@ -41,6 +42,7 @@ export function Button({
   type = "button",
   onClick,
   fullWidth,
+  "aria-label": ariaLabel,
 }: ButtonProps) {
   const styles = cn(
     "inline-flex items-center justify-center gap-2 rounded-xl font-semibold transition-all duration-200 hover:-translate-y-0.5",
@@ -53,20 +55,20 @@ export function Button({
   if (href) {
     if (external) {
       return (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={styles}>
+        <a href={href} target="_blank" rel="noopener noreferrer" className={styles} aria-label={ariaLabel}>
           {children}
         </a>
       );
     }
     return (
-      <Link href={href} className={styles}>
+      <Link href={href} className={styles} aria-label={ariaLabel}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} onClick={onClick} className={styles}>
+    <button type={type} onClick={onClick} className={styles} aria-label={ariaLabel}>
       {children}
     </button>
   );

@@ -20,7 +20,7 @@ export function ServicesOverview({
   tone?: "white" | "gray";
 }) {
   return (
-    <Section eyebrow="Layanan" title={title} description={description} tone={tone}>
+    <Section eyebrow="Layanan" title={title} description={description} tone={tone} className="pt-5 sm:pt-7 lg:pt-9">
       <div className="grid gap-6 md:grid-cols-3">
         {services.map((service) => {
           const Icon = icons[service.slug] ?? Briefcase;

@@ -6,7 +6,8 @@ const benefitIcons = [Sparkles, Layers, Users, Clock, MapPin, Shield, Wifi, Chec
 import { Section } from "@/components/ui/section";
 import { Breadcrumbs } from "@/components/ui/breadcrumbs";
 import { BenefitsSection } from "@/components/sections/benefits-section";
-import { FacilitiesGrid } from "@/components/sections/facilities-grid";
+import { ComparisonTable } from "@/components/sections/comparison-table";
+import { PromoSection } from "@/components/sections/promo-section";
 import { Testimonials } from "@/components/sections/testimonials";
 import { FaqSection } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
@@ -69,6 +70,7 @@ export default async function ServiceLandingPage({
         description={service.intro}
         image={service.image}
         imageAlt={service.imageAlt}
+        imageLabel={service.title}
         primaryCta={{
           label: "Hubungi Kami",
           href: whatsappFor(service.title),
@@ -115,12 +117,18 @@ export default async function ServiceLandingPage({
         </div>
       </Section>
 
+      <PromoSection
+        title={`Promo Spesial ${service.title}`}
+        description={`Lihat penawaran EasyOffice untuk layanan ${service.title} dan temukan paket yang sesuai dengan kebutuhan bisnis Anda.`}
+      />
+
       <div id="lokasi">
         <Section
           eyebrow="Pilih Lokasi"
           title={`Lokasi ${service.title} Tersedia`}
           description="Pilih lokasi untuk melihat harga, fasilitas, dan kontak spesifik lokasi tersebut."
           tone="gray"
+          className="pt-3 sm:pt-5 lg:pt-7"
         >
           <ServiceLocationGrid
             service={service}
@@ -134,13 +142,10 @@ export default async function ServiceLandingPage({
         </Section>
       </div>
 
-      {preview ? (
-        <FacilitiesGrid
-          title={`Fasilitas ${service.title}`}
-          description="Fasilitas yang tersedia — dapat berbeda di tiap lokasi."
-          items={preview.facilities}
-        />
-      ) : null}
+      <ComparisonTable
+        title={`Perbandingan ${service.title}`}
+        description={`Bandingkan fasilitas dan keunggulan ${service.title} EasyOffice dengan penyedia lain.`}
+      />
 
       <BenefitsSection serviceSlug={service.slug} />
 

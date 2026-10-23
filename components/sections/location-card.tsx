@@ -24,7 +24,7 @@ export function LocationCard({ location, service, combo }: LocationCardProps) {
           sizes="(max-width: 768px) 100vw, 33vw"
           className="object-cover"
         />
-        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-navy/90 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-white backdrop-blur">
+        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-navy shadow-sm">
           <MapPin className="h-3.5 w-3.5" aria-hidden />
           {location.name}
         </span>
