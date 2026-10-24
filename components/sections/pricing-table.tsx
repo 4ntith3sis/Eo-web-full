@@ -15,6 +15,13 @@ interface PricingTableProps {
   tone?: "white" | "gray";
 }
 
+function discountedPrice(plan: PricingPlan) {
+  if (!plan.discountPercent || plan.discountedPrice) return plan.discountedPrice;
+  const numericPrice = Number(plan.price.replace(/[^0-9]/g, ""));
+  if (!numericPrice) return undefined;
+  return `Rp ${Math.round(numericPrice * (1 - plan.discountPercent / 100)).toLocaleString("id-ID")}`;
+}
+
 export function PricingTable({
   eyebrow = "Harga",
   title,
@@ -29,6 +36,9 @@ export function PricingTable({
     <Section eyebrow={eyebrow} title={title} description={description} tone={tone}>
       <div className="grid gap-6 lg:grid-cols-3">
         {plans.map((plan) => (
+          (() => {
+            const salePrice = discountedPrice(plan);
+            return (
           <div
             key={plan.name}
             className="flex flex-col rounded-2xl border border-neutral-200 bg-white p-6 shadow-soft sm:p-8"
@@ -39,12 +49,30 @@ export function PricingTable({
               </span>
             ) : null}
             <h3 className="text-lg font-semibold text-navy">{plan.name}</h3>
+            {plan.description ? (
+              <p className="mt-2 text-sm leading-relaxed text-neutral-600">{plan.description}</p>
+            ) : null}
             <p className="mt-3 flex items-baseline gap-1">
-              <span className="font-display text-3xl font-bold tracking-tight text-navy">
-                {plan.price}
-              </span>
-              <span className="text-sm text-neutral-500">{plan.period}</span>
+              {salePrice ? (
+                <span className="flex flex-col">
+                  <span className="text-sm text-neutral-400 line-through">
+                    {plan.price} {plan.period}
+                  </span>
+                  <span className="font-display text-3xl font-bold tracking-tight text-navy">
+                    {salePrice} {plan.period}
+                  </span>
+                </span>
+              ) : (
+                <span className="font-display text-3xl font-bold tracking-tight text-navy">
+                  {plan.price} {plan.period}
+                </span>
+              )}
             </p>
+            {plan.discountPercent ? (
+              <span className="mt-2 inline-flex w-fit rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-bold text-emerald-700">
+                Hemat {plan.discountPercent}%
+              </span>
+            ) : null}
             <ul className="mt-6 flex-1 space-y-3 text-sm text-neutral-700">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
@@ -65,6 +93,8 @@ export function PricingTable({
               </Button>
             </div>
           </div>
+            );
+          })()
         ))}
       </div>
     </Section>

@@ -124,9 +124,9 @@ export default async function ServiceLandingPage({
 
       <div id="lokasi">
         <Section
-          eyebrow="Pilih Lokasi"
-          title={`Lokasi ${service.title} Tersedia`}
-          description="Pilih lokasi untuk melihat harga, fasilitas, dan kontak spesifik lokasi tersebut."
+          eyebrow="Pilih Kantor"
+          title={`Kantor ${service.title} Tersedia`}
+          description="Pilih kantor untuk melihat harga, fasilitas, dan kontak spesifik kantor tersebut."
           tone="gray"
           className="pt-3 sm:pt-5 lg:pt-7"
         >
@@ -135,7 +135,7 @@ export default async function ServiceLandingPage({
             items={availableLocations
               .map((loc) => {
                 const combo = getServiceLocation(service.slug, loc.slug);
-                return combo ? { location: loc, combo } : null;
+                return combo ? { location: loc, combo, office: combo.offices?.[0] } : null;
               })
               .filter((item) => item !== null)}
           />

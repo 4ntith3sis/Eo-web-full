@@ -20,10 +20,27 @@ import {
 import { locationWhatsappNumber, whatsappFor } from "@/lib/whatsapp";
 
 export function generateStaticParams() {
-  return serviceLocations.map((s) => ({
-    service: s.serviceSlug,
-    location: s.locationSlug,
-  }));
+  return serviceLocations.flatMap((combo) => [
+    { service: combo.serviceSlug, location: combo.locationSlug },
+    ...(combo.offices?.map((office) => ({
+      service: combo.serviceSlug,
+      location: office.slug,
+    })) ?? []),
+  ]);
+}
+
+function getRouteData(serviceSlug: string, routeSlug: string) {
+  const combo = serviceLocations.find(
+    (entry) =>
+      entry.serviceSlug === serviceSlug &&
+      (entry.locationSlug === routeSlug ||
+        entry.offices?.some((office) => office.slug === routeSlug)),
+  );
+  const exactLocationCombo = getServiceLocation(serviceSlug, routeSlug);
+  const resolvedCombo = exactLocationCombo ?? combo;
+  const location = resolvedCombo ? getLocation(resolvedCombo.locationSlug) : undefined;
+  const office = resolvedCombo?.offices?.find((entry) => entry.slug === routeSlug);
+  return { combo: resolvedCombo, location, office };
 }
 
 export async function generateMetadata({
@@ -33,12 +50,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { service: serviceSlug, location: locationSlug } = await params;
   const service = getService(serviceSlug);
-  const location = getLocation(locationSlug);
-  const combo = getServiceLocation(serviceSlug, locationSlug);
+  const { location, combo, office } = getRouteData(serviceSlug, locationSlug);
   if (!service || !location || !combo) return { title: "Layanan" };
+  const officeName = office?.name ?? `EasyOffice ${location.name}`;
+  const officeDescription = office?.description ?? `${location.shortDescription} ${combo.tagline}`;
   return {
-    title: `${service.title} ${location.name}`,
-    description: `${service.title} EasyOffice di ${location.name}: ${combo.tagline}`,
+    title: `${service.title} ${officeName}`,
+    description: officeDescription,
   };
 }
 
@@ -49,11 +67,13 @@ export default async function ServiceLocationPage({
 }) {
   const { service: serviceSlug, location: locationSlug } = await params;
   const service = getService(serviceSlug);
-  const location = getLocation(locationSlug);
-  const combo = getServiceLocation(serviceSlug, locationSlug);
+  const { location, combo, office } = getRouteData(serviceSlug, locationSlug);
   if (!service || !location || !combo) notFound();
 
-  const waNumber = combo.whatsapp ?? locationWhatsappNumber(location.slug);
+  const officeName = office?.name ?? `EasyOffice ${location.name}`;
+  const officeDescription = office?.description ?? `${location.shortDescription} ${combo.tagline}`;
+  const address = office?.address ?? location.address;
+  const waNumber = office?.whatsapp ?? combo.whatsapp ?? locationWhatsappNumber(location.slug);
 
   return (
     <>
@@ -62,24 +82,24 @@ export default async function ServiceLocationPage({
           { label: "Beranda", href: "/" },
           { label: "Layanan" },
           { label: service.title, href: `/layanan/${service.slug}` },
-          { label: location.name },
+          { label: officeName },
         ]}
       />
       <Hero
         eyebrow={`${service.title} — ${location.name}`}
-        title={`${service.title} di ${location.name}`}
-        description={`${location.shortDescription} ${combo.tagline}`}
+        title={officeName}
+        description={officeDescription}
         image={combo.image}
         imageAlt={combo.imageAlt}
-        imageLabel={service.title}
+        imageLabel={officeName}
         primaryCta={{
           label: "Hubungi Kami",
-          href: whatsappFor(service.title, location.name, waNumber),
+          href: whatsappFor(service.title, officeName, waNumber),
           external: true,
         }}
         secondaryCta={{
           label: "Lihat Harga",
-          href: `/layanan/${service.slug}/${location.slug}#harga`,
+          href: `/layanan/${service.slug}/${locationSlug}#harga`,
         }}
       />
       <StatsBand />
@@ -91,7 +111,7 @@ export default async function ServiceLocationPage({
               Lokasi & Operasional
             </p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-navy sm:text-3xl">
-              {service.title} {location.name}
+              {service.title} {officeName}
             </h2>
             <p className="mt-4 text-base leading-relaxed text-neutral-600">
               {service.intro}
@@ -105,42 +125,42 @@ export default async function ServiceLocationPage({
               ))}
             </ul>
           </div>
-          <LocationDetailCard location={location} topic={service.title} />
+          <LocationDetailCard location={{ ...location, address }} topic={service.title} />
         </Container>
       </section>
 
       <div id="harga">
         <PricingTable
-          title={`Harga ${service.title} ${location.name}`}
+          title={`Harga ${service.title} ${officeName}`}
           description="Harga khusus lokasi ini — hubungi kami untuk penawaran resmi."
           plans={combo.pricing}
           topic={service.title}
-          locationName={location.name}
+          locationName={officeName}
           whatsappNumber={waNumber}
         />
       </div>
 
       <Gallery
-        title={`Detail Kantor ${service.title} ${location.name}`}
-        description={`Foto ruang dan fasilitas ${service.title} di lokasi ${location.name}.`}
+        title={`Detail Kantor ${service.title} ${officeName}`}
+        description={`Foto ruang dan fasilitas ${service.title} di ${officeName}.`}
         images={combo.gallery}
       />
 
       <FacilitiesGrid
-        title={`Fasilitas di ${location.name}`}
-        description={`Fasilitas ${service.title} yang tersedia di lokasi ini.`}
+        title={`Fasilitas di ${officeName}`}
+        description={`Fasilitas ${service.title} yang tersedia di kantor ini.`}
         items={combo.facilities}
       />
       <ComparisonTable />
       <FaqSection
-        title={`FAQ ${service.title} ${location.name}`}
+          title={`FAQ ${service.title} ${officeName}`}
         faqs={combo.faqs}
       />
       <WhatsappCta
-        title={`Siap Memulai di ${location.name}?`}
-        description={`Hubungi tim EasyOffice ${location.name} melalui WhatsApp — Anda akan terhubung ke nomor khusus lokasi ini.`}
+          title={`Siap Memulai di ${officeName}?`}
+        description={`Hubungi tim ${officeName} melalui WhatsApp.`}
         topic={service.title}
-        locationName={location.name}
+        locationName={officeName}
         whatsappNumber={waNumber}
       />
     </>

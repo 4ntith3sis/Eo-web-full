@@ -367,12 +367,16 @@ export const serviceLocations: ServiceLocation[] = [
         "Penanganan surat",
         "Pemberitahuan via email",
       ]),
-      plan("Business", "Rp 650 rb", "/bulan", [
-        "Semua fitur Basic",
-        "Layanan resepsionis",
-        "2 jam meeting room / bulan",
-        "Nomor telepon khusus",
-      ]),
+      {
+        ...plan("Business", "Rp 550.000", "/bulan", [
+          "Semua fitur Basic",
+          "Layanan resepsionis",
+          "2 jam meeting room / bulan",
+          "Nomor telepon khusus",
+        ]),
+        description: "Paket kantor virtual untuk bisnis yang membutuhkan alamat dan layanan administrasi profesional.",
+        discountPercent: 20,
+      },
       plan("Premium", "Rp 1,2 jt", "/bulan", [
         "Semua fitur Business",
         "8 jam meeting room / bulan",
@@ -382,6 +386,26 @@ export const serviceLocations: ServiceLocation[] = [
     ],
     facilities: pickFacilities("map-pin", "bell", "printer", "wifi", "door", "coffee"),
     faqs: virtualOfficeFaqs,
+    offices: [
+      {
+        slug: "asia-afrika",
+        name: "EasyOffice Asia Afrika",
+        description: "Kantor virtual di kawasan Asia Afrika, Bandung, dengan alamat bisnis strategis dan layanan surat untuk mendukung citra profesional perusahaan Anda.",
+        address: "Jl. Asia Afrika No. 123, Sumur Bandung, Bandung 40113",
+        operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
+        phoneDisplay: "+62 812 3456 7890",
+        whatsapp: "6281234567890",
+      },
+      {
+        slug: "dago",
+        name: "EasyOffice Dago",
+        description: "Kantor virtual di kawasan Dago, Bandung, dengan alamat bisnis representatif dan layanan kantor yang mendukung aktivitas bisnis Anda.",
+        address: "Jl. Ir. H. Juanda No. 88, Dago, Bandung 40135",
+        operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
+        phoneDisplay: "+62 812 3456 7893",
+        whatsapp: "6281234567893",
+      },
+    ],
   },
   {
     serviceSlug: "virtual-office",

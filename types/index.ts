@@ -27,9 +27,12 @@ export interface Service {
 
 export interface PricingPlan {
   name: string;
+  description?: string;
   price: string;
   period: string;
   features: string[];
+  discountPercent?: number;
+  discountedPrice?: string;
   featured?: boolean;
   ctaLabel: string;
 }
@@ -69,6 +72,16 @@ export interface GalleryImage {
   alt: string;
 }
 
+export interface Office {
+  slug: string;
+  name: string;
+  description?: string;
+  address: string;
+  operatingHours?: string;
+  phoneDisplay?: string;
+  whatsapp?: string;
+}
+
 /**
  * A unique service offering: Service + Location.
  * Pricing, facilities, FAQs, and contact belong to this combination,
@@ -89,4 +102,6 @@ export interface ServiceLocation {
   imageAlt: string;
   /** 3 detail gallery photos for this Service × Location page — never reused. */
   gallery: GalleryImage[];
+  /** Offices shown for this service in the location (frontend prototype). */
+  offices?: Office[];
 }
