@@ -4,15 +4,21 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrate:cms": "node scripts/migrate-cms.mjs"
   },
   "dependencies": {
+    "@measured/puck": "^0.20.2",
+    "@payloadcms/db-postgres": "^3.92.0",
+    "@payloadcms/next": "^3.92.0",
     "lucide-react": "^1.49.0",
     "next": "16.3.8",
+    "payload": "^3.92.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

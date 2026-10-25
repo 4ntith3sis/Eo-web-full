@@ -8,19 +8,20 @@ import { ChevronDown, Menu, MessageCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { MobileNav } from "./mobile-nav";
-import { navItems } from "./nav";
+import { navItems as defaultNavItems, type NavItem } from "./nav";
 
-export function Header() {
+export function Header({ whatsappNumber, ctaLabel = "Hubungi Kami", ctaMessage, logoUrl, navItems }: { whatsappNumber?: string; ctaLabel?: string; ctaMessage?: string; logoUrl?: string; navItems?: NavItem[] }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
 
+  const items = navItems?.length ? navItems : defaultNavItems;
   return (
     <header className="sticky top-0 z-50 border-b border-neutral-200/80 bg-white/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:h-[72px] sm:px-8">
         <Link href="/" aria-label="EasyOffice — Beranda" className="shrink-0">
           <Image
-            src="/images/logo-EO.png"
+             src={logoUrl ?? "/images/logo-EO.png"}
             alt="EasyOffice"
             width={1418}
             height={1225}
@@ -30,8 +31,8 @@ export function Header() {
         </Link>
 
         <nav aria-label="Navigasi utama" className="hidden items-center gap-8 lg:flex">
-          {navItems.map((item) =>
-            item.children ? (
+          {items.map((item) =>
+            item.children?.length ? (
               <div
                 key={item.label}
                 className="relative"
@@ -93,13 +94,13 @@ export function Header() {
 
         <div className="hidden lg:block">
           <a
-            href={whatsappUrl("Halo EasyOffice, saya ingin bertanya tentang layanan Anda.")}
+             href={whatsappUrl(ctaMessage ?? "Halo EasyOffice, saya ingin bertanya tentang layanan Anda.", whatsappNumber)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 rounded-xl bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy/90"
           >
             <MessageCircle className="h-4 w-4" aria-hidden />
-            Hubungi Kami
+             {ctaLabel}
           </a>
         </div>
 
@@ -114,7 +115,7 @@ export function Header() {
         </button>
       </div>
 
-      {open ? <MobileNav onNavigate={() => setOpen(false)} /> : null}
+      {open ? <MobileNav onNavigate={() => setOpen(false)} whatsappNumber={whatsappNumber} ctaLabel={ctaLabel} ctaMessage={ctaMessage} navItems={items} /> : null}
     </header>
   );
 }

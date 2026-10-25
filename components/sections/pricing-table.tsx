@@ -22,6 +22,10 @@ function discountedPrice(plan: PricingPlan) {
   return `Rp ${Math.round(numericPrice * (1 - plan.discountPercent / 100)).toLocaleString("id-ID")}`;
 }
 
+function displayPrice(value: string) {
+  return value.trim().startsWith("Rp") ? value : `Rp ${value}`;
+}
+
 export function PricingTable({
   eyebrow = "Harga",
   title,
@@ -56,7 +60,7 @@ export function PricingTable({
               {salePrice ? (
                 <span className="flex flex-col">
                   <span className="text-sm text-neutral-400 line-through">
-                    {plan.price} {plan.period}
+                    {displayPrice(plan.price)} {plan.period}
                   </span>
                   <span className="font-display text-3xl font-bold tracking-tight text-navy">
                     {salePrice} {plan.period}
@@ -64,7 +68,7 @@ export function PricingTable({
                 </span>
               ) : (
                 <span className="font-display text-3xl font-bold tracking-tight text-navy">
-                  {plan.price} {plan.period}
+                   {displayPrice(plan.price)} {plan.period}
                 </span>
               )}
             </p>

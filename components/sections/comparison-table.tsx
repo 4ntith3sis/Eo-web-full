@@ -1,14 +1,17 @@
 import { Check, Minus } from "lucide-react";
-import { comparisonRows } from "@/lib/data/mock-data";
+import type { ComparisonRow } from "@/types";
 import { Section } from "@/components/ui/section";
 
 export function ComparisonTable({
   title = "Mengapa EasyOffice?",
   description = "Perbandingan fasilitas yang Anda dapatkan bersama EasyOffice.",
+  rows = [],
 }: {
   title?: string;
   description?: string;
+  rows?: ComparisonRow[];
 }) {
+  const comparisonRows = rows ?? [];
   return (
     <Section eyebrow="Perbandingan" title={title} description={description} tone="gray">
       <div className="mx-auto w-full min-w-0 max-w-4xl">

@@ -27,7 +27,7 @@ const steps = [
   },
 ];
 
-export function HowItWorks() {
+export function HowItWorks({ items = steps }: { items?: Array<{ title: string; description: string }> }) {
   return (
     <section className="bg-white py-10 sm:py-12 lg:py-16">
       <Container>
@@ -43,13 +43,13 @@ export function HowItWorks() {
           </p>
         </div>
         <div className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s) => (
+          {items.map((s, index) => (
             <div
-              key={s.step}
+              key={s.title}
               className="relative rounded-3xl border border-neutral-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card"
             >
               <span className="font-display text-4xl font-bold text-navy/15">
-                {s.step}
+                {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="font-display mt-4 text-lg font-bold text-navy">
                 {s.title}

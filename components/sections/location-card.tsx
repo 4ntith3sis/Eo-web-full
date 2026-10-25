@@ -15,6 +15,10 @@ interface LocationCardProps {
  * with its starting price, linking to the [service]/[location] detail.
  */
 export function LocationCard({ location, service, combo, office }: LocationCardProps) {
+  const displayPrice = (value?: string) => {
+    if (!value) return "Rp 0";
+    return value.trim().startsWith("Rp") ? value : `Rp ${value}`;
+  };
   const officeName = office.name;
   const firstPlan = combo.pricing[0];
   const firstPlanSale = firstPlan?.discountedPrice ?? (firstPlan?.discountPercent
@@ -52,7 +56,7 @@ export function LocationCard({ location, service, combo, office }: LocationCardP
           {firstPlanSale ? (
             <span className="inline-flex flex-col align-middle leading-tight">
               <span className="text-xs text-neutral-400 line-through">
-                {firstPlan.price} {firstPlan.period}
+                {displayPrice(firstPlan.price)} {firstPlan.period}
               </span>
               <span className="font-display text-lg font-bold text-navy">
                 {firstPlanSale} {firstPlan.period}
@@ -60,7 +64,7 @@ export function LocationCard({ location, service, combo, office }: LocationCardP
             </span>
           ) : (
             <span className="font-display text-lg font-bold text-navy">
-              {firstPlan?.price ?? combo.startingPrice} {firstPlan?.period}
+              {displayPrice(firstPlan?.price ?? combo.startingPrice)} {firstPlan?.period}
             </span>
           )}
         </p>

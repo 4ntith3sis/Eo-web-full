@@ -5,19 +5,20 @@ import { useState } from "react";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import { whatsappUrl } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
-import { navItems } from "./nav";
+import { navItems as defaultNavItems, type NavItem } from "./nav";
 
-export function MobileNav({ onNavigate }: { onNavigate: () => void }) {
+export function MobileNav({ onNavigate, whatsappNumber, ctaLabel = "Hubungi Kami", ctaMessage, navItems }: { onNavigate: () => void; whatsappNumber?: string; ctaLabel?: string; ctaMessage?: string; navItems?: NavItem[] }) {
   const [expanded, setExpanded] = useState<string | null>("Layanan");
 
+  const items = navItems?.length ? navItems : defaultNavItems;
   return (
     <nav
       aria-label="Navigasi seluler"
       className="border-t border-neutral-200 bg-white px-5 py-4 lg:hidden"
     >
       <ul className="flex flex-col">
-        {navItems.map((item) =>
-          item.children ? (
+        {items.map((item) =>
+          item.children?.length ? (
             <li key={item.label} className="border-b border-neutral-100">
               <button
                 type="button"
@@ -64,13 +65,13 @@ export function MobileNav({ onNavigate }: { onNavigate: () => void }) {
         )}
       </ul>
       <a
-        href={whatsappUrl("Halo EasyOffice, saya ingin bertanya tentang layanan Anda.")}
+         href={whatsappUrl(ctaMessage ?? "Halo EasyOffice, saya ingin bertanya tentang layanan Anda.", whatsappNumber)}
         target="_blank"
         rel="noopener noreferrer"
         className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-navy px-5 py-3 text-sm font-semibold text-white hover:bg-navy/90"
       >
         <MessageCircle className="h-4 w-4" aria-hidden />
-        Hubungi Kami
+         {ctaLabel}
       </a>
     </nav>
   );

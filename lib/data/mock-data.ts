@@ -32,7 +32,7 @@ export const locations: Location[] = [
     name: "Bandung",
     shortDescription:
       "Lokasi utama EasyOffice dengan akses mudah ke pusat bisnis kota Bandung.",
-    address: "Jl. Asia Afrika No. 123, Sumur Bandung, Bandung 40113",
+    address: "Jl. Ir. H. Juanda No. 88, Dago, Bandung 40135",
     operatingHours: "Senin–Jumat, 08.00–17.00 WIB",
     email: "bandung@easyoffice.id",
     phoneDisplay: "+62 812 3456 7890",
@@ -94,7 +94,7 @@ export const services: Service[] = [
     icon: "briefcase",
     href: "/layanan/virtual-office",
     image:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-01.webp",
     imageAlt: "Ruang kantor profesional untuk layanan virtual office",
   },
   {
@@ -122,7 +122,7 @@ export const services: Service[] = [
     icon: "users",
     href: "/layanan/coworking-space",
     image:
-      "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-02.webp",
     imageAlt: "Area coworking space yang nyaman dan produktif",
   },
   {
@@ -150,7 +150,7 @@ export const services: Service[] = [
     icon: "door",
     href: "/layanan/meeting-room",
     image:
-      "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-03.webp",
     imageAlt: "Ruang meeting profesional dengan meja dan kursi rapat",
   },
 ];
@@ -244,7 +244,7 @@ export const generalFaqs: Faq[] = [
   },
 ];
 
-const virtualOfficeFaqs: Faq[] = [
+export const virtualOfficeFaqs: Faq[] = [
   {
     question: "Apakah alamat Virtual Office bisa untuk legalitas usaha?",
     answer:
@@ -267,7 +267,7 @@ const virtualOfficeFaqs: Faq[] = [
   },
 ];
 
-const coworkingFaqs: Faq[] = [
+export const coworkingFaqs: Faq[] = [
   {
     question: "Apa perbedaan hot desk dan dedicated desk?",
     answer:
@@ -289,7 +289,7 @@ const coworkingFaqs: Faq[] = [
   },
 ];
 
-const meetingRoomFaqs: Faq[] = [
+export const meetingRoomFaqs: Faq[] = [
   {
     question: "Berapa kapasitas meeting room yang tersedia?",
     answer:
@@ -345,19 +345,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Kehadiran bisnis kredibel di pusat kota Bandung.",
     startingPrice: "Rp 350 rb",
     image:
-      "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-04.webp",
     imageAlt: "Kantor virtual office EasyOffice di Bandung",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-05.webp",
         alt: "Area resepsionis profesional dan meja tamu",
       },
       {
-        src: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-06.webp",
         alt: "Suasana ruang kerja kantor modern yang produktif",
       },
       {
-        src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-07.webp",
         alt: "Bilik meja kerja profesional dan komputer kantor",
       },
     ],
@@ -385,7 +385,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("map-pin", "bell", "printer", "wifi", "door", "coffee"),
-    faqs: virtualOfficeFaqs,
     offices: [
       {
         slug: "asia-afrika",
@@ -413,19 +412,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Alamat prestisius ibu kota untuk jangkauan bisnis nasional.",
     startingPrice: "Rp 450 rb",
     image:
-      "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-08.webp",
     imageAlt: "Kantor virtual office EasyOffice di Jakarta",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-09.webp",
         alt: "Area resepsionis dan front office representatif",
       },
       {
-        src: "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-10.webp",
         alt: "Sudut fasilitas cetak dan mesin fotokopi kantor",
       },
       {
-        src: "https://images.unsplash.com/photo-1542744094-24638eff58bb?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-11.webp",
         alt: "Area lounge santai untuk istirahat dan diskusi",
       },
     ],
@@ -449,7 +448,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("map-pin", "bell", "printer", "wifi", "door", "coffee", "car", "clock"),
-    faqs: virtualOfficeFaqs,
   },
   {
     serviceSlug: "virtual-office",
@@ -457,19 +455,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Solusi hemat di kawasan penyangga Jakarta.",
     startingPrice: "Rp 300 rb",
     image:
-      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-12.webp",
     imageAlt: "Kantor virtual office EasyOffice di Bekasi",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1497366858526-0766cadbe8fa?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-13.webp",
         alt: "Meja resepsionis dan penyambutan tamu profesional",
       },
       {
-        src: "https://images.unsplash.com/photo-1531973576160-7125cd663d86?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-14.webp",
         alt: "Fasilitas loker surat dan penanganan paket",
       },
       {
-        src: "https://images.unsplash.com/photo-1568992687947-868a62a9f521?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-15.webp",
         alt: "Area pantry dengan perlengkapan kopi dan teh",
       },
     ],
@@ -493,7 +491,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("map-pin", "bell", "printer", "wifi", "door"),
-    faqs: virtualOfficeFaqs,
   },
   {
     serviceSlug: "coworking-space",
@@ -501,19 +498,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang kerja fleksibel di jantung kota Bandung.",
     startingPrice: "Rp 75 rb",
     image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-16.webp",
     imageAlt: "Coworking space EasyOffice di Bandung",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-17.webp",
         alt: "Area hot desk kerja bersama yang terang dan luas",
       },
       {
-        src: "https://images.unsplash.com/photo-1527192491265-7e15c55b1ed2?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-18.webp",
         alt: "Meja kerja dedicated dan fasilitas stopkontak individual",
       },
       {
-        src: "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-19.webp",
         alt: "Fasilitas mesin cetak dan scanner dokumen cepat",
       },
     ],
@@ -538,7 +535,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("wifi", "coffee", "printer", "door", "clock", "car"),
-    faqs: coworkingFaqs,
   },
   {
     serviceSlug: "coworking-space",
@@ -546,19 +542,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang kerja fleksibel di jantung bisnis Jakarta.",
     startingPrice: "Rp 95 rb",
     image:
-      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-20.webp",
     imageAlt: "Coworking space EasyOffice di Jakarta",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-21.webp",
         alt: "Area hot desk modern dengan koneksi Wi-Fi super cepat",
       },
       {
-        src: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-22.webp",
         alt: "Sudut diskusi santai dan area kolaborasi terbuka",
       },
       {
-        src: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-07.webp",
         alt: "Pantry lengkap dengan mesin espresso dan air minum",
       },
     ],
@@ -583,7 +579,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("wifi", "coffee", "printer", "door", "clock", "car"),
-    faqs: coworkingFaqs,
   },
   {
     serviceSlug: "coworking-space",
@@ -591,19 +586,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang kerja hemat di kawasan penyangga Jakarta.",
     startingPrice: "Rp 60 rb",
     image:
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-23.webp",
     imageAlt: "Coworking space EasyOffice di Bekasi",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-24.webp",
         alt: "Ruang kerja bersama yang ergonomis dan nyaman",
       },
       {
-        src: "https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-25.webp",
         alt: "Area diskusi tim dan pojok santai",
       },
       {
-        src: "https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-09.webp",
         alt: "Fasilitas loker pribadi dan area cetak dokumen",
       },
     ],
@@ -628,7 +623,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("wifi", "coffee", "printer", "door"),
-    faqs: coworkingFaqs,
   },
   {
     serviceSlug: "meeting-room",
@@ -636,19 +630,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang meeting profesional dan lengkap di Bandung.",
     startingPrice: "Rp 150 rb",
     image:
-      "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-26.webp",
     imageAlt: "Meeting room EasyOffice di Bandung",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-27.webp",
         alt: "Ruang rapat dilengkapi layar proyektor dan white board",
       },
       {
-        src: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-28.webp",
         alt: "Meja rapat besar dengan stopkontak di setiap kursi",
       },
       {
-        src: "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-29.webp",
         alt: "Peralatan audio video konferensi online siap pakai",
       },
     ],
@@ -673,7 +667,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("door", "wifi", "coffee", "printer", "car", "clock"),
-    faqs: meetingRoomFaqs,
   },
   {
     serviceSlug: "meeting-room",
@@ -681,19 +674,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang meeting profesional dan lengkap di Jakarta.",
     startingPrice: "Rp 200 rb",
     image:
-      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-30.webp",
     imageAlt: "Meeting room EasyOffice di Jakarta",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-31.webp",
         alt: "Ruang meeting berkapasitas besar dengan pencahayaan optimal",
       },
       {
-        src: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-32.webp",
         alt: "Fasilitas proyektor high-definition dan flipchart",
       },
       {
-        src: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-33.webp",
         alt: "Layanan penyajian konsumsi dan snack rapat",
       },
     ],
@@ -718,7 +711,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("door", "wifi", "coffee", "printer", "car", "clock"),
-    faqs: meetingRoomFaqs,
   },
   {
     serviceSlug: "meeting-room",
@@ -726,19 +718,19 @@ export const serviceLocations: ServiceLocation[] = [
     tagline: "Ruang meeting profesional dan lengkap di Bekasi.",
     startingPrice: "Rp 120 rb",
     image:
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&q=80",
+      "/images/unsplash/office-34.webp",
     imageAlt: "Meeting room EasyOffice di Bekasi",
     gallery: [
       {
-        src: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-35.webp",
         alt: "Ruang rapat eksekutif dengan peredam suara",
       },
       {
-        src: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-36.webp",
         alt: "Peralatan presentasi dan koneksi internet stabil",
       },
       {
-        src: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=800&q=80",
+        src: "/images/unsplash/office-37.webp",
         alt: "Area penyambutan tamu khusus ruang meeting",
       },
     ],
@@ -763,7 +755,6 @@ export const serviceLocations: ServiceLocation[] = [
       ]),
     ],
     facilities: pickFacilities("door", "wifi", "coffee", "car"),
-    faqs: meetingRoomFaqs,
   },
 ];
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { ArrowRight, Briefcase, DoorOpen, Users } from "lucide-react";
-import { services } from "@/lib/data/mock-data";
+import { ArrowRight, Briefcase, DoorOpen, Users, Laptop, Wifi, MapPin, Headset, Presentation, Video, Clock, Wallet, Award, Handshake, Star, Sparkles } from "lucide-react";
+import type { Service } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 
@@ -8,22 +8,28 @@ const icons: Record<string, typeof Briefcase> = {
   "virtual-office": Briefcase,
   "coworking-space": Users,
   "meeting-room": DoorOpen,
+  briefcase: Briefcase, laptop: Laptop, wifi: Wifi, "map-pin": MapPin, headset: Headset,
+  presentation: Presentation, video: Video, clock: Clock, wallet: Wallet, award: Award,
+  handshake: Handshake, star: Star, sparkles: Sparkles,
 };
 
 export function ServicesOverview({
   title = "Layanan EasyOffice",
   description = "Tiga layanan utama untuk mendukung operasional dan citra profesional bisnis Anda.",
   tone = "white",
+  items = [],
 }: {
   title?: string;
   description?: string;
   tone?: "white" | "gray";
+  items?: Service[];
 }) {
+  const services = items ?? [];
   return (
     <Section eyebrow="Layanan" title={title} description={description} tone={tone} className="pt-5 sm:pt-7 lg:pt-9">
       <div className="grid gap-6 md:grid-cols-3">
         {services.map((service) => {
-          const Icon = icons[service.slug] ?? Briefcase;
+          const Icon = icons[service.icon] ?? icons[service.slug] ?? Briefcase;
           return (
             <div
               key={service.slug}

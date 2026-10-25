@@ -8,6 +8,10 @@ export interface Location {
   phoneDisplay: string;
   /** WhatsApp number (wa.me format). */
   whatsapp: string;
+  whatsappNumbers?: WhatsAppNumber[];
+  latitude?: number;
+  longitude?: number;
+  mapsUrl?: string;
 }
 
 export interface Service {
@@ -17,12 +21,30 @@ export interface Service {
   description: string;
   intro: string;
   benefits: string[];
+  benefitItems?: Benefit[];
+  benefitsTitle?: string;
+  benefitsDescription?: string;
   features: string[];
   icon: string;
   href: string;
   /** Unique image URL — must not be reused across services or combos. */
   image: string;
   imageAlt: string;
+  seo?: SeoMetadata;
+}
+
+export interface Benefit {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+export interface SeoMetadata {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noIndex?: boolean;
 }
 
 export interface PricingPlan {
@@ -41,9 +63,12 @@ export interface Facility {
   icon: string;
   title: string;
   description: string;
+  image?: string;
+  imageAlt?: string;
 }
 
 export interface Testimonial {
+  id?: string | number;
   name: string;
   company: string;
   quote: string;
@@ -52,6 +77,8 @@ export interface Testimonial {
 export interface Faq {
   question: string;
   answer: string;
+  category?: string;
+  sortOrder?: number;
 }
 
 export interface Promotion {
@@ -59,12 +86,15 @@ export interface Promotion {
   title: string;
   description: string;
   period: string;
+  image?: string;
+  serviceSlug?: string;
 }
 
 export interface ComparisonRow {
   feature: string;
   easyoffice: boolean;
   typical: boolean;
+  serviceSlug?: string;
 }
 
 export interface GalleryImage {
@@ -80,6 +110,17 @@ export interface Office {
   operatingHours?: string;
   phoneDisplay?: string;
   whatsapp?: string;
+  whatsappNumbers?: WhatsAppNumber[];
+  mapsUrl?: string;
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface WhatsAppNumber {
+  label?: string;
+  number: string;
+  active?: boolean;
+  priority?: number;
 }
 
 /**
@@ -94,9 +135,12 @@ export interface ServiceLocation {
   startingPrice: string;
   pricing: PricingPlan[];
   facilities: Facility[];
-  faqs: Faq[];
   /** Optional override; defaults to the location's WhatsApp number. */
   whatsapp?: string;
+  whatsappNumbers?: WhatsAppNumber[];
+  mapsUrl?: string;
+  latitude?: number;
+  longitude?: number;
   /** Unique hero image for this Service × Location page — never reused. */
   image: string;
   imageAlt: string;
@@ -104,4 +148,5 @@ export interface ServiceLocation {
   gallery: GalleryImage[];
   /** Offices shown for this service in the location (frontend prototype). */
   offices?: Office[];
+  seo?: SeoMetadata;
 }

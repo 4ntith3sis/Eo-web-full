@@ -7,9 +7,9 @@ import {
   MapPin,
   Printer,
   Wifi,
+  Laptop, Presentation, Video, Wallet, Headset, Award, Handshake, Star, Sparkles,
 } from "lucide-react";
 import type { Facility } from "@/types";
-import { allFacilities } from "@/lib/data/mock-data";
 import { Section } from "@/components/ui/section";
 
 const icons: Record<string, typeof Wifi> = {
@@ -21,12 +21,14 @@ const icons: Record<string, typeof Wifi> = {
   coffee: Coffee,
   car: Car,
   clock: Clock,
+  laptop: Laptop, presentation: Presentation, video: Video, wallet: Wallet, headset: Headset,
+  award: Award, handshake: Handshake, star: Star, sparkles: Sparkles,
 };
 
 export function FacilitiesGrid({
   title = "Fasilitas & Keunggulan",
   description = "Fasilitas lengkap untuk mendukung produktivitas dan citra profesional bisnis Anda.",
-  items = allFacilities,
+  items = [],
   tone = "white",
 }: {
   title?: string;
@@ -35,7 +37,7 @@ export function FacilitiesGrid({
   items?: Facility[];
 }) {
   return (
-    <Section eyebrow="Keunggulan" title={title} description={description} tone={tone}>
+    <Section eyebrow="Fasilitas" title={title} description={description} tone={tone}>
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((f) => {
           const Icon = icons[f.icon] ?? Wifi;

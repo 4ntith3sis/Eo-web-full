@@ -10,8 +10,8 @@
   --color-navy-950: #070e24;
   --color-surface: #f4f7fb;
 
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-outfit), var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Outfit", "Plus Jakarta Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   --shadow-soft: 0 4px 20px -2px rgb(12 23 54 / 0.06);
   --shadow-card: 0 8px 28px -6px rgb(12 23 54 / 0.1);

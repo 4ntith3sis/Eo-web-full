@@ -1,6 +1,5 @@
 import { Star } from "lucide-react";
 import type { Testimonial } from "@/types";
-import { testimonials } from "@/lib/data/mock-data";
 import { Section } from "@/components/ui/section";
 
 function initials(name: string) {
@@ -25,7 +24,7 @@ function MarqueeRow({
       <div className={reverse ? "marquee-track-reverse" : "marquee-track"}>
         {[...items, ...items].map((t, i) => (
           <article
-            key={`${t.name}-${i}`}
+            key={`${t.id ?? `${t.name}-${i % Math.max(items.length, 1)}`}-${i < items.length ? "a" : "b"}`}
             className="flex w-[380px] shrink-0 flex-col justify-between rounded-3xl border border-neutral-200 bg-white p-7 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-navy/30 hover:shadow-card"
           >
             <div>
@@ -59,10 +58,13 @@ function MarqueeRow({
 export function Testimonials({
   title = "Apa Kata Mereka",
   description = "Cerita dari pengguna layanan ruang kerja profesional.",
+  items = [],
 }: {
   title?: string;
   description?: string;
+  items?: Testimonial[];
 }) {
+  const testimonials = items ?? [];
   return (
     <Section eyebrow="Testimoni" title={title} description={description} tone="gray">
       <div className="-mx-6 flex flex-col gap-4">

@@ -9,16 +9,17 @@ import {
   Video,
   Wallet,
   Wifi,
+  Sparkles,
 } from "lucide-react";
 import { Section } from "@/components/ui/section";
 
-interface Benefit {
+interface RenderBenefit {
   icon: typeof Wallet;
   title: string;
   description: string;
 }
 
-const voBenefits: Benefit[] = [
+const voBenefits: RenderBenefit[] = [
   {
     icon: Wallet,
     title: "Hemat Biaya",
@@ -57,7 +58,7 @@ const voBenefits: Benefit[] = [
   },
 ];
 
-const coworkingBenefits: Benefit[] = [
+const coworkingBenefits: RenderBenefit[] = [
   {
     icon: Wallet,
     title: "Biaya Fleksibel",
@@ -96,7 +97,7 @@ const coworkingBenefits: Benefit[] = [
   },
 ];
 
-const meetingRoomBenefits: Benefit[] = [
+const meetingRoomBenefits: RenderBenefit[] = [
   {
     icon: Presentation,
     title: "Ruang Profesional",
@@ -135,7 +136,7 @@ const meetingRoomBenefits: Benefit[] = [
   },
 ];
 
-const benefitsByService: Record<string, { title: string; description: string; items: Benefit[] }> = {
+const benefitsByService: Record<string, { title: string; description: string; items: RenderBenefit[] }> = {
   "virtual-office": {
     title: "Manfaat Virtual Office Untuk Bisnis Anda",
     description:
@@ -156,16 +157,18 @@ const benefitsByService: Record<string, { title: string; description: string; it
   },
 };
 
-export function BenefitsSection({ serviceSlug = "virtual-office" }: { serviceSlug?: string }) {
+export function BenefitsSection({ serviceSlug = "virtual-office", items, title, description }: { serviceSlug?: string; items?: { icon: string; title: string; description: string }[]; title?: string; description?: string }) {
   const content = benefitsByService[serviceSlug] ?? benefitsByService["virtual-office"];
+  const cmsItems = items?.length ? items.map((item) => ({ ...item, icon: ({ wallet: Wallet, laptop: Laptop, building: Building2, headset: Headset, "map-pin": MapPin, presentation: Presentation, wifi: Wifi, users: Users, clock: Clock, video: Video } as Record<string, typeof Wallet>)[item.icon] ?? Sparkles })) : null;
+  const displayItems = cmsItems ?? content.items;
   return (
     <Section
       eyebrow="Manfaat"
-      title={content.title}
-      description={content.description}
+      title={title || content.title}
+      description={description || content.description}
     >
       <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {content.items.map((b) => (
+        {displayItems.map((b) => (
           <div
             key={b.title}
             className="rounded-3xl border border-neutral-200 bg-white p-6 shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:border-navy/30 hover:shadow-card"

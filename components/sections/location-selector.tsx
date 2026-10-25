@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { ArrowRight, Clock, MapPin, MessageCircle } from "lucide-react";
-import { locations } from "@/lib/data/mock-data";
 import { whatsappFor } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -10,11 +9,22 @@ import { Card } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 
 export function LocationSelector({
+  locations,
   title = "Pilih Lokasi EasyOffice",
   description = "Lokasi-lokasi strategis untuk kebutuhan bisnis Anda. Pilih lokasi untuk melihat detail layanan, harga, dan fasilitas.",
+  whatsappNumber,
 }: {
+  locations: Array<{
+    slug: string;
+    name: string;
+    shortDescription: string;
+    address: string;
+    operatingHours: string;
+    whatsapp: string;
+  }>;
   title?: string;
   description?: string;
+  whatsappNumber?: string;
 }) {
   const [active, setActive] = useState(locations[0].slug);
   const current = locations.find((l) => l.slug === active) ?? locations[0];
@@ -69,7 +79,7 @@ export function LocationSelector({
           </div>
         </dl>
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-          <Button href={whatsappFor("layanan", current.name, current.whatsapp)} external>
+           <Button href={whatsappFor("layanan", current.name, current.whatsapp || whatsappNumber)} external>
             <MessageCircle className="h-4 w-4" aria-hidden />
             WhatsApp {current.name}
           </Button>
