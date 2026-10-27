@@ -14,9 +14,9 @@ export function LocationDetailCard({
   whatsappNumber?: string;
 }) {
   return (
-    <Card className="rounded-[2rem] border-neutral-200/90 p-8 shadow-soft hover:translate-y-0 hover:shadow-soft sm:p-10">
+      <Card className="flex h-full flex-col justify-center rounded-[2rem] border-neutral-200/90 p-8 shadow-soft hover:translate-y-0 hover:shadow-soft sm:p-10">
       <h2 className="font-display text-2xl font-bold tracking-tight text-navy">
-        EasyOffice {location.name}
+        {location.name}
       </h2>
       <dl className="mt-8 space-y-6 text-base">
         <div className="flex gap-3">
@@ -48,7 +48,7 @@ export function LocationDetailCard({
            <Mail className="mt-0.5 h-6 w-6 shrink-0 text-navy" aria-hidden />
           <div>
             <dt className="font-semibold text-navy">Email</dt>
-           <dd className="mt-2 leading-relaxed text-neutral-600">{location.email}</dd>
+            <dd className="mt-2 leading-relaxed text-neutral-600">{location.email || "Email kantor belum diatur"}</dd>
           </div>
         </div>
       </dl>

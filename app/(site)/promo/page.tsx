@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function PromoPage() {
   const [promotions, promoServices, serviceLocations, site] = await Promise.all([getCmsPromotions(), getCmsServices(), getCmsServiceLocations(), getCmsSite()]);
-  const offices = serviceLocations.flatMap((combo) => combo.offices ?? []);
+  const offices = Array.from(new Map(serviceLocations.flatMap((combo) => combo.offices ?? []).map((office) => [office.slug, office])).values());
   return (
     <>
       <section className="bg-surface">

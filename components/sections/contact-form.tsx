@@ -11,7 +11,7 @@ const topics = [
   "Lainnya",
 ];
 
-export function ContactForm({ services = [], locations = [], whatsappNumber }: { services?: Array<{ id?: string | number; slug: string; title: string }>; locations?: Array<{ id?: string | number; slug: string; name: string }>; whatsappNumber?: string }) {
+export function ContactForm({ services = [], whatsappNumber }: { services?: Array<{ id?: string | number; slug: string; title: string }>; whatsappNumber?: string }) {
   const [topic, setTopic] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
@@ -22,8 +22,7 @@ export function ContactForm({ services = [], locations = [], whatsappNumber }: {
     const business = String(data.get("business") ?? "");
     const message = String(data.get("message") ?? "");
     const service = services.find((item) => item.title === topic);
-    const location = locations.find((item) => item.slug === String(data.get("location") ?? ""));
-    void fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, contact: `${data.get("email") ?? ""} / ${data.get("phone") ?? ""}`, interestedService: service?.id, location: location?.id, sourcePage: window.location.pathname, notes: `${topic}: ${message}` }) }).catch(() => undefined);
+    void fetch("/api/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, contact: `${data.get("email") ?? ""} / ${data.get("phone") ?? ""}`, interestedService: service?.id, sourcePage: window.location.pathname, notes: `${topic}: ${message}` }) }).catch(() => undefined);
     setSubmitted(true);
     const text = `Halo EasyOffice, saya ${name}${business ? ` dari ${business}` : ""}. Topik: ${topic}. ${message}`;
     window.open(whatsappUrl(text, whatsappNumber), "_blank", "noopener,noreferrer");
@@ -88,13 +87,6 @@ export function ContactForm({ services = [], locations = [], whatsappNumber }: {
               {t}
             </option>
           ))}
-        </select>
-      </label>
-      <label className="grid gap-2 text-sm font-bold text-navy">
-        Lokasi
-        <select name="location" className="rounded-xl border border-neutral-300 bg-white px-4 py-3.5 text-sm font-normal text-navy focus:border-navy focus:outline-none">
-          <option value="">Pilih lokasi (opsional)</option>
-          {locations.map((location) => <option key={location.slug} value={location.slug}>{location.name}</option>)}
         </select>
       </label>
       <label className="grid gap-2 text-sm font-bold text-navy">

@@ -214,6 +214,10 @@ for (const [sortOrder, row] of comparisonRows.entries()) {
   await upsertComparison(`global-${row.feature}`, { feature: row.feature, easyoffice: row.easyoffice, typical: row.typical, sortOrder, isActive: true });
   for (const service of services) await upsertComparison(`${service.slug}-${row.feature}`, { feature: row.feature, service: serviceDocs.get(service.slug)?.id, easyoffice: row.easyoffice, typical: row.typical, sortOrder, isActive: true });
 }
+const globalComparison = [
+  ["Masa sewa lebih dari 12 bulan", "true", "neutral"], ["Dukungan alamat untuk pengajuan PKP*", "true", "neutral"], ["Pembayaran bulanan melalui marketplace", "true", "neutral"], ["Pilihan paket sesuai kebutuhan dan Anggaran bisnis", "true", "neutral"], ["Akses meeting room di beberapa kota", "true", "neutral"], ["Tersedia di Berbagai Kota Besar", "true", "neutral"], ["Lokasi Strategis di Pusat Kota & Mudah Diakses", "true", "neutral"], ["Konsultasi bisnis, legalitas & pajak selama masa sewa", "true", "neutral"], ["Dukungan pembukaan rekening bank perusahaan", "true", "neutral"],
+];
+for (const [sortOrder, [feature, easyoffice, typical]] of globalComparison.entries()) await upsertComparison(`global-${feature}`, { feature, easyoffice, typical, sortOrder, isActive: true });
 
 for (const [sortOrder, facility] of allFacilities.entries()) {
   const image = await mediaIdFromPath(facility.image);
@@ -266,8 +270,16 @@ await request("/api/globals/site-settings", {
     copyrightText: "© 2026 EasyOffice. Seluruh hak cipta dilindungi.",
     defaultSeoTitle: "EasyOffice — Virtual Office, Coworking Space & Meeting Room",
     defaultSeoDescription: "EasyOffice menyediakan Virtual Office, Coworking Space, dan Meeting Room profesional di Bandung, Jakarta, dan Bekasi.",
-    homepageHeroTitle: "Solusi Ruang Kerja Profesional untuk Bisnis Anda",
-    homepageHeroDescription: "Virtual Office, Coworking Space, dan Meeting Room untuk mendukung kebutuhan bisnis Anda — dengan alamat prestisius dan layanan profesional.",
+     homepageHeroTitle: "Solusi Ruang Kerja Profesional untuk Bisnis Anda",
+     homepageHeroDescription: "Virtual Office, Coworking Space, dan Meeting Room untuk mendukung kebutuhan bisnis Anda — dengan alamat prestisius dan layanan profesional.",
+     homepageHeroImageLabel: "Private Office",
+     homepageHeroTrustItems: [
+       { text: "Lokasi Strategis", sortOrder: 0 },
+       { text: "Alamat legal untuk PT, CV dan PKP", sortOrder: 1 },
+       { text: "Dibantu Urus Pembukaan Rekening PT", sortOrder: 2 },
+       { text: "Proses Cepat dan Tanpa Ribet", sortOrder: 3 },
+       { text: "Harga Affordable", sortOrder: 4 },
+     ],
       statsBanner: [
        { value: "13.000+", label: "Bisnis Terlayani" }, { value: "5 Menit", label: "Respon WhatsApp" },
        { value: "4.9 ★", label: "Rating Google (700+)" }, { value: "100%", label: "Legal & Resmi" },

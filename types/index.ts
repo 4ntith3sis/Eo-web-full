@@ -1,13 +1,14 @@
 export interface Location {
   slug: string;
   name: string;
-  shortDescription: string;
-  address: string;
-  operatingHours: string;
-  email: string;
-  phoneDisplay: string;
-  /** WhatsApp number (wa.me format). */
-  whatsapp: string;
+  card?: { title?: string; description?: string; image?: string; imageAlt?: string };
+  /** Legacy fields retained for type compatibility; office pages should use Office. */
+  shortDescription?: string;
+  address?: string;
+  operatingHours?: string;
+  email?: string;
+  phoneDisplay?: string;
+  whatsapp?: string;
   whatsappNumbers?: WhatsAppNumber[];
   latitude?: number;
   longitude?: number;
@@ -31,6 +32,8 @@ export interface Service {
   image: string;
   imageAlt: string;
   seo?: SeoMetadata;
+  catatanLegalitas?: string;
+  linkShopee?: string;
 }
 
 export interface Benefit {
@@ -82,20 +85,25 @@ export interface Faq {
 }
 
 export interface Promotion {
-  badge: string;
+  badge: "promo" | "trial" | "diskon" | string;
   title: string;
   description: string;
   period: string;
   image?: string;
   serviceSlug?: string;
+  ctaLabel?: string;
+  ctaMessage?: string;
+  ctaHref?: string;
 }
 
 export interface ComparisonRow {
   feature: string;
-  easyoffice: boolean;
-  typical: boolean;
+  easyoffice: ComparisonStatus | boolean;
+  typical: ComparisonStatus | boolean;
   serviceSlug?: string;
 }
+
+export type ComparisonStatus = "true" | "neutral" | "false";
 
 export interface GalleryImage {
   src: string;
@@ -108,6 +116,7 @@ export interface Office {
   description?: string;
   address: string;
   operatingHours?: string;
+  email?: string;
   phoneDisplay?: string;
   whatsapp?: string;
   whatsappNumbers?: WhatsAppNumber[];
@@ -148,5 +157,7 @@ export interface ServiceLocation {
   gallery: GalleryImage[];
   /** Offices shown for this service in the location (frontend prototype). */
   offices?: Office[];
+  catatanLegalitas?: string;
+  linkShopee?: string;
   seo?: SeoMetadata;
 }

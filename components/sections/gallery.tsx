@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import { Container } from "@/components/ui/container";
 
 interface GalleryImage {
@@ -15,7 +18,9 @@ export function Gallery({
   description?: string;
   images: GalleryImage[];
 }) {
+  const [activeIndex, setActiveIndex] = useState(0);
   if (images.length === 0) return null;
+  const activeImage = images[activeIndex] ?? images[0];
   return (
     <section className="bg-surface">
       <Container className="py-10 sm:py-12 lg:py-16">
@@ -32,21 +37,17 @@ export function Gallery({
             </p>
           ) : null}
         </div>
-        <div className="mt-10 grid min-w-0 gap-5 sm:mt-12 sm:grid-cols-3">
-          {images.map((img, i) => (
-            <figure
-              key={`${img.src}-${i}`}
-              className="group relative aspect-[4/3] overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:shadow-card"
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                sizes="(max-width: 640px) 100vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </figure>
-          ))}
+        <div className="mx-auto mt-10 max-w-5xl sm:mt-12">
+          <figure className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-card">
+            <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes="(max-width: 1024px) 100vw, 960px" className="object-cover" />
+          </figure>
+          <div className="mt-5 flex gap-3 overflow-x-auto pb-2" aria-label="Pilih foto kantor">
+            {images.map((img, i) => (
+              <button key={`${img.src}-${i}`} type="button" onClick={() => setActiveIndex(i)} aria-label={`Lihat foto ${i + 1}`} aria-pressed={activeIndex === i} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition-all sm:h-24 sm:w-36 ${activeIndex === i ? "border-emerald-500 shadow-md" : "border-transparent opacity-75 hover:opacity-100"}`}>
+                <Image src={img.src} alt={img.alt} fill sizes="144px" className="object-cover" />
+              </button>
+            ))}
+          </div>
         </div>
       </Container>
     </section>

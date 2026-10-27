@@ -69,3 +69,16 @@ body {
 .marquee-track-reverse:hover {
   animation-play-state: paused;
 }
+
+/* Keep the Puck editor isolated from the public-site typography and controls. */
+.puck-editor-frame {
+  min-height: 100vh;
+  background: #fff;
+  color: #111827;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.puck-editor-frame .Puck,
+.puck-editor-frame [class*="Puck"] {
+  color: #111827;
+}

@@ -15,6 +15,7 @@ interface HeroProps {
   imageAlt?: string;
   /** Label shown on the overlay badge (bottom of hero image). Defaults to service tagline. */
   imageLabel?: string;
+  trustItems?: string[];
   visual?: ReactNode;
 }
 
@@ -23,9 +24,10 @@ const defaultHeroImage =
 
 const defaultTrustItems = [
   "Lokasi Strategis",
-  "Alamat Bisnis Prestisius",
-  "Layanan Profesional",
-  "Harga Fleksibel",
+  "Alamat legal untuk PT, CV dan PKP",
+  "Dibantu Urus Pembukaan Rekening PT",
+  "Proses Cepat dan Tanpa Ribet",
+  "Harga Affordable",
 ];
 
 export function Hero({
@@ -37,6 +39,7 @@ export function Hero({
   image,
   imageAlt,
   imageLabel,
+  trustItems,
   visual,
 }: HeroProps) {
   return (
@@ -78,7 +81,7 @@ export function Hero({
             ) : null}
           </div>
           <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
-            {defaultTrustItems.map((item) => (
+            {(trustItems?.length ? trustItems : defaultTrustItems).map((item) => (
               <li
                 key={item}
                 className="inline-flex items-center gap-2.5 text-sm font-semibold text-white/85"

@@ -1,13 +1,23 @@
-import { BadgeCheck, MessageCircle, ShieldCheck, Star } from "lucide-react";
+import { Award, BadgeCheck, Banknote, Building2, CalendarDays, Check, Clock3, Globe2, Headphones, MapPin, MessageCircle, Rocket, ShieldCheck, ShoppingBag, Star, Target, Trophy, Users, BriefcaseBusiness, Zap, Handshake, Heart, WalletCards } from "lucide-react";
 
 const stats = [
-  { value: "13.000+", label: "Bisnis Terlayani", icon: BadgeCheck },
-  { value: "5 Menit", label: "Respon WhatsApp", icon: MessageCircle },
-  { value: "4.9 ★", label: "Rating Google (700+)", icon: Star },
-  { value: "100%", label: "Legal & Resmi", icon: ShieldCheck },
+  { value: "13.000+", label: "Bisnis Terlayani", icon: "users" },
+  { value: "5 Menit", label: "Respon WhatsApp", icon: "check" },
+  { value: "4.9 ★", label: "Rating Google (700+)", icon: "star" },
+  { value: "100%", label: "Legal & Resmi", icon: "shield" },
 ];
 
-export function StatsBand({ items = stats }: { items?: Array<{ value: string; label: string }> }) {
+export function StatsBand({ items = stats }: { items?: Array<{ value: string; label: string; icon?: string }> }) {
+  const iconForStat = (label: string, index: number, configuredIcon?: string) => {
+    const configured = { location: MapPin, users: Users, briefcase: BriefcaseBusiness, star: Star, shield: ShieldCheck, check: Check, message: MessageCircle, clock: Clock3, target: Target, building: Building2, award: Award, banknote: Banknote, calendar: CalendarDays, globe: Globe2, headset: Headphones, rocket: Rocket, shopping: ShoppingBag, trophy: Trophy, zap: Zap, handshake: Handshake, heart: Heart, wallet: WalletCards }[configuredIcon ?? ""];
+    if (configuredIcon && configuredIcon !== "auto" && configured) return configured;
+    const normalized = label.toLowerCase();
+    if (normalized.includes("kota") || normalized.includes("lokasi")) return MapPin;
+    if (normalized.includes("client") || normalized.includes("bisnis")) return Users;
+    if (normalized.includes("rating") || normalized.includes("google")) return Star;
+    if (normalized.includes("legal") || normalized.includes("resmi")) return ShieldCheck;
+    return [Users, BadgeCheck, Star, ShieldCheck][index % 4];
+  };
   return (
     <section className="bg-white py-8 sm:py-10">
       <div className="mx-auto w-full max-w-[1150px] px-6">
@@ -19,7 +29,7 @@ export function StatsBand({ items = stats }: { items?: Array<{ value: string; la
             >
               <span className="absolute right-3 top-3 h-1.5 w-1.5 rounded-full bg-emerald-500" aria-hidden />
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-navy text-white shadow-soft transition-transform duration-300 group-hover:scale-105">
-                {(() => { const Icon = [BadgeCheck, MessageCircle, Star, ShieldCheck][index % 4]; return <Icon className="h-5 w-5" aria-hidden />; })()}
+                 {(() => { const Icon = iconForStat(stat.label, index, stat.icon); return <Icon className="h-5 w-5" aria-hidden />; })()}
               </span>
               <div className="min-w-0">
                 <strong className="font-display block text-xl font-bold tracking-tight text-navy sm:text-2xl">

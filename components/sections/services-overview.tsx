@@ -27,7 +27,7 @@ export function ServicesOverview({
   const services = items ?? [];
   return (
     <Section eyebrow="Layanan" title={title} description={description} tone={tone} className="pt-5 sm:pt-7 lg:pt-9">
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {services.map((service) => {
           const Icon = icons[service.icon] ?? icons[service.slug] ?? Briefcase;
           return (
@@ -60,7 +60,7 @@ export function ServicesOverview({
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 pt-2">
+                <div className="mt-auto pt-6">
                   <Button href={service.href} variant="outline" size="sm">
                     Lihat {service.shortTitle}
                     <ArrowRight className="h-4 w-4" aria-hidden />

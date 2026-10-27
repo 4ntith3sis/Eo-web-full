@@ -22,7 +22,7 @@ export function HomepageRenderer({ layout, services, promotions, testimonials, c
         switch (props.section) {
            case "stats": return <StatsBand key={index} items={Array.isArray(site.statsBanner) ? site.statsBanner as Array<{ value: string; label: string }> : undefined} />;
            case "facilities": return <FacilitiesGrid key={index} items={facilities.slice(0, 6)} />;
-           case "promotions": return <PromoSection key={index} promotions={promotions} services={services} whatsappNumber={typeof site.whatsappNumber === "string" ? site.whatsappNumber : undefined} />;
+            case "promotions": return <PromoSection key={index} promotions={promotions} services={services} />;
           case "services": return <ServicesOverview key={index} tone="gray" items={services} />;
            case "howItWorks": return <HowItWorks key={index} items={Array.isArray(site.howItWorks) ? site.howItWorks as Array<{ title: string; description: string }> : undefined} />;
           case "comparison": return <ComparisonTable key={index} rows={comparisonRows} />;

@@ -1,8 +1,8 @@
 import config from "@/payload.config";
 import { RootPage, generatePageMetadata } from "@payloadcms/next/views";
-import { redirect } from "next/navigation";
 import { importMap } from "../importMap.js";
-import { PuckBuilder } from "@/components/puck/puck-builder";
+import { PuckBuilder } from "@/components/puck/puck-builder-server";
+import { PuckManager } from "@/components/puck/puck-manager";
 
 type PayloadRouteProps = {
   params: Promise<{ segments: string[] }>;
@@ -16,11 +16,10 @@ export const generateMetadata = ({
 
 const Page = async ({ params, searchParams }: PayloadRouteProps) => {
   const resolvedParams = await params;
-  if (resolvedParams.segments?.join("/") === "puck-builder") {
-    redirect("/admin/collections/homepage-layout");
-  }
+  if (resolvedParams.segments?.join("/") === "puck-builder") return <div className="min-h-screen bg-white"><PuckManager /></div>;
   if (resolvedParams.segments?.join("/") === "puck-builder/edit") {
-    return <div className="min-h-screen bg-white"><PuckBuilder /></div>;
+    const queryId = typeof (await searchParams).id === "string" ? (await searchParams).id as string : undefined;
+    return <div className="min-h-screen bg-white"><PuckBuilder id={queryId} /></div>;
   }
   return RootPage({ config, params: Promise.resolve(resolvedParams), searchParams, importMap });
 };

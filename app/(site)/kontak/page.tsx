@@ -11,7 +11,7 @@ import { FaqSection } from "@/components/sections/faq";
 import { ContactForm } from "@/components/sections/contact-form";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
 import { Container } from "@/components/ui/container";
-import { getCmsFaqs, getCmsLocations, getCmsServices, getCmsSite } from "@/lib/data/cms-data";
+import { getCmsFaqs, getCmsServices, getCmsSite } from "@/lib/data/cms-data";
 import { whatsappUrl } from "@/lib/whatsapp";
 
 export const metadata: Metadata = {
@@ -53,7 +53,7 @@ function buildQuickCards(site: Awaited<ReturnType<typeof getCmsSite>>) {
 }
 
 export default async function ContactPage() {
-  const [generalFaqs, site, services, locations] = await Promise.all([getCmsFaqs(), getCmsSite(), getCmsServices(), getCmsLocations()]);
+  const [generalFaqs, site, services] = await Promise.all([getCmsFaqs(), getCmsSite(), getCmsServices()]);
   const quickCards = buildQuickCards(site);
   return (
     <>
@@ -124,7 +124,7 @@ export default async function ContactPage() {
                 Isi form berikut dan tim kami akan menghubungi Anda kembali dalam 1×24 jam kerja.
               </p>
               <hr className="my-7 border-neutral-100" />
-          <ContactForm services={services} locations={locations} whatsappNumber={site.primaryWhatsapp} />
+          <ContactForm services={services} whatsappNumber={site.primaryWhatsapp} />
             </div>
 
             <aside className="grid gap-5">

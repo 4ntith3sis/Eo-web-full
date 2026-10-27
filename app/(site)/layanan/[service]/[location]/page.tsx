@@ -11,6 +11,7 @@ import { Hero } from "@/components/sections/hero";
 import { LocationDetailCard } from "@/components/sections/location-detail-card";
 import { PricingTable } from "@/components/sections/pricing-table";
 import { StatsBand } from "@/components/sections/stats-band";
+import { ShopeeSection } from "@/components/sections/shopee-section";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
 import { getCmsServiceLocations, getCmsServices, getCmsLocations, getCmsComparisonRows, getCmsFaqs, getCmsSite } from "@/lib/data/cms-data";
 import { locationWhatsappNumber, routedWhatsappNumber, whatsappFor } from "@/lib/whatsapp";
@@ -34,14 +35,14 @@ export async function generateMetadata({
   const office = combo?.offices?.find((entry) => entry.slug === locationSlug);
   if (!service || !location || !combo) return { title: "Layanan" };
   const officeName = office?.name ?? `EasyOffice ${location.name}`;
-  const officeDescription = office?.description ?? `${location.shortDescription} ${combo.tagline}`;
+  const officeDescription = office?.description ?? combo.tagline;
   const seo = combo.seo;
   return {
     title: seo?.title ?? `${service.title} ${officeName}`,
     description: seo?.description ?? officeDescription,
     alternates: seo?.canonicalUrl ? { canonical: seo.canonicalUrl } : undefined,
     robots: seo?.noIndex ? { index: false, follow: true } : undefined,
-    openGraph: { title: seo?.title ?? `${service.title} ${officeName}`, description: seo?.description ?? officeDescription, images: seo?.ogImage ? [seo.ogImage] : undefined },
+      openGraph: { title: seo?.title ?? `${service.title} ${officeName}`, description: seo?.description ?? officeDescription, images: seo?.ogImage ? [seo.ogImage] : combo.image ? [combo.image] : undefined },
   };
 }
 
@@ -66,8 +67,8 @@ export default async function ServiceLocationPage({
   if (!service || !location || !combo) notFound();
 
   const officeName = office?.name ?? `EasyOffice ${location.name}`;
-  const officeDescription = office?.description ?? `${location.shortDescription} ${combo.tagline}`;
-  const address = office?.address ?? location.address;
+  const officeDescription = office?.description ?? combo.tagline;
+  const address = office?.address ?? "";
   const waNumber = routedWhatsappNumber(office?.whatsappNumbers ?? combo.whatsappNumbers, office?.whatsapp ?? combo.whatsapp ?? locationWhatsappNumber(location.slug));
 
   return (
@@ -131,11 +132,11 @@ export default async function ServiceLocationPage({
               })}
             </ul>
           </div>
-          <LocationDetailCard location={{ ...location, address, mapsUrl: office?.mapsUrl ?? combo.mapsUrl, latitude: office?.latitude ?? combo.latitude, longitude: office?.longitude ?? combo.longitude }} topic={service.title} whatsappNumber={waNumber} />
+          <LocationDetailCard location={{ ...location, name: officeName, address, operatingHours: office?.operatingHours ?? "", email: office?.email ?? "", whatsapp: waNumber, mapsUrl: office?.mapsUrl ?? combo.mapsUrl, latitude: office?.latitude ?? combo.latitude, longitude: office?.longitude ?? combo.longitude }} topic={service.title} whatsappNumber={waNumber} />
         </Container>
       </section>
 
-      <div id="harga">
+      {combo.pricing.length ? <div id="harga">
         <PricingTable
           title={`Harga ${service.title} ${officeName}`}
           description="Harga khusus lokasi ini — hubungi kami untuk penawaran resmi."
@@ -144,7 +145,12 @@ export default async function ServiceLocationPage({
           locationName={officeName}
           whatsappNumber={waNumber}
         />
-      </div>
+      </div> : null}
+      {combo.catatanLegalitas ? <p className="mx-auto max-w-5xl px-6 pb-8 text-sm text-neutral-500">{combo.catatanLegalitas}</p> : null}
+      <ShopeeSection
+        title={`Transaksi ${service.title} melalui Marketplace`}
+        description={`Pilih paket ${service.title} di ${officeName} dan lakukan pembayaran melalui Shopee.`}
+      />
 
       <Gallery
         title={`Detail Kantor ${service.title} ${officeName}`}
@@ -152,20 +158,20 @@ export default async function ServiceLocationPage({
         images={combo.gallery}
       />
 
-      <FacilitiesGrid
+      {combo.facilities.length ? <FacilitiesGrid
         title={`Fasilitas di ${officeName}`}
         description={`Fasilitas ${service.title} yang tersedia di kantor ini.`}
         items={combo.facilities}
-      />
+      /> : null}
       <ComparisonTable
         rows={cmsComparisonRows}
         title={`Perbandingan ${service.title}`}
         description={`Bandingkan fasilitas dan keunggulan ${service.title} EasyOffice dengan penyedia lain.`}
       />
-      <FaqSection
+      {cmsFaqs.length ? <FaqSection
           title={`FAQ ${service.title} ${officeName}`}
         faqs={cmsFaqs}
-      />
+      /> : null}
       <WhatsappCta
           title={`Siap Memulai di ${officeName}?`}
         description={`Hubungi tim ${officeName} melalui WhatsApp.`}

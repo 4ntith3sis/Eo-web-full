@@ -3,7 +3,7 @@ import { fileURLToPath } from "node:url";
 import sharp from "sharp";
 import { postgresAdapter } from "@payloadcms/db-postgres";
 import { buildConfig, type CollectionConfig } from "payload";
-import { AboutPage, Cities, ComparisonRows, Faqs, HomepageFacilities, HomepageLayout, Leads, Media, Promotions, ServiceOffices, Services, SiteSettings, Testimonials, isAdmin } from "./payload/collections/content";
+import { AboutPage, ComparisonRows, Faqs, HomepageFacilities, HomepageLayout, Kantor, Leads, LayananKantor, Media, Promotions, Services, SiteSettings, Testimonials, isAdmin } from "./payload/collections/content";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -48,13 +48,14 @@ export default buildConfig({
       puckBuilder: {
         path: "/puck-builder",
         exact: true,
-        Component: { path: "../../payload/components/puck-manager-view.tsx", exportName: "default" },
+            Component: { path: "../../payload/components/puck-manager-view.tsx", exportName: "default" },
       },
     },
   },
-  collections: [Users, Services, Cities, ServiceOffices, Media, Promotions, Testimonials, ComparisonRows, HomepageLayout, Faqs, HomepageFacilities, Leads],
+  collections: [Users, Services, Kantor, LayananKantor, Media, Promotions, Testimonials, ComparisonRows, HomepageLayout, Faqs, HomepageFacilities, Leads],
   globals: [SiteSettings, AboutPage],
   db: postgresAdapter({
+    migrationDir: path.resolve(dirname, "migrations"),
     pool: {
       connectionString: process.env.DATABASE_URL ?? "",
     },

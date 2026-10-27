@@ -1,5 +1,5 @@
-import { PuckBuilder } from "@/components/puck/puck-builder";
+import { PuckBuilder } from "@/components/puck/puck-builder-server";
 
-export default function PuckBuilderPage() {
+export default async function PuckBuilderPage() {
   return <PuckBuilder />;
 }
