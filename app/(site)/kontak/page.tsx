@@ -57,7 +57,7 @@ export default async function ContactPage() {
   const quickCards = buildQuickCards(site);
   return (
     <>
-      <section className="bg-navy py-14 sm:py-16 lg:py-20">
+      <section className="bg-navy py-10 sm:py-12 lg:py-14">
         <Container>
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/60">
             <Link href="/" className="text-white/60 hover:text-white">
@@ -113,7 +113,7 @@ export default async function ContactPage() {
         </Container>
       </section>
 
-      <section className="bg-surface py-10 sm:py-12 lg:py-16">
+      <section className="bg-surface py-8 sm:py-10 lg:py-12">
         <Container>
           <div className="grid items-start gap-10 lg:grid-cols-[1.15fr_0.85fr]">
             <div className="rounded-3xl border border-neutral-200 bg-white p-8 shadow-soft sm:p-10">

@@ -29,7 +29,7 @@ const steps = [
 
 export function HowItWorks({ items = steps }: { items?: Array<{ title: string; description: string }> }) {
   return (
-    <section className="bg-white py-10 sm:py-12 lg:py-16">
+    <section className="bg-white py-8 sm:py-10 lg:py-12">
       <Container>
         <div className="mx-auto max-w-2xl text-center">
           <p className="inline-flex items-center rounded-full border border-navy/15 bg-navy/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-navy">
@@ -42,7 +42,7 @@ export function HowItWorks({ items = steps }: { items?: Array<{ title: string; d
             Proses sederhana untuk mulai menggunakan layanan ruang kerja profesional kami.
           </p>
         </div>
-        <div className="mt-10 grid gap-6 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4">
           {items.map((s, index) => (
             <div
               key={s.title}

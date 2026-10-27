@@ -20,8 +20,8 @@ export function WhatsappCta({
 }: WhatsappCtaProps) {
   return (
     <section className="bg-white">
-      <Container className="py-10 sm:py-12 lg:py-16">
-        <div className="relative overflow-hidden rounded-3xl bg-navy px-6 py-12 text-center text-white shadow-card sm:px-10 sm:py-14 lg:py-16">
+      <Container className="py-8 sm:py-10 lg:py-12">
+        <div className="relative overflow-hidden rounded-3xl bg-navy px-6 py-9 text-center text-white shadow-card sm:px-10 sm:py-11 lg:py-12">
           <span
             aria-hidden
             className="pointer-events-none absolute -left-24 -top-24 h-64 w-64 rounded-full bg-white/5"
@@ -42,7 +42,7 @@ export function WhatsappCta({
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/80">
               {description}
             </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Button
                 href={whatsappFor(topic, locationName, whatsappNumber)}
                 external

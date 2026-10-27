@@ -42,7 +42,7 @@ export default async function AboutPage() {
   const [cmsServices, about, site] = await Promise.all([getCmsServices(), getCmsAbout(), getCmsSite()]);
   return (
     <>
-      <section className="bg-navy py-14 sm:py-16 lg:py-20">
+      <section className="bg-navy py-10 sm:py-12 lg:py-14">
         <Container>
           <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm text-white/60">
             <Link href="/" className="text-white/60 hover:text-white">
@@ -124,7 +124,7 @@ export default async function AboutPage() {
         </Container>
       </section>
 
-      <section id="cerita" className="bg-white py-10 sm:py-12 lg:py-16">
+      <section id="cerita" className="bg-white py-8 sm:py-10 lg:py-12">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[360px] overflow-hidden rounded-3xl bg-surface shadow-soft sm:min-h-[420px]">

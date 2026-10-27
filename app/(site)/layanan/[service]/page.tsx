@@ -138,10 +138,12 @@ export default async function ServiceLandingPage({
         </div>
       </Section>
 
-       <ShopeeSection
-         title={`Transaksi ${service.title} melalui Marketplace`}
-         description={`Pilih paket ${service.title} EasyOffice dan lakukan pembayaran dengan mudah melalui Shopee.`}
-       />
+        <ShopeeSection
+          title={`Transaksi ${service.title} melalui Marketplace`}
+          description={`Pilih paket ${service.title} EasyOffice dan lakukan pembayaran dengan mudah melalui Shopee.`}
+          image={site.homepageShopeeImage}
+          imageAlt={site.homepageShopeeImageAlt}
+        />
        {serviceLegalNotes.length ? (
          <Section eyebrow="Informasi Legalitas" title={`Catatan Legalitas ${service.title}`} tone="gray">
            <div className="mx-auto max-w-3xl rounded-2xl border border-amber-200 bg-amber-50 p-5 text-sm leading-relaxed text-amber-950">

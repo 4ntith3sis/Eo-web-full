@@ -44,20 +44,20 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className="bg-navy">
-      <Container className="grid items-center gap-10 py-14 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:py-20">
+      <Container className="grid items-center gap-8 py-10 sm:py-12 lg:grid-cols-2 lg:gap-14 lg:py-14">
         <div>
           {eyebrow ? (
             <p className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-white/80">
               {eyebrow}
             </p>
           ) : null}
-          <h1 className="font-display mt-6 text-4xl font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
+          <h1 className="font-display mt-5 text-4xl font-bold leading-[1.12] tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
             {title}
           </h1>
-          <p className="mt-6 max-w-[570px] text-base leading-relaxed text-white/70 sm:text-lg">
+          <p className="mt-5 max-w-[570px] text-base leading-relaxed text-white/70 sm:text-lg">
             {description}
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Button
               href={primaryCta.href}
               external={primaryCta.external}
@@ -80,7 +80,7 @@ export function Hero({
               </Button>
             ) : null}
           </div>
-          <ul className="mt-8 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+          <ul className="mt-6 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
             {(trustItems?.length ? trustItems : defaultTrustItems).map((item) => (
               <li
                 key={item}

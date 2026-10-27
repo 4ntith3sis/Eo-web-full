@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/container";
 
 export function ShopeeSection({ title, description, image, imageAlt }: { title?: string; description?: string; image?: string; imageAlt?: string }) {
   return (
-    <section className="bg-surface py-10 sm:py-14">
+    <section className="bg-surface py-8 sm:py-10">
       <Container>
         <div className="overflow-hidden rounded-[2rem] bg-white shadow-soft lg:grid lg:grid-cols-[0.9fr_1.1fr]">
           <div className="relative min-h-[240px] bg-[#fff4ed] lg:min-h-full">{image ? <Image src={image} alt={imageAlt ?? "Pembayaran EasyOffice melalui Shopee"} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" /> : <div className="flex h-full min-h-[240px] items-center justify-center text-6xl font-black text-[#ee4d2d]/20">Shopee</div>}</div>

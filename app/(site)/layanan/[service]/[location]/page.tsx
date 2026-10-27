@@ -101,7 +101,7 @@ export default async function ServiceLocationPage({
       <StatsBand items={site.statsBanner} />
 
       <section className="bg-surface">
-        <Container className="grid gap-8 py-10 sm:py-12 lg:grid-cols-2 lg:py-16">
+        <Container className="grid gap-8 py-8 sm:py-10 lg:grid-cols-2 lg:py-12">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.15em] text-navy/70">
               Lokasi & Operasional
@@ -136,6 +136,12 @@ export default async function ServiceLocationPage({
         </Container>
       </section>
 
+      <ShopeeSection
+        title={`Transaksi ${service.title} melalui Marketplace`}
+        description={`Pilih paket ${service.title} di ${officeName} dan lakukan pembayaran melalui Shopee.`}
+        image={site.homepageShopeeImage}
+        imageAlt={site.homepageShopeeImageAlt}
+      />
       {combo.pricing.length ? <div id="harga">
         <PricingTable
           title={`Harga ${service.title} ${officeName}`}
@@ -146,11 +152,7 @@ export default async function ServiceLocationPage({
           whatsappNumber={waNumber}
         />
       </div> : null}
-      {combo.catatanLegalitas ? <p className="mx-auto max-w-5xl px-6 pb-8 text-sm text-neutral-500">{combo.catatanLegalitas}</p> : null}
-      <ShopeeSection
-        title={`Transaksi ${service.title} melalui Marketplace`}
-        description={`Pilih paket ${service.title} di ${officeName} dan lakukan pembayaran melalui Shopee.`}
-      />
+      {combo.catatanLegalitas ? <p className="mx-auto max-w-5xl px-6 pb-5 text-sm text-neutral-500">{combo.catatanLegalitas}</p> : null}
 
       <Gallery
         title={`Detail Kantor ${service.title} ${officeName}`}
