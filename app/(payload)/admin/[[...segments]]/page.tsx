@@ -12,14 +12,22 @@ type PayloadRouteProps = {
 export const generateMetadata = ({
   params,
   searchParams,
-}: PayloadRouteProps) => generatePageMetadata({ config, params, searchParams });
+}: PayloadRouteProps) => {
+  return params.then(({ segments }) => {
+    const path = segments?.join("/");
+    if (path === "puck-builder" || path === "puck-builder/edit") {
+      return { title: "Puck Builder | EasyOffice" };
+    }
+    return generatePageMetadata({ config, params, searchParams });
+  });
+};
 
 const Page = async ({ params, searchParams }: PayloadRouteProps) => {
   const resolvedParams = await params;
   if (resolvedParams.segments?.join("/") === "puck-builder") return <div className="min-h-screen bg-white"><PuckManager /></div>;
   if (resolvedParams.segments?.join("/") === "puck-builder/edit") {
     const queryId = typeof (await searchParams).id === "string" ? (await searchParams).id as string : undefined;
-    return <div className="min-h-screen bg-white"><PuckBuilder id={queryId} /></div>;
+    return <div className="puck-admin-page min-h-screen bg-white"><PuckBuilder id={queryId} /></div>;
   }
   return RootPage({ config, params: Promise.resolve(resolvedParams), searchParams, importMap });
 };
