@@ -26,13 +26,15 @@ export function PuckManager() {
   const createPage = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError("");
-    const normalizedRoute = route.trim().startsWith("/") ? route.trim() : `/${route.trim()}`;
-    if (!name.trim() || !normalizedRoute || normalizedRoute === "/") {
-      setError("Isi nama halaman dan route selain /. Contoh: /tentang-kami");
+    const normalizedRoute = `/${name.trim().toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`;
+    const routePattern = /^\/[a-z0-9]+(?:[a-z0-9/_-]*[a-z0-9_-])?$/;
+    if (!name.trim() || normalizedRoute === "/" || !routePattern.test(normalizedRoute) || /^\/(admin|api|login)(?:\/|$)/.test(normalizedRoute)) {
+      setError("Route harus valid, diawali /, tanpa spasi, dan tidak boleh memakai /admin, /api, atau /login.");
       return;
     }
     setCreating(true);
-    const response = await fetch("/api/page-layout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), route: normalizedRoute, layout: { content: [], root: {} }, status: "draft", isActive: true }) });
+    const starterLayout = { content: [{ type: "Heading", props: { id: "starter-heading", children: "Judul halaman", level: "h1" } }, { type: "Text", props: { id: "starter-text", children: "Tulis isi halaman Anda di sini." } }, { type: "Button", props: { id: "starter-button", label: "Pelajari lebih lanjut", href: "#", variant: "primary" } }], root: {} };
+    const response = await fetch("/api/page-layout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), route: normalizedRoute, seoTitle: name.trim(), seoDescription: `Informasi ${name.trim()} EasyOffice.`, layout: starterLayout, status: "draft", isActive: true }) });
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !result.doc?.id) {
       setError(result.errors?.[0]?.message ?? "Halaman gagal dibuat. Pastikan route belum digunakan.");

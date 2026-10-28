@@ -16,8 +16,6 @@ import { WhatsappCta } from "@/components/sections/whatsapp-cta";
 import { getCmsServiceLocations, getCmsServices, getCmsLocations, getCmsComparisonRows, getCmsFaqs, getCmsSite } from "@/lib/data/cms-data";
 import { locationWhatsappNumber, routedWhatsappNumber, whatsappFor } from "@/lib/whatsapp";
 
-export const dynamic = "force-dynamic";
-
 export async function generateStaticParams() {
   return [];
 }

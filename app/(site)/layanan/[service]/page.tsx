@@ -86,6 +86,10 @@ export default async function ServiceLandingPage({
         image={service.image}
         imageAlt={service.imageAlt}
         imageLabel={service.title}
+        trustItems={Array.isArray(site.homepageHeroTrustItems) ? [...site.homepageHeroTrustItems]
+          .sort((a: { sortOrder?: number }, b: { sortOrder?: number }) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+          .map((item: { text?: string }) => item.text ?? "")
+          .filter(Boolean) : undefined}
         primaryCta={{
           label: "Hubungi Kami",
            href: whatsappFor(service.title, undefined, site.whatsappNumber),

@@ -1,10 +1,12 @@
 import type { ComparisonRow, ComparisonStatus, Faq, Facility, Location, Office, Promotion, Service, ServiceLocation, Testimonial } from "@/types";
 import { routedWhatsappNumber } from "@/lib/whatsapp";
+import { cache } from "react";
+import crypto from "node:crypto";
 
 type PayloadList<T> = { docs?: T[] };
 
 const apiBase = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000";
-const cmsCache = { next: { revalidate: 30 } } as const;
+const cmsCache = { next: { revalidate: 60 } } as const;
 function mediaUrl(value: unknown): string | undefined {
   if (typeof value === "string") return value;
   if (value && typeof value === "object" && typeof (value as { url?: unknown }).url === "string") return (value as { url: string }).url;
@@ -12,7 +14,7 @@ function mediaUrl(value: unknown): string | undefined {
 }
 
 export type HomepageLayoutData = { content?: Array<{ type?: string; props?: Record<string, unknown> }>; root?: Record<string, unknown> };
-export type PublishedPuckPage = { id?: string | number; name?: string; route?: string; layout?: HomepageLayoutData };
+export type PublishedPuckPage = { id?: string | number; name?: string; route?: string; seoTitle?: string; seoDescription?: string; layout?: HomepageLayoutData };
 
 async function payloadList<T>(collection: string): Promise<T[]> {
     const response = await fetch(`${apiBase}/api/${collection}?limit=100&where[isActive][equals]=true`, {
@@ -25,7 +27,7 @@ async function payloadList<T>(collection: string): Promise<T[]> {
     return data.docs;
 }
 
-export async function getCmsServices(): Promise<Service[]> {
+export const getCmsServices = cache(async function getCmsServices(): Promise<Service[]> {
   const docs = await payloadList<Partial<Service>>("services");
   if (!docs.length) throw new Error("No services configured in CMS");
   const preferredOrder = ["virtual-office", "coworking-space", "meeting-room", "private-office"];
@@ -53,9 +55,9 @@ export async function getCmsServices(): Promise<Service[]> {
     if (aPreferred !== -1 || bPreferred !== -1) return (aPreferred === -1 ? 1000 : aPreferred) - (bPreferred === -1 ? 1000 : bPreferred);
     return ((a as Service & { sortOrder?: number }).sortOrder ?? 9999) - ((b as Service & { sortOrder?: number }).sortOrder ?? 9999);
   });
-}
+});
 
-export async function getCmsLocations(): Promise<Location[]> {
+export const getCmsLocations = cache(async function getCmsLocations(): Promise<Location[]> {
   const response = await fetch(`${apiBase}/api/kantor?limit=100&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, ...cmsCache });
   if (!response.ok) throw new Error(`CMS request failed: kantor (${response.status})`);
   const data = (await response.json()) as PayloadList<Record<string, unknown>>;
@@ -67,9 +69,9 @@ export async function getCmsLocations(): Promise<Location[]> {
     card: { title: String(doc.nama ?? ""), description: String(doc.deskripsi ?? ""), image: mediaUrl(doc.foto), imageAlt: String(doc.altFoto ?? doc.nama ?? "") },
     address: String(doc.alamat ?? ""), operatingHours: String(doc.jamOperasional ?? ""), email: String(doc.email ?? ""), phoneDisplay: String(doc.telepon ?? ""), whatsappNumbers: Array.isArray(doc.whatsappNumbers) ? doc.whatsappNumbers as Office["whatsappNumbers"] : undefined, mapsUrl: String(doc.linkGoogleMaps ?? ""), latitude: typeof doc.latitude === "number" ? doc.latitude : undefined, longitude: typeof doc.longitude === "number" ? doc.longitude : undefined,
   }));
-}
+});
 
-export async function getCmsPromotions(): Promise<Promotion[]> {
+export const getCmsPromotions = cache(async function getCmsPromotions(): Promise<Promotion[]> {
   const docs = await payloadList<Partial<Promotion> & { service?: unknown }>("promotions");
   if (!docs.length) return [];
   return docs.map((doc) => {
@@ -79,15 +81,15 @@ export async function getCmsPromotions(): Promise<Promotion[]> {
     const badge = String(doc.badge ?? "promo").toLowerCase();
     return { badge: badge === "trial" || badge === "diskon" ? badge : "promo", title, description: doc.description ?? "", period: doc.period ?? "", image: mediaUrl(doc.image), serviceSlug: inferredService };
   });
-}
+});
 
-export async function getCmsTestimonials(): Promise<Testimonial[]> {
+export const getCmsTestimonials = cache(async function getCmsTestimonials(): Promise<Testimonial[]> {
   const docs = await payloadList<Partial<Testimonial>>("testimonials");
   if (!docs.length) return [];
   return docs.map((doc) => ({ id: doc.id, name: doc.name ?? "", company: doc.company ?? "", quote: doc.quote ?? "" }));
-}
+});
 
-export async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
+export const getCmsServiceLocations = cache(async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
   const response = await fetch(`${apiBase}/api/layanan-kantor?limit=100&depth=2&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, ...cmsCache });
   if (!response.ok) throw new Error(`CMS request failed: layanan-kantor (${response.status})`);
   const data = (await response.json()) as PayloadList<Record<string, unknown>>;
@@ -113,18 +115,18 @@ export async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
     const facilities = Array.isArray(doc.fasilitas) ? doc.fasilitas.map((item: { icon?: string; title?: string; description?: string; image?: unknown; imageAlt?: string }) => ({ icon: String(item.icon ?? "sparkles"), title: String(item.title ?? ""), description: String(item.description ?? ""), image: mediaUrl(item.image), imageAlt: item.imageAlt ?? item.title })) : [];
     return { serviceSlug, locationSlug, tagline: String(doc.tagline ?? ""), startingPrice: String(doc.hargaMulai ?? ""), pricing: packages as ServiceLocation["pricing"], image: mediaUrl(doc.foto) ?? "", imageAlt: String(doc.altFoto ?? doc.namaTampilan ?? ""), gallery, facilities, whatsappNumbers: numbers, mapsUrl: String(office.linkGoogleMaps ?? ""), latitude: typeof office.latitude === "number" ? office.latitude : undefined, longitude: typeof office.longitude === "number" ? office.longitude : undefined, offices, catatanLegalitas: String(doc.catatanLegalitas ?? ""), seo: doc.seo ? { ...(doc.seo as Record<string, unknown>), ogImage: mediaUrl((doc.seo as Record<string, unknown>).ogImage) } : undefined };
   });
-}
+});
 
-export async function getCmsSite() {
+export const getCmsSite = cache(async function getCmsSite() {
   const response = await fetch(`${apiBase}/api/globals/site-settings?depth=1`, cmsCache);
   if (!response.ok) throw new Error(`CMS request failed: site-settings (${response.status})`);
   const data = await response.json();
   const whatsappNumbers = Array.isArray(data.whatsappNumbers) ? data.whatsappNumbers : [];
   const primaryWhatsapp = String(data.primaryWhatsapp ?? data.phone ?? "");
   return { ...data, phoneDisplay: data.phone ?? "", logoUrl: mediaUrl(data.logo), homepageHeroImage: mediaUrl(data.homepageHeroImage), homepageShopeeImage: mediaUrl(data.homepageShopeeImage), statsBanner: Array.isArray(data.statsBanner) ? data.statsBanner : [], primaryWhatsapp, whatsappNumbers, whatsappNumber: routedWhatsappNumber(whatsappNumbers, primaryWhatsapp) };
-}
+});
 
-export async function getCmsAbout() {
+export const getCmsAbout = cache(async function getCmsAbout() {
   const response = await fetch(`${apiBase}/api/globals/about-page?depth=1`, cmsCache);
   if (!response.ok) throw new Error(`CMS request failed: about-page (${response.status})`);
   const data = await response.json();
@@ -137,26 +139,26 @@ export async function getCmsAbout() {
     stats: Array.isArray(data.stats) ? data.stats.map((item: { value?: string; label?: string }) => ({ value: item.value ?? "", label: item.label ?? "" })) : [],
     values: Array.isArray(data.values) ? data.values.map((item: { icon?: string; title?: string; description?: string }) => ({ icon: item.icon ?? "award", title: item.title ?? "", description: item.description ?? "" })) : [],
   };
-}
+});
 
-export async function getCmsFaqs(serviceSlug?: string) {
+export const getCmsFaqs = cache(async function getCmsFaqs(serviceSlug?: string) {
   const docs = await payloadList<Partial<Faq> & { placement?: string; service?: unknown; items?: Array<{ question?: string; answer?: string; sortOrder?: number }> }>("faqs");
   if (!docs.length) return [];
   return docs.filter((doc) => {
     const service = doc.service && typeof doc.service === "object" ? doc.service as Record<string, unknown> : undefined;
     return serviceSlug ? doc.placement === "service" && !!service && service.slug === serviceSlug : doc.placement === "global";
   }).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).flatMap((doc) => Array.isArray(doc.items) ? [...doc.items].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item) => ({ question: item.question ?? "", answer: item.answer ?? "" })) : []);
-}
+});
 
-export async function getCmsHomepageFacilities(): Promise<Facility[]> {
+export const getCmsHomepageFacilities = cache(async function getCmsHomepageFacilities(): Promise<Facility[]> {
   const docs = await payloadList<Partial<Facility>>("homepage-facilities");
   if (!docs.length) return [];
   return [...docs]
     .sort((a, b) => ((a as Partial<Facility> & { sortOrder?: number }).sortOrder ?? 0) - ((b as Partial<Facility> & { sortOrder?: number }).sortOrder ?? 0))
     .map((doc) => ({ icon: doc.icon ?? "sparkles", title: doc.title ?? "", description: doc.description ?? "" }));
-}
+});
 
-export async function getCmsComparisonRows(serviceSlug?: string): Promise<ComparisonRow[]> {
+export const getCmsComparisonRows = cache(async function getCmsComparisonRows(serviceSlug?: string): Promise<ComparisonRow[]> {
   const docs = await payloadList<Partial<ComparisonRow> & { placement?: string; sortOrder?: number; service?: unknown; items?: Array<{ feature?: string; easyoffice?: string | boolean; typical?: string | boolean; sortOrder?: number }> }>("comparison-rows");
   if (!docs.length) return [];
   const seen = new Set<string>();
@@ -165,7 +167,7 @@ export async function getCmsComparisonRows(serviceSlug?: string): Promise<Compar
     .filter((doc) => { const service = doc.service && typeof doc.service === "object" ? doc.service as Record<string, unknown> : undefined; return serviceSlug ? doc.placement === "service" && !!service && service.slug === serviceSlug : doc.placement === "global"; })
     .flatMap((doc) => Array.isArray(doc.items) && doc.items.length ? [...doc.items].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item) => ({ feature: item.feature ?? "", easyoffice: normalizeComparisonStatus(item.easyoffice), typical: normalizeComparisonStatus(item.typical), serviceSlug })) : [{ feature: doc.feature ?? "", easyoffice: normalizeComparisonStatus(doc.easyoffice), typical: normalizeComparisonStatus(doc.typical), serviceSlug }])
     .filter((row) => { if (seen.has(row.feature)) return false; seen.add(row.feature); return true; });
-}
+});
 
 function normalizeComparisonStatus(value: string | boolean | undefined): ComparisonStatus {
   if (value === true || value === "true") return "true";
@@ -188,15 +190,19 @@ export async function getCmsHomepageLayoutById(id: string): Promise<HomepageLayo
   return data.layout ?? null;
 }
 
-export async function getCmsPublishedPuckPage(route: string): Promise<PublishedPuckPage | null> {
+export async function getCmsPublishedPuckPage(route: string, previewToken?: string): Promise<PublishedPuckPage | null> {
   const normalizedRoute = route.startsWith("/") ? route : `/${route}`;
-  const where = encodeURIComponent(JSON.stringify({
-    and: [
-      { route: { equals: normalizedRoute } },
-      { status: { equals: "published" } },
-      { isActive: { equals: true } },
-    ],
-  }));
+  const tokenParts = previewToken?.split(".");
+  const tokenPayload = tokenParts?.length === 3 ? `${tokenParts[0]}.${tokenParts[1]}` : "";
+  const expected = tokenPayload ? crypto.createHmac("sha256", process.env.PAYLOAD_SECRET ?? "preview").update(tokenPayload).digest("hex") : "";
+  const validPreview = Boolean(tokenParts?.length === 3 && Number(tokenParts[1]) > Math.floor(Date.now() / 1000) && expected && tokenParts[2] && crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(tokenParts[2])));
+  if (validPreview) {
+    const draftResponse = await fetch(`${apiBase}/api/page-layout/${encodeURIComponent(tokenParts![0])}`, { cache: "no-store" });
+    if (!draftResponse.ok) return null;
+    const draft = await draftResponse.json() as PublishedPuckPage;
+    return draft.route === normalizedRoute ? draft : null;
+  }
+  const where = encodeURIComponent(JSON.stringify({ and: [{ route: { equals: normalizedRoute } }, ...(validPreview ? [] : [{ status: { equals: "published" } }, { isActive: { equals: true } }])] }));
   const response = await fetch(`${apiBase}/api/page-layout?limit=1&where=${where}`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { docs?: PublishedPuckPage[] };

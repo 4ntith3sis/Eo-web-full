@@ -6,6 +6,8 @@ import { getCmsServices, getCmsSite } from "@/lib/data/cms-data";
 import { routedWhatsappNumber } from "@/lib/whatsapp";
 import "../globals.css";
 
+export const dynamic = "force-dynamic";
+
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const [site, services] = await Promise.all([getCmsSite(), getCmsServices()]);
   const whatsappNumber = routedWhatsappNumber(site.whatsappNumbers, site.primaryWhatsapp);

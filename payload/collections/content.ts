@@ -1,4 +1,5 @@
 import type { Access, CollectionConfig, Field } from "payload";
+import { revalidatePath } from "next/cache";
 
 type RoleUser = { role?: string };
 
@@ -8,6 +9,27 @@ export const isAdminOrEditor: Access = ({ req }) => {
   const role = (req.user as RoleUser | null)?.role;
   return role === "admin" || role === "editor";
 };
+
+function validateLayoutForPublish(value: unknown): string | null {
+  if (!value || typeof value !== "object") return "Layout halaman tidak valid.";
+  const content = (value as { content?: unknown }).content;
+  if (!Array.isArray(content)) return "Isi layout halaman tidak valid.";
+  const walk = (items: unknown[], depth = 0): string | null => {
+    if (depth > 6) return "Struktur layout terlalu dalam.";
+    for (const item of items) {
+      if (!item || typeof item !== "object") continue;
+      const node = item as { type?: string; props?: Record<string, unknown> };
+      const props = node.props ?? {};
+      if (node.type === "Heading" && !String(props.children ?? "").trim()) return "Heading tidak boleh kosong.";
+      if (node.type === "Button" && (!String(props.label ?? "").trim() || /^(javascript|data):/i.test(String(props.href ?? "")))) return "Button memiliki label atau link yang tidak valid.";
+      if (node.type === "Image" && !String(props.alt ?? "").trim()) return "Setiap gambar wajib memiliki alt text.";
+      for (const child of Object.values(props)) if (Array.isArray(child)) { const error = walk(child, depth + 1); if (error) return error; }
+    }
+    return null;
+  };
+  return walk(content);
+}
+
 
 const discountFields: Field[] = [
   { name: "active", type: "checkbox", defaultValue: false },
@@ -184,14 +206,38 @@ export const PageLayout: CollectionConfig = {
   access: {
     read: () => true,
     create: isAdminOrEditor,
-    update: isAdminOrEditor,
+    update: ({ req, data }) => {
+      const role = (req.user as RoleUser | null)?.role;
+      if (role === "admin") return true;
+      return role === "editor" && data?.status !== "published";
+    },
     delete: isAdmin,
   },
   admin: { useAsTitle: "name", defaultColumns: ["name", "route", "status", "isActive", "editVisual"], description: "Kelola halaman visual dan routing website. Gunakan tombol Edit Visual dengan Puck untuk mengatur tampilan halaman." },
   labels: { singular: "Halaman", plural: "Halaman" },
+  hooks: {
+    beforeValidate: [({ data, req }) => {
+      if (!data) return data;
+      const name = String(data.name ?? "Homepage").trim();
+      const slug = name.toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "halaman";
+      data.name = name;
+      data.route = `/${slug}`;
+      data.seoTitle = data.seoTitle || name;
+      data.seoDescription = data.seoDescription || `Informasi ${name} EasyOffice.`;
+      if (data.status === "published") {
+        if ((req.user as RoleUser | null)?.role !== "admin") throw new Error("Hanya admin yang dapat mempublish halaman.");
+        const layoutError = validateLayoutForPublish(data.layout);
+        if (layoutError) throw new Error(layoutError);
+      }
+      return data;
+    }],
+    afterChange: [({ doc }) => { revalidatePath(String(doc.route ?? "/")); revalidatePath("/"); return doc; }],
+  },
   fields: [
     { name: "name", type: "text", required: true, defaultValue: "Homepage" },
-    { name: "route", type: "text", required: true, unique: true, admin: { description: "URL halaman, contoh: /tentang-kami-baru" } },
+    { name: "route", type: "text", required: true, unique: true, admin: { readOnly: true, description: "Slug otomatis dari nama halaman." } },
+    { name: "seoTitle", type: "text", label: "Judul SEO", admin: { description: "Default mengikuti nama halaman." } },
+    { name: "seoDescription", type: "textarea", label: "Deskripsi SEO", admin: { description: "Default dibuat dari nama halaman." } },
     { name: "layout", type: "json", required: true, defaultValue: { content: [], root: {} }, admin: { hidden: true } },
     { name: "status", type: "select", required: true, defaultValue: "draft", options: [{ label: "Draft", value: "draft" }, { label: "Published", value: "published" }] },
     { name: "isActive", type: "checkbox", defaultValue: true },
