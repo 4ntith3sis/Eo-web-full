@@ -220,10 +220,9 @@ const globalComparison = [
 for (const [sortOrder, [feature, easyoffice, typical]] of globalComparison.entries()) await upsertComparison(`global-${feature}`, { feature, easyoffice, typical, sortOrder, isActive: true });
 
 for (const [sortOrder, facility] of allFacilities.entries()) {
-  const image = await mediaIdFromPath(facility.image);
   await upsertBy("homepage-facilities", "title", facility.title, {
     title: facility.title, description: facility.description, icon: facility.icon,
-    ...(image ? { image } : {}), imageAlt: facility.imageAlt, sortOrder, isActive: true,
+    sortOrder, isActive: true,
   });
 }
 
@@ -306,7 +305,7 @@ await request("/api/globals/about-page", {
   }),
 });
 
-await upsertBy("homepage-layout", "name", "Homepage", { name: "Homepage", layout: { content: [
+await upsertBy("page-layout", "name", "Homepage", { name: "Homepage", layout: { content: [
   { type: "Hero", props: { title: "Solusi Ruang Kerja Profesional untuk Bisnis Anda", description: "Virtual Office, Coworking Space, dan Meeting Room untuk mendukung kebutuhan bisnis Anda — dengan alamat prestisius dan layanan profesional." } },
   ...["stats", "facilities", "promotions", "services", "howItWorks", "comparison", "testimonials", "whatsapp"].map((section) => ({ type: "HomepageSection", props: { section } })),
 ] }, status: "published", isActive: true });

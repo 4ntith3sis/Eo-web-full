@@ -16,11 +16,11 @@ export function PuckManager() {
   const [route, setRoute] = useState("");
   const [creating, setCreating] = useState(false);
   const [error, setError] = useState("");
-  const load = () => fetch("/api/homepage-layout?limit=100&sort=-updatedAt").then((r) => r.json()).then((d) => setDocs(Array.isArray(d.docs) ? d.docs : [])).finally(() => setLoading(false));
+  const load = () => fetch("/api/page-layout?limit=100&sort=-updatedAt").then((r) => r.json()).then((d) => setDocs(Array.isArray(d.docs) ? d.docs : [])).finally(() => setLoading(false));
   useEffect(() => { void load(); }, []);
   const publish = async (doc: LayoutDoc) => {
     if (!doc) return;
-    await fetch(`/api/homepage-layout/${doc.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status: "published", isActive: true }) });
+    await fetch(`/api/page-layout/${doc.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status: "published", isActive: true }) });
     await load();
   };
   const createPage = async (event: FormEvent<HTMLFormElement>) => {
@@ -32,7 +32,7 @@ export function PuckManager() {
       return;
     }
     setCreating(true);
-    const response = await fetch("/api/homepage-layout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), route: normalizedRoute, layout: { content: [], root: {} }, status: "draft", isActive: true }) });
+    const response = await fetch("/api/page-layout", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: name.trim(), route: normalizedRoute, layout: { content: [], root: {} }, status: "draft", isActive: true }) });
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !result.doc?.id) {
       setError(result.errors?.[0]?.message ?? "Halaman gagal dibuat. Pastikan route belum digunakan.");

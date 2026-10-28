@@ -59,14 +59,16 @@ export function Testimonials({
   title = "Apa Kata Mereka",
   description = "Cerita dari pengguna layanan ruang kerja profesional.",
   items = [],
+  className = "pt-5 sm:pt-6 lg:pt-8",
 }: {
   title?: string;
   description?: string;
   items?: Testimonial[];
+  className?: string;
 }) {
   const testimonials = items ?? [];
   return (
-    <Section eyebrow="Testimoni" title={title} description={description} tone="gray">
+    <Section eyebrow="Testimoni" title={title} description={description} tone="gray" className={className}>
       <div className="-mx-6 flex flex-col gap-4">
         <MarqueeRow items={testimonials} />
         <MarqueeRow items={testimonials} reverse />

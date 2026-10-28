@@ -8,7 +8,7 @@ import "../globals.css";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const [site, services] = await Promise.all([getCmsSite(), getCmsServices()]);
-  const whatsappNumber = routedWhatsappNumber(site.whatsappNumbers, typeof site.defaultWhatsapp === "string" ? site.defaultWhatsapp : undefined, site.primaryWhatsapp);
+  const whatsappNumber = routedWhatsappNumber(site.whatsappNumbers, site.primaryWhatsapp);
   return (
     <div className="flex min-h-screen flex-col bg-white">
        <Header whatsappNumber={whatsappNumber} ctaLabel={site.headerCtaLabel} ctaMessage={site.headerCtaMessage} logoUrl={site.logoUrl} navItems={site.navigation} />

@@ -59,15 +59,17 @@ export const Services: CollectionConfig = {
       { name: "shortTitle", type: "text", label: "Judul Singkat" },
       { name: "description", type: "textarea", label: "Deskripsi Singkat", admin: { description: "Jelaskan manfaat utama layanan dalam 1–3 kalimat." } },
       { name: "intro", type: "textarea", label: "Deskripsi Lengkap" },
-      { name: "icon", type: "select", label: "Ikon Layanan", options: iconOptions, defaultValue: "briefcase" },
+      { name: "icon", type: "select", label: "Ikon Layanan (Legacy)", options: iconOptions, defaultValue: "briefcase", admin: { hidden: true, description: "Kartu layanan menggunakan gambar layanan, bukan ikon tambahan." } },
     ] },
     { label: "Keunggulan", fields: [
       { name: "benefitsTitle", type: "text", label: "Judul Keunggulan" },
       { name: "benefitsDescription", type: "textarea", label: "Deskripsi Keunggulan" },
-      { name: "benefitItems", type: "array", label: "Daftar Keunggulan", labels: { singular: "Keunggulan", plural: "Keunggulan" }, fields: [{ name: "icon", type: "select", label: "Ikon", options: iconOptions, defaultValue: "sparkles" }, { name: "title", type: "text", label: "Judul", required: true }, { name: "description", type: "textarea", label: "Penjelasan" }] },
-      { name: "benefits", type: "array", admin: { hidden: true }, fields: [{ name: "value", type: "text" }] },
-      { name: "keunggulan", type: "array", admin: { hidden: true }, fields: [{ name: "icon", type: "select", options: iconOptions }, { name: "title", type: "text" }, { name: "description", type: "textarea" }] },
-      { name: "features", type: "array", admin: { hidden: true }, fields: [{ name: "value", type: "text" }] },
+      { name: "keunggulanItems", type: "array", label: "Daftar Keunggulan", labels: { singular: "Keunggulan", plural: "Keunggulan" }, fields: [{ name: "icon", type: "select", label: "Ikon", options: iconOptions, defaultValue: "sparkles" }, { name: "title", type: "text", label: "Judul", required: true }, { name: "description", type: "textarea", label: "Penjelasan" }] },
+    ] },
+    { label: "Manfaat", fields: [
+      { name: "manfaatTitle", type: "text", label: "Judul Manfaat" },
+      { name: "manfaatDescription", type: "textarea", label: "Deskripsi Manfaat" },
+      { name: "manfaatItems", type: "array", label: "Daftar Manfaat", labels: { singular: "Manfaat", plural: "Manfaat" }, fields: [{ name: "icon", type: "select", label: "Ikon", options: iconOptions, defaultValue: "sparkles" }, { name: "title", type: "text", label: "Judul", required: true }, { name: "description", type: "textarea", label: "Penjelasan" }] },
     ] },
     { label: "Gambar", fields: [
       { name: "image", type: "upload", label: "Gambar Layanan", relationTo: "media" },
@@ -84,7 +86,7 @@ export const Services: CollectionConfig = {
 
 const galleryFields: Field[] = [{ name: "src", type: "upload", relationTo: "media" }, { name: "alt", type: "text", label: "Teks Alternatif Gambar", admin: { description: "Jelaskan isi gambar untuk aksesibilitas dan SEO." } }];
 const seoFields: Field[] = [{ name: "title", type: "text" }, { name: "slug", type: "text", admin: { readOnly: true } }, { name: "description", type: "textarea" }, { name: "ogImage", type: "upload", relationTo: "media" }, { name: "canonicalUrl", type: "text" }, { name: "noIndex", type: "checkbox", defaultValue: false }];
-const facilityFields: Field[] = [{ name: "icon", type: "select", options: iconOptions, defaultValue: "sparkles" }, { name: "title", type: "text" }, { name: "description", type: "textarea" }];
+const facilityFields: Field[] = [{ name: "icon", type: "select", label: "Ikon Fasilitas", options: iconOptions, defaultValue: "sparkles", admin: { description: "Pilih ikon yang paling sesuai dengan fasilitas." } }, { name: "title", type: "text", label: "Nama Fasilitas", required: true }, { name: "description", type: "textarea", label: "Penjelasan Fasilitas" }];
 const slugify = (value: unknown) => String(value ?? "").trim().toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
 /** New normalized office master. service-offices remains legacy during migration. */
@@ -106,7 +108,7 @@ export const LayananKantor: CollectionConfig = {
   admin: { useAsTitle: "namaTampilan", defaultColumns: ["namaTampilan", "kantor", "layanan", "aktif"], description: "Hubungkan layanan dengan kantor, lalu isi harga, fasilitas, foto, dan SEO." },
   fields: [{ type: "tabs", tabs: [
     { label: "Kantor & Layanan", fields: [{ name: "kantor", type: "relationship", relationTo: "kantor", required: true, label: "Kantor", admin: { description: "Pilih kantor tempat layanan tersedia." } }, { name: "layanan", type: "relationship", relationTo: "services", required: true, label: "Layanan", admin: { description: "Pilih jenis layanan." } }, { name: "slug", type: "text", required: true, unique: true, admin: { hidden: true } }, { name: "namaTampilan", type: "text", label: "Nama Tampilan" }, { name: "deskripsi", type: "textarea", label: "Deskripsi" }, { name: "tagline", type: "text", label: "Tagline" }, { name: "hargaMulai", type: "text", label: "Harga Mulai" }, { name: "catatanLegalitas", type: "textarea", label: "Catatan Legalitas / PKP" }, { name: "linkShopee", type: "text", admin: { hidden: true } }] },
-    { label: "Harga & Fasilitas", fields: [{ name: "paketHarga", type: "array", minRows: 1, labels: { singular: "Paket Harga", plural: "Paket Harga" }, fields: pricingFields }, { name: "fasilitas", type: "array", minRows: 6, maxRows: 6, labels: { singular: "Fasilitas", plural: "Fasilitas" }, fields: facilityFields }] },
+    { label: "Harga & Fasilitas", fields: [{ name: "paketHarga", type: "array", minRows: 1, labels: { singular: "Paket Harga", plural: "Paket Harga" }, fields: pricingFields }, { name: "fasilitas", type: "array", labels: { singular: "Fasilitas", plural: "Fasilitas" }, admin: { description: "Jumlah fasilitas fleksibel. Saat ini desain biasanya menggunakan 6 item, tetapi tidak wajib." }, fields: facilityFields }] },
     { label: "Foto & Publikasi", fields: [{ name: "foto", type: "upload", label: "Foto Utama", relationTo: "media", required: true }, { name: "altFoto", type: "text", label: "Deskripsi Foto", required: true }, { name: "galeri", type: "array", label: "Galeri Foto", minRows: 1, fields: galleryFields }, { name: "seo", type: "group", label: "SEO & Google", fields: seoFields }, { name: "aktif", type: "checkbox", label: "Tampilkan di Website", defaultValue: true }] },
   ] }],
   hooks: { beforeValidate: [async ({ data, req, originalDoc }) => {
@@ -168,28 +170,32 @@ export const ComparisonRows: CollectionConfig = {
       { name: "typical", type: "select", label: "Di Penyedia Lain", defaultValue: "neutral", options: [{ label: "Umumnya tersedia", value: "true" }, { label: "Tergantung penyedia", value: "neutral" }, { label: "Umumnya tidak tersedia", value: "false" }], admin: { description: "Pilih kondisi umum fitur ini pada penyedia lain." } },
     ] },
     { label: "Penempatan", fields: [
-      { name: "service", type: "relationship", relationTo: "services", label: "Berlaku untuk Layanan", admin: { description: "Kosongkan jika fitur berlaku untuk semua layanan." } },
+      { name: "placement", type: "select", label: "Penempatan Data", options: [{ label: "Global", value: "global" }, { label: "Layanan", value: "service" }], admin: { description: "Pilih Global atau Layanan. Data tanpa penempatan tidak akan ditampilkan." } },
+      { name: "service", type: "relationship", relationTo: "services", label: "Berlaku untuk Layanan", admin: { description: "Wajib diisi jika Penempatan = Layanan." } },
       { name: "sortOrder", type: "number", label: "Urutan Tampil", defaultValue: 0, admin: { hidden: true } },
       { name: "isActive", type: "checkbox", label: "Tampilkan di Website", defaultValue: true },
     ] },
   ] }],
+  hooks: { beforeValidate: [({ data }) => { if (!data) return data; if (data.placement === "service" && !data.service) throw new Error("Pilih layanan jika Penempatan Data diatur ke Layanan."); if (data.placement === "global" && data.service) throw new Error("Kosongkan layanan jika Penempatan Data diatur ke Global."); return data; }] },
 };
 
-export const HomepageLayout: CollectionConfig = {
-  slug: "homepage-layout",
+export const PageLayout: CollectionConfig = {
+  slug: "page-layout",
   access: {
     read: () => true,
     create: isAdminOrEditor,
     update: isAdminOrEditor,
     delete: isAdmin,
   },
-  admin: { useAsTitle: "name", hidden: true },
+  admin: { useAsTitle: "name", defaultColumns: ["name", "route", "status", "isActive", "editVisual"], description: "Kelola halaman visual dan routing website. Gunakan tombol Edit Visual dengan Puck untuk mengatur tampilan halaman." },
+  labels: { singular: "Halaman", plural: "Halaman" },
   fields: [
     { name: "name", type: "text", required: true, defaultValue: "Homepage" },
     { name: "route", type: "text", required: true, unique: true, admin: { description: "URL halaman, contoh: /tentang-kami-baru" } },
-    { name: "layout", type: "json", required: true },
+    { name: "layout", type: "json", required: true, defaultValue: { content: [], root: {} }, admin: { hidden: true } },
     { name: "status", type: "select", required: true, defaultValue: "draft", options: [{ label: "Draft", value: "draft" }, { label: "Published", value: "published" }] },
     { name: "isActive", type: "checkbox", defaultValue: true },
+    { name: "editVisual", type: "ui", admin: { components: { Cell: "../../payload/components/puck-edit-cell.tsx#PuckEditCell" } } },
   ],
 };
 
@@ -199,7 +205,8 @@ export const Faqs: CollectionConfig = {
   admin: { useAsTitle: "title", description: "Buat satu grup FAQ, lalu tambahkan pertanyaan dan jawaban di dalamnya." },
   fields: [
     { name: "title", type: "text", required: true, label: "Judul FAQ", admin: { description: "Contoh: Pertanyaan Umum Virtual Office." } },
-    { name: "service", type: "relationship", relationTo: "services", label: "Untuk Layanan", admin: { description: "Kosongkan jika FAQ ini berlaku untuk semua layanan." } },
+    { name: "placement", type: "select", label: "Penempatan FAQ", options: [{ label: "Global", value: "global" }, { label: "Layanan", value: "service" }], admin: { description: "Pilih Global atau Layanan. FAQ tanpa penempatan tidak akan ditampilkan." } },
+    { name: "service", type: "relationship", relationTo: "services", label: "Untuk Layanan", admin: { description: "Wajib diisi jika Penempatan = Layanan." } },
     { name: "question", type: "text", admin: { hidden: true } },
     { name: "answer", type: "textarea", admin: { hidden: true } },
     { name: "items", type: "array", labels: { singular: "Pertanyaan & Jawaban", plural: "Pertanyaan & Jawaban" }, admin: { description: "Tambahkan satu pertanyaan dan jawabannya pada setiap blok." }, fields: [
@@ -210,6 +217,7 @@ export const Faqs: CollectionConfig = {
     { name: "sortOrder", type: "number", label: "Urutan Tampil", defaultValue: 0, admin: { hidden: true } },
     { name: "isActive", type: "checkbox", label: "Tampilkan di Website", defaultValue: true },
   ],
+  hooks: { beforeValidate: [({ data }) => { if (!data) return data; if (data.placement === "service" && !data.service) throw new Error("Pilih layanan jika Penempatan FAQ diatur ke Layanan."); if (data.placement === "global" && data.service) throw new Error("Kosongkan layanan jika Penempatan FAQ diatur ke Global."); return data; }] },
 };
 
 export const HomepageFacilities: CollectionConfig = {
@@ -242,6 +250,8 @@ export const Leads: CollectionConfig = {
 
 export const SiteSettings: import("payload").GlobalConfig = {
   slug: "site-settings",
+  label: "Site Settings",
+  admin: { group: "Konten Website" },
   access: { read: () => true, update: isAdminOrEditor },
   fields: [
     { name: "siteName", type: "text", defaultValue: "EasyOffice" },
@@ -290,6 +300,8 @@ export const SiteSettings: import("payload").GlobalConfig = {
 
 export const AboutPage: import("payload").GlobalConfig = {
   slug: "about-page",
+  label: "About Page",
+  admin: { group: "Konten Website" },
   access: { read: () => true, update: isAdminOrEditor },
   fields: [
     { name: "eyebrow", type: "text", defaultValue: "Tentang EasyOffice" },

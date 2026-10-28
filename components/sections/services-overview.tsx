@@ -1,17 +1,8 @@
 import Image from "next/image";
-import { ArrowRight, Briefcase, DoorOpen, Users, Laptop, Wifi, MapPin, Headset, Presentation, Video, Clock, Wallet, Award, Handshake, Star, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { Service } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
-
-const icons: Record<string, typeof Briefcase> = {
-  "virtual-office": Briefcase,
-  "coworking-space": Users,
-  "meeting-room": DoorOpen,
-  briefcase: Briefcase, laptop: Laptop, wifi: Wifi, "map-pin": MapPin, headset: Headset,
-  presentation: Presentation, video: Video, clock: Clock, wallet: Wallet, award: Award,
-  handshake: Handshake, star: Star, sparkles: Sparkles,
-};
 
 export function ServicesOverview({
   title = "Layanan EasyOffice",
@@ -29,7 +20,6 @@ export function ServicesOverview({
     <Section eyebrow="Layanan" title={title} description={description} tone={tone} className="pt-5 sm:pt-7 lg:pt-9">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {services.map((service) => {
-          const Icon = icons[service.icon] ?? icons[service.slug] ?? Briefcase;
           return (
             <div
               key={service.slug}
@@ -45,9 +35,6 @@ export function ServicesOverview({
                 />
               </div>
               <div className="flex flex-1 flex-col p-7 sm:p-8">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-navy text-white shadow-soft">
-                  <Icon className="h-6 w-6" aria-hidden />
-                </span>
                 <h3 className="mt-5 text-lg font-semibold text-navy">{service.title}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-neutral-600">
                   {service.description}

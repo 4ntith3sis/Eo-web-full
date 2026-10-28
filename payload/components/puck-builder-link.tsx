@@ -7,10 +7,10 @@ export function PuckBuilderLink() {
   return (
     <button
       type="button"
-      className="nav__link"
-      onClick={() => router.push("/admin/collections/homepage-layout")}
+      style={{ background: "transparent", border: 0, borderRadius: 0, boxShadow: "none", padding: 0 }}
+      onClick={() => router.push("/admin/collections/page-layout")}
     >
-      Puck Builder
+       Halaman
     </button>
   );
 }

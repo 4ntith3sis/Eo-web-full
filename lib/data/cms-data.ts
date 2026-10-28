@@ -2,9 +2,9 @@ import type { ComparisonRow, ComparisonStatus, Faq, Facility, Location, Office, 
 import { routedWhatsappNumber } from "@/lib/whatsapp";
 
 type PayloadList<T> = { docs?: T[] };
-type PayloadText = string | { value?: string };
 
 const apiBase = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000";
+const cmsCache = { next: { revalidate: 30 } } as const;
 function mediaUrl(value: unknown): string | undefined {
   if (typeof value === "string") return value;
   if (value && typeof value === "object" && typeof (value as { url?: unknown }).url === "string") return (value as { url: string }).url;
@@ -17,7 +17,7 @@ export type PublishedPuckPage = { id?: string | number; name?: string; route?: s
 async function payloadList<T>(collection: string): Promise<T[]> {
     const response = await fetch(`${apiBase}/api/${collection}?limit=100&where[isActive][equals]=true`, {
       headers: { Accept: "application/json" },
-      cache: "no-store",
+      ...cmsCache,
     });
     if (!response.ok) throw new Error(`CMS request failed: ${collection} (${response.status})`);
     const data = (await response.json()) as PayloadList<T>;
@@ -36,11 +36,12 @@ export async function getCmsServices(): Promise<Service[]> {
     shortTitle: doc.shortTitle ?? doc.title ?? "",
     description: doc.description ?? "",
     intro: doc.intro ?? "",
-    benefits: (doc.benefits as PayloadText[] | undefined)?.map((item) => typeof item === "string" ? item : item.value ?? "") ?? [],
-    benefitsTitle: doc.benefitsTitle ?? "",
-    benefitsDescription: doc.benefitsDescription ?? "",
-    benefitItems: Array.isArray(doc.benefitItems) ? doc.benefitItems.map((item: { icon?: string; title?: string; description?: string }) => ({ icon: item.icon ?? "sparkles", title: item.title ?? "", description: item.description ?? "" })) : [],
-    features: (doc.features as PayloadText[] | undefined)?.map((item) => typeof item === "string" ? item : item.value ?? "") ?? [],
+    benefits: Array.isArray(doc.manfaatItems) ? doc.manfaatItems.map((item: { title?: string }) => item.title ?? "").filter(Boolean) : [],
+    benefitsTitle: doc.manfaatTitle ?? "",
+    benefitsDescription: doc.manfaatDescription ?? "",
+    keunggulanItems: Array.isArray(doc.keunggulanItems) ? doc.keunggulanItems.map((item: { icon?: string; title?: string; description?: string }) => ({ icon: item.icon ?? "sparkles", title: item.title ?? "", description: item.description ?? "" })) : [],
+    manfaatItems: Array.isArray(doc.manfaatItems) ? doc.manfaatItems.map((item: { icon?: string; title?: string; description?: string }) => ({ icon: item.icon ?? "sparkles", title: item.title ?? "", description: item.description ?? "" })) : [],
+    features: [],
     icon: doc.icon ?? "briefcase",
     href: `/layanan/${doc.slug ?? ""}`,
     image: mediaUrl(doc.image) ?? "",
@@ -55,7 +56,7 @@ export async function getCmsServices(): Promise<Service[]> {
 }
 
 export async function getCmsLocations(): Promise<Location[]> {
-  const response = await fetch(`${apiBase}/api/kantor?limit=100&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/kantor?limit=100&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, ...cmsCache });
   if (!response.ok) throw new Error(`CMS request failed: kantor (${response.status})`);
   const data = (await response.json()) as PayloadList<Record<string, unknown>>;
   const docs = data.docs ?? [];
@@ -64,7 +65,7 @@ export async function getCmsLocations(): Promise<Location[]> {
     slug: String(doc.slug ?? "").replace(/^easyoffice-/, ""),
     name: String(doc.kota ?? doc.nama ?? ""),
     card: { title: String(doc.nama ?? ""), description: String(doc.deskripsi ?? ""), image: mediaUrl(doc.foto), imageAlt: String(doc.altFoto ?? doc.nama ?? "") },
-    address: String(doc.alamat ?? ""), operatingHours: String(doc.jamOperasional ?? ""), email: String(doc.email ?? ""), phoneDisplay: String(doc.telepon ?? ""), whatsapp: String(doc.whatsapp ?? ""), whatsappNumbers: Array.isArray(doc.whatsappNumbers) ? doc.whatsappNumbers as Office["whatsappNumbers"] : undefined, mapsUrl: String(doc.linkGoogleMaps ?? ""), latitude: typeof doc.latitude === "number" ? doc.latitude : undefined, longitude: typeof doc.longitude === "number" ? doc.longitude : undefined,
+    address: String(doc.alamat ?? ""), operatingHours: String(doc.jamOperasional ?? ""), email: String(doc.email ?? ""), phoneDisplay: String(doc.telepon ?? ""), whatsappNumbers: Array.isArray(doc.whatsappNumbers) ? doc.whatsappNumbers as Office["whatsappNumbers"] : undefined, mapsUrl: String(doc.linkGoogleMaps ?? ""), latitude: typeof doc.latitude === "number" ? doc.latitude : undefined, longitude: typeof doc.longitude === "number" ? doc.longitude : undefined,
   }));
 }
 
@@ -87,7 +88,7 @@ export async function getCmsTestimonials(): Promise<Testimonial[]> {
 }
 
 export async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
-  const response = await fetch(`${apiBase}/api/layanan-kantor?limit=100&depth=2&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/layanan-kantor?limit=100&depth=2&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, ...cmsCache });
   if (!response.ok) throw new Error(`CMS request failed: layanan-kantor (${response.status})`);
   const data = (await response.json()) as PayloadList<Record<string, unknown>>;
   const docs = data.docs ?? [];
@@ -107,24 +108,24 @@ export async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
       ctaLabel: "Hubungi via WhatsApp",
     })) : [];
     const numbers = Array.isArray(office.whatsappNumbers) ? office.whatsappNumbers as Office["whatsappNumbers"] : undefined;
-    const offices = [{ slug: locationSlug, name: String(office.nama ?? office.kota ?? ""), description: String(office.deskripsi ?? ""), address: String(office.alamat ?? ""), operatingHours: String(office.jamOperasional ?? ""), email: String(office.email ?? ""), phoneDisplay: String(office.telepon ?? ""), whatsapp: String(office.whatsapp ?? ""), whatsappNumbers: numbers, mapsUrl: String(office.linkGoogleMaps ?? ""), latitude: typeof office.latitude === "number" ? office.latitude : undefined, longitude: typeof office.longitude === "number" ? office.longitude : undefined }] as Office[];
+    const offices = [{ slug: locationSlug, name: String(office.nama ?? office.kota ?? ""), description: String(office.deskripsi ?? ""), address: String(office.alamat ?? ""), operatingHours: String(office.jamOperasional ?? ""), email: String(office.email ?? ""), phoneDisplay: String(office.telepon ?? ""), whatsappNumbers: numbers, mapsUrl: String(office.linkGoogleMaps ?? ""), latitude: typeof office.latitude === "number" ? office.latitude : undefined, longitude: typeof office.longitude === "number" ? office.longitude : undefined }] as Office[];
     const gallery = Array.isArray(doc.galeri) ? doc.galeri.map((item: { src?: unknown; alt?: string }) => ({ src: mediaUrl(item.src) ?? "", alt: String(item.alt ?? "") })).filter((item) => item.src) : [];
     const facilities = Array.isArray(doc.fasilitas) ? doc.fasilitas.map((item: { icon?: string; title?: string; description?: string; image?: unknown; imageAlt?: string }) => ({ icon: String(item.icon ?? "sparkles"), title: String(item.title ?? ""), description: String(item.description ?? ""), image: mediaUrl(item.image), imageAlt: item.imageAlt ?? item.title })) : [];
-    return { serviceSlug, locationSlug, tagline: String(doc.tagline ?? ""), startingPrice: String(doc.hargaMulai ?? ""), pricing: packages as ServiceLocation["pricing"], image: mediaUrl(doc.foto) ?? "", imageAlt: String(doc.altFoto ?? doc.namaTampilan ?? ""), gallery, facilities, whatsapp: String(office.whatsapp ?? ""), whatsappNumbers: numbers, mapsUrl: String(office.linkGoogleMaps ?? ""), latitude: typeof office.latitude === "number" ? office.latitude : undefined, longitude: typeof office.longitude === "number" ? office.longitude : undefined, offices, catatanLegalitas: String(doc.catatanLegalitas ?? ""), seo: doc.seo ? { ...(doc.seo as Record<string, unknown>), ogImage: mediaUrl((doc.seo as Record<string, unknown>).ogImage) } : undefined };
+    return { serviceSlug, locationSlug, tagline: String(doc.tagline ?? ""), startingPrice: String(doc.hargaMulai ?? ""), pricing: packages as ServiceLocation["pricing"], image: mediaUrl(doc.foto) ?? "", imageAlt: String(doc.altFoto ?? doc.namaTampilan ?? ""), gallery, facilities, whatsappNumbers: numbers, mapsUrl: String(office.linkGoogleMaps ?? ""), latitude: typeof office.latitude === "number" ? office.latitude : undefined, longitude: typeof office.longitude === "number" ? office.longitude : undefined, offices, catatanLegalitas: String(doc.catatanLegalitas ?? ""), seo: doc.seo ? { ...(doc.seo as Record<string, unknown>), ogImage: mediaUrl((doc.seo as Record<string, unknown>).ogImage) } : undefined };
   });
 }
 
 export async function getCmsSite() {
-  const response = await fetch(`${apiBase}/api/globals/site-settings?depth=1`, { cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/globals/site-settings?depth=1`, cmsCache);
   if (!response.ok) throw new Error(`CMS request failed: site-settings (${response.status})`);
   const data = await response.json();
   const whatsappNumbers = Array.isArray(data.whatsappNumbers) ? data.whatsappNumbers : [];
   const primaryWhatsapp = String(data.primaryWhatsapp ?? data.phone ?? "");
-  return { ...data, phoneDisplay: data.phone ?? "", logoUrl: mediaUrl(data.logo), homepageHeroImage: mediaUrl(data.homepageHeroImage), homepageShopeeImage: mediaUrl(data.homepageShopeeImage), statsBanner: Array.isArray(data.statsBanner) ? data.statsBanner : [], primaryWhatsapp, whatsappNumbers, whatsappNumber: routedWhatsappNumber(whatsappNumbers, typeof data.defaultWhatsapp === "string" ? data.defaultWhatsapp : undefined, primaryWhatsapp) };
+  return { ...data, phoneDisplay: data.phone ?? "", logoUrl: mediaUrl(data.logo), homepageHeroImage: mediaUrl(data.homepageHeroImage), homepageShopeeImage: mediaUrl(data.homepageShopeeImage), statsBanner: Array.isArray(data.statsBanner) ? data.statsBanner : [], primaryWhatsapp, whatsappNumbers, whatsappNumber: routedWhatsappNumber(whatsappNumbers, primaryWhatsapp) };
 }
 
 export async function getCmsAbout() {
-  const response = await fetch(`${apiBase}/api/globals/about-page?depth=1`, { cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/globals/about-page?depth=1`, cmsCache);
   if (!response.ok) throw new Error(`CMS request failed: about-page (${response.status})`);
   const data = await response.json();
   return {
@@ -139,27 +140,29 @@ export async function getCmsAbout() {
 }
 
 export async function getCmsFaqs(serviceSlug?: string) {
-  const docs = await payloadList<Partial<Faq> & { service?: unknown; items?: Array<{ question?: string; answer?: string; sortOrder?: number }> }>("faqs");
+  const docs = await payloadList<Partial<Faq> & { placement?: string; service?: unknown; items?: Array<{ question?: string; answer?: string; sortOrder?: number }> }>("faqs");
   if (!docs.length) return [];
   return docs.filter((doc) => {
     const service = doc.service && typeof doc.service === "object" ? doc.service as Record<string, unknown> : undefined;
-    return serviceSlug ? !service || service.slug === serviceSlug : !service;
-  }).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).flatMap((doc) => Array.isArray(doc.items) && doc.items.length ? [...doc.items].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item) => ({ question: item.question ?? "", answer: item.answer ?? "" })) : [{ question: doc.question ?? "", answer: doc.answer ?? "" }]);
+    return serviceSlug ? doc.placement === "service" && !!service && service.slug === serviceSlug : doc.placement === "global";
+  }).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).flatMap((doc) => Array.isArray(doc.items) ? [...doc.items].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item) => ({ question: item.question ?? "", answer: item.answer ?? "" })) : []);
 }
 
 export async function getCmsHomepageFacilities(): Promise<Facility[]> {
   const docs = await payloadList<Partial<Facility>>("homepage-facilities");
   if (!docs.length) return [];
-  return docs.map((doc) => ({ icon: doc.icon ?? "sparkles", title: doc.title ?? "", description: doc.description ?? "", image: mediaUrl(doc.image), imageAlt: doc.imageAlt }));
+  return [...docs]
+    .sort((a, b) => ((a as Partial<Facility> & { sortOrder?: number }).sortOrder ?? 0) - ((b as Partial<Facility> & { sortOrder?: number }).sortOrder ?? 0))
+    .map((doc) => ({ icon: doc.icon ?? "sparkles", title: doc.title ?? "", description: doc.description ?? "" }));
 }
 
 export async function getCmsComparisonRows(serviceSlug?: string): Promise<ComparisonRow[]> {
-  const docs = await payloadList<Partial<ComparisonRow> & { sortOrder?: number; service?: unknown; items?: Array<{ feature?: string; easyoffice?: string | boolean; typical?: string | boolean; sortOrder?: number }> }>("comparison-rows");
+  const docs = await payloadList<Partial<ComparisonRow> & { placement?: string; sortOrder?: number; service?: unknown; items?: Array<{ feature?: string; easyoffice?: string | boolean; typical?: string | boolean; sortOrder?: number }> }>("comparison-rows");
   if (!docs.length) return [];
   const seen = new Set<string>();
   return docs
     .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
-    .filter((doc) => { const service = doc.service && typeof doc.service === "object" ? doc.service as Record<string, unknown> : undefined; return serviceSlug ? !service || service.slug === serviceSlug : !service; })
+    .filter((doc) => { const service = doc.service && typeof doc.service === "object" ? doc.service as Record<string, unknown> : undefined; return serviceSlug ? doc.placement === "service" && !!service && service.slug === serviceSlug : doc.placement === "global"; })
     .flatMap((doc) => Array.isArray(doc.items) && doc.items.length ? [...doc.items].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item) => ({ feature: item.feature ?? "", easyoffice: normalizeComparisonStatus(item.easyoffice), typical: normalizeComparisonStatus(item.typical), serviceSlug })) : [{ feature: doc.feature ?? "", easyoffice: normalizeComparisonStatus(doc.easyoffice), typical: normalizeComparisonStatus(doc.typical), serviceSlug }])
     .filter((row) => { if (seen.has(row.feature)) return false; seen.add(row.feature); return true; });
 }
@@ -171,7 +174,7 @@ function normalizeComparisonStatus(value: string | boolean | undefined): Compari
 }
 
 export async function getCmsHomepageLayout(): Promise<HomepageLayoutData | null> {
-  const response = await fetch(`${apiBase}/api/homepage-layout?limit=1&where[isActive][equals]=true&where[status][equals]=published`, { cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/page-layout?limit=1&where[isActive][equals]=true&where[status][equals]=published`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { docs?: Array<{ layout?: HomepageLayoutData }> };
   const docs = data.docs;
@@ -179,7 +182,7 @@ export async function getCmsHomepageLayout(): Promise<HomepageLayoutData | null>
 }
 
 export async function getCmsHomepageLayoutById(id: string): Promise<HomepageLayoutData | null> {
-  const response = await fetch(`${apiBase}/api/homepage-layout/${encodeURIComponent(id)}`, { cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/page-layout/${encodeURIComponent(id)}`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { layout?: HomepageLayoutData };
   return data.layout ?? null;
@@ -194,7 +197,7 @@ export async function getCmsPublishedPuckPage(route: string): Promise<PublishedP
       { isActive: { equals: true } },
     ],
   }));
-  const response = await fetch(`${apiBase}/api/homepage-layout?limit=1&where=${where}`, { cache: "no-store" });
+  const response = await fetch(`${apiBase}/api/page-layout?limit=1&where=${where}`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { docs?: PublishedPuckPage[] };
   return data.docs?.[0] ?? null;

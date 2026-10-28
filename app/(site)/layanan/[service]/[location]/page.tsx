@@ -114,10 +114,11 @@ export default async function ServiceLocationPage({
             </p>
             <ul className="relative mt-7 space-y-5 pl-1">
               <span className="absolute bottom-5 left-[1.15rem] top-5 w-px bg-navy/15" aria-hidden />
-              {service.benefits.map((benefit) => {
-                const [title, ...description] = benefit.split(" — ");
+              {service.keunggulanItems?.map((benefit) => {
+                const title = benefit.title;
+                const description = benefit.description ? [benefit.description] : [];
                 return (
-                <li key={benefit} className="relative flex items-start gap-4">
+                <li key={benefit.title} className="relative flex items-start gap-4">
                   <span className="relative z-10 mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full border border-navy/15 bg-surface text-navy">
                     <CheckCircle2 className="h-4.5 w-4.5" aria-hidden />
                   </span>

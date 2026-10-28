@@ -7,15 +7,17 @@ export function ComparisonTable({
   description = "Perbandingan fasilitas yang Anda dapatkan bersama EasyOffice.",
   rows = [],
   showPkpNote = false,
+  className,
 }: {
   title?: string;
   description?: string;
   rows?: ComparisonRow[];
   showPkpNote?: boolean;
+  className?: string;
 }) {
   const comparisonRows = rows ?? [];
   return (
-    <Section eyebrow="Perbandingan" title={title} description={description} tone="gray">
+    <Section eyebrow="Perbandingan" title={title} description={description} tone="gray" className={className}>
       <div className="mx-auto w-full min-w-0 max-w-4xl">
         <div className="overflow-x-auto rounded-2xl border border-neutral-200 bg-white">
           <table className="w-full min-w-[480px] text-left text-sm">

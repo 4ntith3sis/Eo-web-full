@@ -22,9 +22,12 @@ export interface Service {
   description: string;
   intro: string;
   benefits: string[];
-  benefitItems?: Benefit[];
+  keunggulanItems?: Benefit[];
+  manfaatItems?: Benefit[];
   benefitsTitle?: string;
   benefitsDescription?: string;
+  manfaatTitle?: string;
+  manfaatDescription?: string;
   features: string[];
   icon: string;
   href: string;
@@ -66,8 +69,6 @@ export interface Facility {
   icon: string;
   title: string;
   description: string;
-  image?: string;
-  imageAlt?: string;
 }
 
 export interface Testimonial {
@@ -82,6 +83,7 @@ export interface Faq {
   answer: string;
   category?: string;
   sortOrder?: number;
+  placement?: "global" | "service";
 }
 
 export interface Promotion {
@@ -101,6 +103,7 @@ export interface ComparisonRow {
   easyoffice: ComparisonStatus | boolean;
   typical: ComparisonStatus | boolean;
   serviceSlug?: string;
+  placement?: "global" | "service";
 }
 
 export type ComparisonStatus = "true" | "neutral" | "false";

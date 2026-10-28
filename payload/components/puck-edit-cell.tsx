@@ -10,8 +10,8 @@ export function PuckEditCell({ rowData }: { rowData?: { id?: string | number } }
       className="rounded-lg border border-slate-400 px-3 py-1.5 text-sm font-semibold"
       onClick={() => rowData?.id && router.push(`/admin/puck-builder/edit?id=${rowData.id}`)}
       disabled={!rowData?.id}
-    >
-      Edit Puck
+      >
+       Edit Visual dengan Puck
     </button>
   );
 }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"}/api/globals/site-settings`, { cache: "no-store" });
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"}/api/globals/site-settings`, { next: { revalidate: 30 } });
     const site = response.ok ? await response.json() : {};
     return { title: { default: site.defaultSeoTitle ?? "EasyOffice — Virtual Office, Coworking Space & Meeting Room", template: "%s | EasyOffice" }, description: site.defaultSeoDescription ?? "EasyOffice menyediakan Virtual Office, Coworking Space, dan Meeting Room profesional di Bandung, Jakarta, dan Bekasi." };
   } catch {

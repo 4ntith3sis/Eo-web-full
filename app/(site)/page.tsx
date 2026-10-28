@@ -44,6 +44,7 @@ export default async function Home() {
       />
       <StatsBand items={site.statsBanner} />
       <FacilitiesGrid
+        eyebrow="Keunggulan"
         items={homepageFacilities.slice(0, 6)}
         title={site.homepageFacilitiesTitle ?? "Mengapa Pilih EasyOffice?"}
         description={site.homepageFacilitiesDescription ?? "Fasilitas lengkap untuk mendukung produktivitas dan citra profesional bisnis Anda."}
