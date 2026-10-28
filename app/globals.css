@@ -73,15 +73,21 @@ body {
 /* Keep the editor canvas visually independent from public-site body styles. */
 .puck-editor-frame {
   min-height: 100vh;
-  background: #fff;
-  color: #171717;
+  background: #fff !important;
+  color: #171717 !important;
 }
+
+.puck-standalone-shell {
+  min-height: 100vh;
+  background: #f1f5f9;
+  color: #171717;
+  isolation: isolate;
+}
+
 
 .puck-admin-page,
 .puck-admin-page .puck-editor-frame,
-.puck-admin-page .Puck,
-.puck-admin-page [class*="Puck"],
-.puck-admin-page [class*="puck"] {
+.puck-admin-page .Puck {
   background-color: #fff;
   color: #171717;
   --puck-color-grey-11: #f5f5f5;
@@ -93,21 +99,19 @@ body {
   --puck-color-grey-09: #cbd5e1;
 }
 
-.puck-page-context { display: flex; align-items: center; gap: 1rem; padding: .75rem 1rem; background: #fff; color: #171717; border-bottom: 1px solid #e5e7eb; font-size: .875rem; }
-.puck-page-context span { color: #64748b; }
-.puck-page-context a { margin-left: auto; color: #2563eb; font-weight: 600; }
-.puck-page-context button { border: 1px solid #cbd5e1; border-radius: .375rem; background: #f8fafc; padding: .35rem .6rem; color: #0f172a; font-size: .8rem; font-weight: 600; }
+.puck-admin-page,
+.puck-admin-page .puck-editor-frame,
+.puck-admin-page .puck-editor-with-outline {
+  background: #ffffff !important;
+  color: #171717 !important;
+}
+
 .puck-dropzone { min-height: 120px; border: 1px dashed #94a3b8; border-radius: .5rem; background: rgba(248, 250, 252, .8); }
 .puck-clean-preview { min-height: calc(100vh - 4rem); background: #fff; padding: 3rem; color: #171717; }
 .puck-preview-item { margin: 0 auto 1rem; max-width: 960px; border-bottom: 1px solid #e2e8f0; padding: 1rem; color: #334155; }
 .puck-preview-mode .puck-clean-preview { max-width: 1200px; margin: 0 auto; }
 .puck-editor-with-outline { display: grid; grid-template-columns: 180px minmax(0, 1fr); min-height: 80vh; }
-.puck-outline { border-right: 1px solid #e2e8f0; background: #f8fafc; padding: 1rem; color: #334155; font-size: .8rem; }
-.puck-outline ol { margin: .75rem 0 0; padding-left: 1.25rem; }
-.puck-outline li { margin: .4rem 0; }
 .puck-status-badge { border-radius: 999px; background: #e0f2fe; padding: .15rem .5rem; color: #0369a1 !important; font-size: .7rem; font-weight: 800; }
-.puck-recovery { display: flex; align-items: center; gap: .75rem; border-bottom: 1px solid #f59e0b; background: #fffbeb; padding: .75rem 1rem; color: #92400e; }
-.puck-recovery button { border: 1px solid #f59e0b; border-radius: .375rem; background: #fff; padding: .25rem .6rem; color: #92400e; font-weight: 700; }
 
 /* Improve contrast for Puck device and zoom controls. */
 .puck-admin-page [class*="_ViewportControls_"] {
@@ -120,6 +124,20 @@ body {
   color: #0f172a !important;
   background-color: #f8fafc !important;
   border-color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+.puck-admin-page [class*="_ViewportControls_"] button:not(:disabled),
+.puck-admin-page [class*="_ViewportControls_"] select,
+.puck-admin-page [class*="_ViewportControls_"] [role="button"] {
+  color: #1e293b !important;
+  fill: #1e293b !important;
+  stroke: #1e293b !important;
+}
+.puck-admin-page [class*="_ViewportControls_"] button:disabled {
+  color: #64748b !important;
+  fill: #64748b !important;
+  stroke: #64748b !important;
+  opacity: .75 !important;
 }
 .puck-admin-page [class*="_ViewportControls_"] button:hover,
 .puck-admin-page [class*="_ViewportControls_"] select:hover,
@@ -129,16 +147,120 @@ body {
 }
 .puck-admin-page [class*="_ViewportButton--isActive_"] [class*="_ViewportButton-inner_"] {
   color: #1d4ed8 !important;
+  fill: #1d4ed8 !important;
+  stroke: #1d4ed8 !important;
   font-weight: 700;
 }
 .puck-admin-page [class*="_ViewportControls_"] svg {
-  color: currentColor !important;
-  stroke: currentColor !important;
+  color: #1e293b !important;
+  fill: none !important;
+  stroke: #1e293b !important;
+  opacity: 1 !important;
 }
+.puck-admin-page [class*="_ViewportButton--isActive_"] svg { color: #1d4ed8 !important; stroke: #1d4ed8 !important; }
+.puck-admin-page [class*="_ViewportControls-zoomSelect_"] { color: #1e293b !important; background-color: #f8fafc !important; opacity: 1 !important; }
 .puck-admin-page [class*="_ViewportControls_"] option {
   color: #0f172a !important;
   background: #ffffff !important;
 }
+
+/* Puck renders its header/viewport toolbar through a portal, outside the page wrapper. */
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: .65rem !important;
+  min-height: 58px !important;
+  padding: .75rem 1rem !important;
+  background: #ffffff !important;
+  color: #171717 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+  font-size: .875rem !important;
+}
+body:has(.puck-editor-frame) {
+  background: #ffffff !important;
+  color: #171717 !important;
+}
+body:has(.puck-editor-frame) .puck-editor-frame,
+body:has(.puck-editor-frame) .puck-editor-frame > * {
+  background-color: #ffffff !important;
+  color: #171717 !important;
+}
+  border: 1px solid #cbd5e1 !important;
+  border-radius: .375rem !important;
+  background: #f8fafc !important;
+  color: #0f172a !important;
+  padding: .45rem .7rem !important;
+  font-weight: 700 !important;
+}
+
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] {
+  background: #e2e8f0 !important;
+  color: #1e293b !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] button,
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] select,
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] [role="button"] {
+  color: #1e293b !important;
+  fill: #1e293b !important;
+  stroke: #1e293b !important;
+  opacity: 1 !important;
+  background-color: #f8fafc !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] svg {
+  color: #1e293b !important;
+  fill: none !important;
+  stroke: #1e293b !important;
+  opacity: 1 !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportButton_"] svg,
+body:has(.puck-editor-frame) [class*="_ViewportButton-inner_"] svg,
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] button svg,
+body:has(.puck-editor-frame) [class*="_ViewportControls_"] select {
+  color: #0f172a !important;
+  fill: #0f172a !important;
+  stroke: #0f172a !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportButton_"] {
+  color: #0f172a !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportButton--isActive_"] svg,
+body:has(.puck-editor-frame) [class*="_ViewportButton--isActive_"] [class*="_ViewportButton-inner_"] {
+  color: #1d4ed8 !important;
+  fill: #1d4ed8 !important;
+  stroke: #1d4ed8 !important;
+}
+body:has(.puck-editor-frame) [class*="_ViewportButton--isActive_"] svg,
+body:has(.puck-editor-frame) [class*="_ViewportButton--isActive_"] [class*="_ViewportButton-inner_"] {
+  color: #1d4ed8 !important;
+  fill: none !important;
+  stroke: #1d4ed8 !important;
+}
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] {
+  background: #ffffff !important;
+  color: #0f172a !important;
+}
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] button,
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] [role="button"] {
+  color: #1e293b !important;
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  opacity: 1 !important;
+}
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] button svg,
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] [role="button"] svg,
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] svg {
+  color: #1e293b !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] button:hover,
+body:has(.puck-editor-frame) [class*="_PuckHeader_"] [role="button"]:hover { background: #e0f2fe !important; color: #1d4ed8 !important; }
 
 .puck-admin-page .Puck {
   min-height: 100vh;
@@ -155,11 +277,27 @@ body {
 
 .puck-admin-page [class*="_PuckCanvas-root_"] {
   background: #ffffff !important;
+  background-color: #ffffff !important;
   color: #171717 !important;
+  min-height: 100% !important;
 }
 
-.puck-admin-page [class*="_PuckCanvas-root_"] * {
-  color: inherit;
+.puck-admin-page [class*="_PuckCanvas-root_"] * { color: inherit; }
+.puck-admin-page [class*="_PuckCanvas-root_"],
+.puck-admin-page [class*="_PuckCanvas-root_"] > *,
+.puck-admin-page [class*="_PuckCanvas-root_"] main,
+.puck-admin-page [class*="_PuckCanvas-root_"] main > div {
+  background-color: #ffffff !important;
+}
+
+.puck-admin-page [class*="_PuckCanvas-root_"] h1,
+.puck-admin-page [class*="_PuckCanvas-root_"] h2,
+.puck-admin-page [class*="_PuckCanvas-root_"] h3,
+.puck-admin-page [class*="_PuckCanvas-root_"] p,
+.puck-admin-page [class*="_PuckCanvas-root_"] a,
+.puck-admin-page [class*="_PuckCanvas-root_"] section,
+.puck-admin-page [class*="_PuckCanvas-root_"] div {
+  background-color: transparent;
 }
 
 .puck-admin-page [class*="_DropZone_"] {
