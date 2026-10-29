@@ -7,12 +7,13 @@ import { ComparisonTable } from "@/components/sections/comparison-table";
 import { PromoSection } from "@/components/sections/promo-section";
 import { ShopeeSection } from "@/components/sections/shopee-section";
 import { Testimonials } from "@/components/sections/testimonials";
+import { PartnersCarousel } from "@/components/sections/partners-carousel";
 import { FaqSection } from "@/components/sections/faq";
 import { Hero } from "@/components/sections/hero";
 import { ServiceLocationGrid } from "@/components/sections/service-location-grid";
 import { StatsBand } from "@/components/sections/stats-band";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
-import { getCmsComparisonRows, getCmsFaqs, getCmsPromotions, getCmsServiceLocations, getCmsServices, getCmsSite, getCmsTestimonials } from "@/lib/data/cms-data";
+import { getCmsComparisonRows, getCmsFaqs, getCmsPartners, getCmsPromotions, getCmsServiceLocations, getCmsServices, getCmsSite, getCmsTestimonials } from "@/lib/data/cms-data";
 import { whatsappFor } from "@/lib/whatsapp";
 
 export async function generateStaticParams() {
@@ -27,11 +28,10 @@ export async function generateMetadata({
   const { service: slug } = await params;
   const cmsServices = await getCmsServices();
   const service = cmsServices.find((item) => item.slug === slug);
-  const siteResponse = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000"}/api/globals/site-settings`, { next: { revalidate: 30 } }).catch(() => null);
-  const site = siteResponse?.ok ? await siteResponse.json() : {};
+  const site = await getCmsSite();
   const seo = service?.seo;
   return {
-    title: seo?.title ?? (service ? service.title : "Layanan"),
+    title: seo?.title ?? (service ? service.title : site.defaultSeoTitle ?? "Layanan"),
     description: seo?.description ?? (service
       ? `${service.title} EasyOffice: ${service.description}`
       : site.defaultSeoDescription ?? "Layanan EasyOffice."),
@@ -47,7 +47,7 @@ export default async function ServiceLandingPage({
   params: Promise<{ service: string }>;
 }) {
   const { service: slug } = await params;
-  const [cmsServices, cmsCombos, cmsPromotions, cmsComparisonRows, cmsTestimonials, site, cmsFaqs] = await Promise.all([
+  const [cmsServices, cmsCombos, cmsPromotions, cmsComparisonRows, cmsTestimonials, site, cmsFaqs, partners] = await Promise.all([
     getCmsServices(),
     getCmsServiceLocations(),
     getCmsPromotions(),
@@ -55,6 +55,7 @@ export default async function ServiceLandingPage({
     getCmsTestimonials(),
     getCmsSite(),
     getCmsFaqs(slug),
+    getCmsPartners(),
   ]);
   const service = cmsServices.find((item) => item.slug === slug);
   if (!service) notFound();
@@ -84,7 +85,6 @@ export default async function ServiceLandingPage({
         title={service.title}
         description={service.intro}
         image={service.image}
-        imageAlt={service.imageAlt}
         imageLabel={service.title}
         trustItems={Array.isArray(site.homepageHeroTrustItems) ? [...site.homepageHeroTrustItems]
           .sort((a: { sortOrder?: number }, b: { sortOrder?: number }) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
@@ -102,10 +102,9 @@ export default async function ServiceLandingPage({
         <BenefitsSection serviceSlug={service.slug} eyebrow="Keunggulan" items={service.keunggulanItems} title={`Keunggulan ${service.title}`} description={`Keunggulan utama layanan ${service.title}.`} />
 
        <ShopeeSection
-          title={`Transaksi ${service.title} melalui Marketplace`}
-          description={`Pilih paket ${service.title} EasyOffice dan lakukan pembayaran dengan mudah melalui Shopee.`}
+          title={site.homepageShopeeTitle ?? `Transaksi ${service.title} melalui Marketplace`}
+          description={site.homepageShopeeDescription ?? `Pilih paket ${service.title} EasyOffice dan lakukan pembayaran dengan mudah melalui Shopee.`}
           image={site.homepageShopeeImage}
-          imageAlt={site.homepageShopeeImageAlt}
         />
        {serviceLegalNotes.length ? (
          <Section eyebrow="Informasi Legalitas" title={`Catatan Legalitas ${service.title}`} tone="gray">
@@ -139,7 +138,8 @@ export default async function ServiceLandingPage({
 
         <BenefitsSection serviceSlug={service.slug} eyebrow="Manfaat" items={service.manfaatItems} title={service.manfaatTitle} description={service.manfaatDescription} />
 
-       <Testimonials items={cmsTestimonials} />
+        <PartnersCarousel partners={partners} />
+        <Testimonials items={cmsTestimonials} />
 
       {preview ? (
          <FaqSection title={`FAQ ${service.title}`} faqs={cmsFaqs} />

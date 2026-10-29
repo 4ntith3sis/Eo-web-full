@@ -1,28 +1,34 @@
 import type { Metadata } from "next";
 import { ComparisonTable } from "@/components/sections/comparison-table";
 import { FacilitiesGrid } from "@/components/sections/facilities-grid";
-import { getCmsComparisonRows, getCmsHomepageFacilities, getCmsPromotions, getCmsServices, getCmsSite, getCmsTestimonials } from "@/lib/data/cms-data";
+import { getCmsComparisonRows, getCmsHomepageFacilities, getCmsPartners, getCmsPromotions, getCmsServices, getCmsSite, getCmsTestimonials } from "@/lib/data/cms-data";
 import { Hero } from "@/components/sections/hero";
 import { HowItWorks } from "@/components/sections/how-it-works";
 import { PromoSection } from "@/components/sections/promo-section";
+import { PartnersCarousel } from "@/components/sections/partners-carousel";
 import { ShopeeSection } from "@/components/sections/shopee-section";
 import { ServicesOverview } from "@/components/sections/services-overview";
 import { StatsBand } from "@/components/sections/stats-band";
 import { Testimonials } from "@/components/sections/testimonials";
 import { WhatsappCta } from "@/components/sections/whatsapp-cta";
-import { whatsappFor } from "@/lib/whatsapp";
+import { whatsappUrl } from "@/lib/whatsapp";
 
-export const metadata: Metadata = {
-  title: "EasyOffice — Virtual Office, Coworking Space & Meeting Room",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getCmsSite();
+  return {
+    title: site.defaultSeoTitle || "EasyOffice — Virtual Office, Coworking Space & Meeting Room",
+    description: site.defaultSeoDescription || "EasyOffice menyediakan Virtual Office, Coworking Space, dan Meeting Room profesional.",
+  };
+}
 
 export default async function Home() {
-  const [cmsServices, cmsTestimonials, cmsPromotions, cmsComparisonRows, homepageFacilities, site] = await Promise.all([
+  const [cmsServices, cmsTestimonials, cmsPromotions, cmsComparisonRows, homepageFacilities, partners, site] = await Promise.all([
     getCmsServices(),
     getCmsTestimonials(),
     getCmsPromotions(),
     getCmsComparisonRows(),
     getCmsHomepageFacilities(),
+    getCmsPartners(),
     getCmsSite(),
   ]);
   return (
@@ -33,15 +39,14 @@ export default async function Home() {
         description={site.homepageHeroDescription ?? "Virtual Office, Coworking Space, dan Meeting Room untuk mendukung kebutuhan bisnis Anda — dengan alamat prestisius dan layanan profesional."}
         primaryCta={{
            label: site.homepageHeroPrimaryCtaLabel ?? "Hubungi Kami",
-            href: site.homepageHeroPrimaryCtaMessage ? `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(site.homepageHeroPrimaryCtaMessage)}` : whatsappFor("layanan", undefined, site.whatsappNumber),
+             href: whatsappUrl(site.homepageHeroPrimaryCtaMessage, site.whatsappNumber),
           external: true,
         }}
         secondaryCta={{ label: site.homepageHeroSecondaryCtaLabel ?? "Lihat Layanan", href: site.homepageHeroSecondaryCtaHref ?? "/layanan/virtual-office" }}
         image={site.homepageHeroImage}
-        imageAlt={site.homepageHeroImageAlt}
         imageLabel={site.homepageHeroImageLabel}
         trustItems={Array.isArray(site.homepageHeroTrustItems) ? site.homepageHeroTrustItems.sort((a: { sortOrder?: number }, b: { sortOrder?: number }) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0)).map((item: { text?: string }) => item.text ?? "").filter(Boolean) : undefined}
-      />
+        />
       <StatsBand items={site.statsBanner} />
       <FacilitiesGrid
         eyebrow="Keunggulan"
@@ -50,10 +55,9 @@ export default async function Home() {
         description={site.homepageFacilitiesDescription ?? "Fasilitas lengkap untuk mendukung produktivitas dan citra profesional bisnis Anda."}
       />
       <ShopeeSection
-        title={site.homepageShopeeTitle}
-        description={site.homepageShopeeDescription}
+        title={site.homepageShopeeTitle ?? "Pesan Paket EasyOffice dengan Mudah"}
+        description={site.homepageShopeeDescription ?? "Pembayaran layanan EasyOffice tersedia melalui marketplace Shopee dengan transaksi yang aman dan terpercaya."}
         image={site.homepageShopeeImage}
-        imageAlt={site.homepageShopeeImageAlt}
       />
       <PromoSection
         promotions={cmsPromotions}
@@ -74,8 +78,9 @@ export default async function Home() {
         description={site.homepageComparisonDescription ?? "Perbandingan fasilitas yang Anda dapatkan bersama EasyOffice."}
         showPkpNote
       />
+      <PartnersCarousel partners={partners} />
       <Testimonials items={cmsTestimonials} />
-       <WhatsappCta whatsappNumber={site.whatsappNumber} />
+        <WhatsappCta whatsappNumber={site.whatsappNumber} title={site.homepageCtaTitle} description={site.homepageCtaDescription} buttonLabel={site.homepageCtaButtonLabel} secondaryButtonLabel={site.homepageCtaSecondaryButtonLabel} />
     </>
   );
 }

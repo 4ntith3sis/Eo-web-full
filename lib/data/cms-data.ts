@@ -2,19 +2,27 @@ import type { ComparisonRow, ComparisonStatus, Faq, Facility, Location, Office, 
 import { routedWhatsappNumber } from "@/lib/whatsapp";
 import { cache } from "react";
 import crypto from "node:crypto";
+import { normalizeMediaUrl } from "@/lib/media";
 
 type PayloadList<T> = { docs?: T[] };
 
 const apiBase = process.env.NEXT_PUBLIC_SERVER_URL ?? "http://localhost:3000";
 const cmsCache = { next: { revalidate: 60 } } as const;
 function mediaUrl(value: unknown): string | undefined {
-  if (typeof value === "string") return value;
-  if (value && typeof value === "object" && typeof (value as { url?: unknown }).url === "string") return (value as { url: string }).url;
+  if (typeof value === "string") return normalizeMediaUrl(value);
+  if (value && typeof value === "object" && typeof (value as { url?: unknown }).url === "string") return normalizeMediaUrl((value as { url: string }).url);
   return undefined;
 }
 
 export type HomepageLayoutData = { content?: Array<{ type?: string; props?: Record<string, unknown> }>; root?: Record<string, unknown> };
 export type PublishedPuckPage = { id?: string | number; name?: string; route?: string; seoTitle?: string; seoDescription?: string; layout?: HomepageLayoutData };
+
+function normalizeLayout(value: unknown): unknown {
+  if (typeof value === "string") return normalizeMediaUrl(value);
+  if (Array.isArray(value)) return value.map(normalizeLayout);
+  if (value && typeof value === "object") return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, normalizeLayout(item)]));
+  return value;
+}
 
 async function payloadList<T>(collection: string): Promise<T[]> {
     const response = await fetch(`${apiBase}/api/${collection}?limit=100&where[isActive][equals]=true`, {
@@ -89,6 +97,37 @@ export const getCmsTestimonials = cache(async function getCmsTestimonials(): Pro
   return docs.map((doc) => ({ id: doc.id, name: doc.name ?? "", company: doc.company ?? "", quote: doc.quote ?? "" }));
 });
 
+export type CmsPartner = { id?: string | number; name: string; logoUrl?: string; logoAlt?: string; href?: string; sortOrder?: number };
+
+export const getCmsPartners = cache(async function getCmsPartners(): Promise<CmsPartner[]> {
+  const response = await fetch(`${apiBase}/api/partners?limit=100&where[isActive][equals]=true`, {
+    headers: { Accept: "application/json" },
+    ...cmsCache,
+  }).catch(() => null);
+  // The collection can be absent on older deployments until its schema migration is applied.
+  if (!response?.ok) return [];
+  const result = await response.json() as PayloadList<{
+    id?: string | number;
+    name?: string;
+    logo?: unknown;
+    logoAlt?: string;
+    href?: string;
+    sortOrder?: number;
+  }>;
+  const docs = result.docs ?? [];
+  return docs
+    .filter((doc) => doc.name && mediaUrl(doc.logo))
+    .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+    .map((doc) => ({
+      id: doc.id,
+      name: doc.name!,
+      logoUrl: mediaUrl(doc.logo),
+      logoAlt: doc.logoAlt || doc.name,
+      href: doc.href || undefined,
+      sortOrder: doc.sortOrder ?? 0,
+    }));
+});
+
 export const getCmsServiceLocations = cache(async function getCmsServiceLocations(): Promise<ServiceLocation[]> {
   const response = await fetch(`${apiBase}/api/layanan-kantor?limit=100&depth=2&where[aktif][equals]=true`, { headers: { Accept: "application/json" }, ...cmsCache });
   if (!response.ok) throw new Error(`CMS request failed: layanan-kantor (${response.status})`);
@@ -121,9 +160,46 @@ export const getCmsSite = cache(async function getCmsSite() {
   const response = await fetch(`${apiBase}/api/globals/site-settings?depth=1`, cmsCache);
   if (!response.ok) throw new Error(`CMS request failed: site-settings (${response.status})`);
   const data = await response.json();
+  // Keep the public site and the Site Settings form aligned for legacy globals
+  // whose stored fields are null. These are content defaults, not guessed data.
+  const siteDefaults = {
+    siteName: "EasyOffice",
+    headerCtaLabel: "Hubungi Kami",
+    homepageHeroEyebrow: "EasyOffice",
+    homepageHeroTitle: "Solusi Ruang Kerja Profesional untuk Bisnis Anda",
+    homepageHeroDescription: "Virtual Office, Coworking Space, dan Meeting Room untuk mendukung kebutuhan bisnis Anda — dengan alamat prestisius dan layanan profesional.",
+    homepageHeroImageLabel: "Virtual Office • Coworking Space • Meeting Room • Private Office",
+    homepageHeroPrimaryCtaLabel: "Hubungi Kami",
+    homepageHeroPrimaryCtaMessage: "Halo EasyOffice, saya ingin bertanya tentang layanan Anda.",
+    homepageHeroSecondaryCtaLabel: "Lihat Layanan",
+    homepageHeroSecondaryCtaHref: "/layanan/virtual-office",
+    homepageServicesTitle: "Layanan EasyOffice",
+    homepageServicesDescription: "Berbagai layanan untuk mendukung operasional dan citra profesional bisnis Anda.",
+    homepageFacilitiesTitle: "Mengapa Pilih EasyOffice?",
+    homepageFacilitiesDescription: "Fasilitas lengkap untuk mendukung produktivitas dan citra profesional bisnis Anda.",
+    homepageComparisonTitle: "Perbandingan dengan Office Lain",
+    homepageComparisonDescription: "Perbandingan fasilitas yang Anda dapatkan bersama EasyOffice.",
+    homepagePromoTitle: "Penawaran Spesial untuk Anda",
+    homepagePromoDescription: "Temukan penawaran EasyOffice untuk kebutuhan ruang kerja dan bisnis Anda.",
+    homepageShopeeTitle: "Pesan Paket EasyOffice dengan Mudah",
+    homepageShopeeDescription: "Pembayaran layanan EasyOffice tersedia melalui marketplace Shopee dengan transaksi yang aman dan terpercaya.",
+    homepageCtaTitle: "Siap Menemukan Ruang Kerja yang Tepat?",
+    homepageCtaDescription: "Hubungi EasyOffice melalui WhatsApp — tim kami siap membantu memilih layanan dan lokasi yang sesuai dengan kebutuhan bisnis Anda.",
+    homepageCtaButtonLabel: "Hubungi via WhatsApp",
+    homepageCtaSecondaryButtonLabel: "Lihat Info Kontak",
+    footerDescription: "Solusi Ruang Kerja Profesional. Virtual Office, Coworking Space, dan Meeting Room di Bandung, Jakarta, dan Bekasi.",
+    copyrightText: `© ${new Date().getFullYear()} EasyOffice. Seluruh hak cipta dilindungi.`,
+    defaultSeoTitle: "EasyOffice — Virtual Office, Coworking Space & Meeting Room",
+    defaultSeoDescription: "EasyOffice menyediakan Virtual Office, Coworking Space, dan Meeting Room profesional di Bandung, Jakarta, dan Bekasi.",
+  };
+  for (const [key, fallback] of Object.entries(siteDefaults)) {
+    if (data[key] == null || data[key] === "") data[key] = fallback;
+  }
+  // Retired from Site Settings; old deployments / globals can still return it.
+  delete data.homepageHeroImageAlt;
   const whatsappNumbers = Array.isArray(data.whatsappNumbers) ? data.whatsappNumbers : [];
   const primaryWhatsapp = String(data.primaryWhatsapp ?? data.phone ?? "");
-  return { ...data, phoneDisplay: data.phone ?? "", logoUrl: mediaUrl(data.logo), homepageHeroImage: mediaUrl(data.homepageHeroImage), homepageShopeeImage: mediaUrl(data.homepageShopeeImage), statsBanner: Array.isArray(data.statsBanner) ? data.statsBanner : [], primaryWhatsapp, whatsappNumbers, whatsappNumber: routedWhatsappNumber(whatsappNumbers, primaryWhatsapp) };
+  return { ...data, phoneDisplay: data.phone ?? "", logoUrl: mediaUrl(data.logo), homepageHeroImage: mediaUrl(data.homepageHeroImage), homepageShopeeImage: mediaUrl(data.homepageShopeeImage), statsBanner: Array.isArray(data.statsBanner) ? data.statsBanner : [], socialLinks: Array.isArray(data.socialLinks) ? data.socialLinks : [], primaryWhatsapp, whatsappNumbers, whatsappNumber: routedWhatsappNumber(whatsappNumbers, primaryWhatsapp) };
 });
 
 export const getCmsAbout = cache(async function getCmsAbout() {
@@ -180,14 +256,14 @@ export async function getCmsHomepageLayout(): Promise<HomepageLayoutData | null>
   if (!response.ok) return null;
   const data = (await response.json()) as { docs?: Array<{ layout?: HomepageLayoutData }> };
   const docs = data.docs;
-  return docs?.[0]?.layout ?? null;
+  return (normalizeLayout(docs?.[0]?.layout) as HomepageLayoutData | undefined) ?? null;
 }
 
 export async function getCmsHomepageLayoutById(id: string): Promise<HomepageLayoutData | null> {
   const response = await fetch(`${apiBase}/api/page-layout/${encodeURIComponent(id)}`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { layout?: HomepageLayoutData };
-  return data.layout ?? null;
+  return (normalizeLayout(data.layout) as HomepageLayoutData | undefined) ?? null;
 }
 
 export async function getCmsPublishedPuckPage(route: string, previewToken?: string): Promise<PublishedPuckPage | null> {
@@ -200,11 +276,12 @@ export async function getCmsPublishedPuckPage(route: string, previewToken?: stri
     const draftResponse = await fetch(`${apiBase}/api/page-layout/${encodeURIComponent(tokenParts![0])}`, { cache: "no-store" });
     if (!draftResponse.ok) return null;
     const draft = await draftResponse.json() as PublishedPuckPage;
-    return draft.route === normalizedRoute ? draft : null;
+    return draft.route === normalizedRoute ? { ...draft, layout: normalizeLayout(draft.layout) as HomepageLayoutData } : null;
   }
   const where = encodeURIComponent(JSON.stringify({ and: [{ route: { equals: normalizedRoute } }, ...(validPreview ? [] : [{ status: { equals: "published" } }, { isActive: { equals: true } }])] }));
   const response = await fetch(`${apiBase}/api/page-layout?limit=1&where=${where}`, cmsCache);
   if (!response.ok) return null;
   const data = (await response.json()) as { docs?: PublishedPuckPage[] };
-  return data.docs?.[0] ?? null;
+  const page = data.docs?.[0];
+  return page ? { ...page, layout: normalizeLayout(page.layout) as HomepageLayoutData } : null;
 }

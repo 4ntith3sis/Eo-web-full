@@ -7,6 +7,8 @@ import * as migration_20261028_000005_add_service_benefit_groups from './2026102
 import * as migration_20261028_000006_add_content_placement from './20261028_000006_add_content_placement';
 import * as migration_20261028_000007_comparison_neutral_status from './20261028_000007_comparison_neutral_status';
 import * as migration_20261028_000008_rename_page_layout_collection from './20261028_000008_rename_page_layout_collection';
+import * as migration_20261029_000009_add_media_storage_fields from './20261029_000009_add_media_storage_fields';
+import * as migration_20261030_000010_add_partners from './20261030_000010_add_partners';
 
 export const migrations = [
   {
@@ -53,5 +55,15 @@ export const migrations = [
     up: migration_20261028_000008_rename_page_layout_collection.up,
     down: migration_20261028_000008_rename_page_layout_collection.down,
     name: '20261028_000008_rename_page_layout_collection'
+  },
+  {
+    up: migration_20261029_000009_add_media_storage_fields.up,
+    down: migration_20261029_000009_add_media_storage_fields.down,
+    name: '20261029_000009_add_media_storage_fields'
+  },
+  {
+    up: migration_20261030_000010_add_partners.up,
+    down: migration_20261030_000010_add_partners.down,
+    name: '20261030_000010_add_partners'
   },
 ];
