@@ -80,7 +80,7 @@ export default async function Home() {
       />
       <PartnersCarousel partners={partners} />
       <Testimonials items={cmsTestimonials} />
-        <WhatsappCta whatsappNumber={site.whatsappNumber} title={site.homepageCtaTitle} description={site.homepageCtaDescription} buttonLabel={site.homepageCtaButtonLabel} secondaryButtonLabel={site.homepageCtaSecondaryButtonLabel} />
+        <WhatsappCta whatsappNumber={site.whatsappNumber} title={site.homepageCtaTitle} description={site.homepageCtaDescription} />
     </>
   );
 }
