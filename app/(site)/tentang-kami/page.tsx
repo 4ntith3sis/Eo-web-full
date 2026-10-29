@@ -11,11 +11,13 @@ import { Section } from "@/components/ui/section";
 import { whatsappFor } from "@/lib/whatsapp";
 import { getCmsAbout, getCmsServices, getCmsSite } from "@/lib/data/cms-data";
 
-export const metadata: Metadata = {
-  title: "Tentang Kami",
-  description:
-    "Tentang EasyOffice: penyedia Virtual Office, Coworking Space, dan Meeting Room di Bandung, Jakarta, dan Bekasi.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getCmsSite();
+  return {
+    title: "Tentang Kami",
+    description: site.defaultSeoDescription || "Tentang EasyOffice: penyedia Virtual Office, Coworking Space, dan Meeting Room.",
+  };
+}
 
 const values = [
   {
@@ -95,14 +97,20 @@ export default async function AboutPage() {
             </div>
 
             <div className="relative min-h-[360px] overflow-hidden rounded-3xl border border-white/10 shadow-card sm:min-h-[440px]">
-              <Image
-                src={about.heroImage}
-                alt={about.heroImageAlt}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                style={{ objectFit: "cover" }}
-              />
+              {about.heroImage ? (
+                <Image
+                  src={about.heroImage}
+                  alt={about.heroImageAlt ?? ""}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-navy via-[#14286b] to-navy-950" aria-label="Gambar utama EasyOffice belum tersedia">
+                  <span className="font-display text-3xl font-bold tracking-wide text-white/80">EasyOffice</span>
+                </div>
+              )}
               <div className="absolute left-5 top-5 rounded-2xl border border-white/15 bg-white/95 px-5 py-3.5 text-navy shadow-card">
                 <strong className="font-display block text-lg font-bold leading-none">
                   {about.heroBadgeTitle}
@@ -128,13 +136,19 @@ export default async function AboutPage() {
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[360px] overflow-hidden rounded-3xl bg-surface shadow-soft sm:min-h-[420px]">
-              <Image
-                src={about.storyImage}
-                alt={about.storyImageAlt}
-                fill
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                style={{ objectFit: "cover" }}
-              />
+              {about.storyImage ? (
+                <Image
+                  src={about.storyImage}
+                  alt={about.storyImageAlt ?? ""}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  style={{ objectFit: "cover" }}
+                />
+              ) : (
+                <div className="absolute inset-0 grid place-items-center bg-gradient-to-br from-surface via-white to-[#e8edf5]" aria-label="Gambar cerita EasyOffice belum tersedia">
+                  <span className="font-display text-2xl font-bold tracking-wide text-navy/60">Cerita EasyOffice</span>
+                </div>
+              )}
               <div className="absolute bottom-5 left-5 rounded-2xl bg-navy px-5 py-3.5 text-white shadow-card">
                 <strong className="font-display block text-lg font-bold leading-none">
                   {about.storyBadgeTitle}
@@ -167,7 +181,7 @@ export default async function AboutPage() {
         </Container>
       </section>
 
-      <StatsBand items={site.statsBanner} />
+      <StatsBand items={site.statsBanner} variant="previous" />
 
       <Section
         eyebrow={about.valuesEyebrow}
