@@ -20,8 +20,7 @@ interface HeroProps {
   visual?: ReactNode;
 }
 
-const defaultHeroImage =
-  "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1200&q=80";
+const defaultHeroImage = "https://qbfgapkitvhlylyrbivs.supabase.co/storage/v1/object/public/media/office-01.webp";
 
 const defaultTrustItems = [
   "Lokasi Strategis",
