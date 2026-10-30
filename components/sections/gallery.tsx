@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { Container } from "@/components/ui/container";
+import { normalizeMediaUrl } from "@/lib/media";
 
 interface GalleryImage {
   src: string;
@@ -39,12 +40,12 @@ export function Gallery({
         </div>
         <div className="mx-auto mt-8 max-w-5xl sm:mt-10">
           <figure className="relative aspect-[16/9] overflow-hidden rounded-[2rem] border border-neutral-200 bg-white shadow-card">
-            <Image src={activeImage.src} alt={activeImage.alt} fill priority sizes="(max-width: 1024px) 100vw, 960px" className="object-cover" />
+            <Image src={normalizeMediaUrl(activeImage.src)} alt={activeImage.alt} fill priority sizes="(max-width: 1024px) 100vw, 960px" className="object-cover" />
           </figure>
           <div className="mt-5 flex gap-3 overflow-x-auto pb-2" aria-label="Pilih foto kantor">
             {images.map((img, i) => (
               <button key={`${img.src}-${i}`} type="button" onClick={() => setActiveIndex(i)} aria-label={`Lihat foto ${i + 1}`} aria-pressed={activeIndex === i} className={`relative h-20 w-28 shrink-0 overflow-hidden rounded-xl border-2 transition-all sm:h-24 sm:w-36 ${activeIndex === i ? "border-emerald-500 shadow-md" : "border-transparent opacity-75 hover:opacity-100"}`}>
-                <Image src={img.src} alt={img.alt} fill sizes="144px" className="object-cover" />
+                <Image src={normalizeMediaUrl(img.src)} alt={img.alt} fill sizes="144px" className="object-cover" />
               </button>
             ))}
           </div>

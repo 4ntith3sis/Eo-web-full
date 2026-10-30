@@ -5,6 +5,7 @@ export type { Data } from "@measured/puck";
 import "@measured/puck/puck.css";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import { normalizeMediaUrl } from "@/lib/media";
 import type { ReactNode } from "react";
 export type PuckBuilderInitialData = { data: Data };
 
@@ -37,7 +38,7 @@ function MediaPickerField({ value, onChange }: { value: unknown; onChange: (valu
   const [open, setOpen] = useState(false);
   const load = async () => {
     const response = await fetch("/api/media?limit=50&sort=-createdAt");
-    if (response.ok) { const result = await response.json() as { docs?: Array<{ url?: string; alt?: string; filename?: string }> }; setMedia(result.docs ?? []); }
+     if (response.ok) { const result = await response.json() as { docs?: Array<{ url?: string; alt?: string; filename?: string }> }; setMedia((result.docs ?? []).map((item) => ({ ...item, url: item.filename ? normalizeMediaUrl(`/api/media/file/${item.filename}`) : item.url }))); }
     setOpen(true);
   };
   const upload = async (file: File) => { const form = new FormData(); form.append("file", file); form.append("alt", file.name); const response = await fetch("/api/media", { method: "POST", body: form }); if (response.ok) { const result = await response.json() as { doc?: { url?: string } }; if (result.doc?.url) onChange(result.doc.url); await load(); } };
@@ -66,7 +67,7 @@ const starterComponents: Config["components"] = {
   Image: {
     fields: { src: { type: "custom", label: "Media CMS", render: MediaPickerField }, alt: { type: "text" } },
     defaultProps: { src: "/media/placeholder.webp", alt: "Gambar halaman" },
-    render: ({ src, alt }: Record<string, unknown>) => <Image src={String(src ?? "/media/placeholder.webp")} alt={String(alt ?? "")} width={1200} height={675} unoptimized className="mb-6 h-auto w-full rounded-xl object-cover" />,
+     render: ({ src, alt }: Record<string, unknown>) => <Image src={normalizeMediaUrl(String(src ?? "/media/placeholder.webp"))} alt={String(alt ?? "")} width={1200} height={675} unoptimized className="mb-6 h-auto w-full rounded-xl object-cover" />,
   },
   Section: {
     fields: { title: { type: "text" }, background: { type: "text" }, padding: { type: "number" }, radius: { type: "number" }, content: { type: "slot" } },

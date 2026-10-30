@@ -17,6 +17,10 @@ src/payload-types.ts
 # Media uploads (local storage — gitignored, persisted via docker volume / disk in prod)
 public/media/
 media/
+!public/assets/
+!public/assets/**
+!public/local-media/
+!public/local-media/**
 
 # Env files (never commit secrets)
 .env

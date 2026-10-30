@@ -8,3 +8,12 @@ export function normalizeMediaUrl(url: string): string {
   const filename = decodeURIComponent(match[1]).split("/").pop() ?? "";
   return `https://qbfgapkitvhlylyrbivs.supabase.co/storage/v1/object/public/media/${encodeURIComponent(filename)}`;
 }
+
+/** Supabase public media is served directly when Next's optimizer rejects it. */
+export function isSupabaseMediaUrl(url: string): boolean {
+  try {
+    return new URL(url, "https://easyoffice.local").hostname === "qbfgapkitvhlylyrbivs.supabase.co";
+  } catch {
+    return false;
+  }
+}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { normalizeMediaUrl } from "@/lib/media";
 import type { ReactNode } from "react";
 import { ArrowRight, CheckCircle2, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -96,7 +97,7 @@ export function Hero({
           {visual ?? (
             <div className="relative min-h-[420px] overflow-hidden rounded-3xl border border-white/10 shadow-card lg:min-h-[520px]">
               <Image
-                src={image ?? defaultHeroImage}
+                 src={normalizeMediaUrl(image ?? defaultHeroImage)}
                 alt={imageAlt ?? "Ruang kerja EasyOffice"}
                 fill
                 priority

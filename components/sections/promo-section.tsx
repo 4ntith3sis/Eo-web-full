@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { normalizeMediaUrl } from "@/lib/media";
 import { useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { Promotion, Service } from "@/types";
@@ -60,7 +61,7 @@ export function PromoSection({
             return (
               <Card key={promo.title} className="flex w-[min(67vw,297px)] shrink-0 snap-start flex-col rounded-[1.35rem] border border-neutral-200/80 bg-white !p-2.5 shadow-[0_12px_40px_rgba(15,23,42,0.04)] sm:w-[min(44vw,306px)] sm:!p-3 lg:w-[31%]">
                 <div className="relative aspect-[0.92/1] overflow-hidden rounded-[1.15rem] bg-navy/10">
-                   <Image src={promo.image ?? service.image} alt={service.imageAlt} fill sizes="(max-width: 640px) 82vw, (max-width: 1024px) 65vw, 30vw" className="object-cover transition duration-500 hover:scale-105" />
+                    <Image src={normalizeMediaUrl(promo.image ?? service.image)} alt={service.imageAlt} fill sizes="(max-width: 640px) 82vw, (max-width: 1024px) 65vw, 30vw" className="object-cover transition duration-500 hover:scale-105" />
                 </div>
                 <div className="flex flex-1 flex-col px-1 pb-0.5 pt-3 sm:px-1.5 sm:pt-3">
                    <span className="mb-2 inline-flex w-fit rounded-full bg-orange-50 px-3 py-1 text-[11px] font-bold uppercase tracking-wide text-orange-700">{promo.badge}</span>

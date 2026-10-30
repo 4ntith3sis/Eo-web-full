@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowRight, MapPin, ImageIcon } from "lucide-react";
 import type { Location, Office, Service, ServiceLocation } from "@/types";
 import { Button } from "@/components/ui/button";
+import { normalizeMediaUrl } from "@/lib/media";
 
 interface LocationCardProps {
   location: Location;
@@ -27,7 +28,7 @@ export function LocationCard({ location, service, combo, office }: LocationCardP
   return (
     <div className="flex h-full min-h-[510px] flex-col overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-card">
       <div className="relative h-44 w-full">
-         {combo.image ? <Image src={combo.image} alt={combo.imageAlt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" /> : <div className="flex h-full items-center justify-center bg-navy/5 text-navy/40"><ImageIcon className="h-10 w-10" aria-hidden /></div>}
+          {combo.image ? <Image src={normalizeMediaUrl(combo.image)} alt={combo.imageAlt} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" /> : <div className="flex h-full items-center justify-center bg-navy/5 text-navy/40"><ImageIcon className="h-10 w-10" aria-hidden /></div>}
         <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-bold uppercase tracking-wide text-navy shadow-sm">
           <MapPin className="h-3.5 w-3.5" aria-hidden />
           {location.name}

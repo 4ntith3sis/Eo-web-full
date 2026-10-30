@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import type { Service } from "@/types";
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
+import { normalizeMediaUrl } from "@/lib/media";
 
 export function ServicesOverview({
   title = "Layanan EasyOffice",
@@ -27,7 +28,7 @@ export function ServicesOverview({
             >
               <div className="relative h-48 w-full">
                 <Image
-                  src={service.image}
+                  src={normalizeMediaUrl(service.image)}
                   alt={service.imageAlt}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

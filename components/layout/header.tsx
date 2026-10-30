@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { normalizeMediaUrl } from "@/lib/media";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -21,7 +22,7 @@ export function Header({ whatsappNumber, ctaLabel = "Hubungi Kami", ctaMessage, 
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:h-[72px] sm:px-8">
         <Link href="/" aria-label="EasyOffice — Beranda" className="shrink-0">
           <Image
-             src={logoUrl ?? "/images/logo-EO.png"}
+             src={normalizeMediaUrl(logoUrl ?? "/images/logo-EO.png")}
             alt="EasyOffice"
             width={1418}
             height={1225}
