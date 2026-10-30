@@ -22,12 +22,13 @@ export function Header({ whatsappNumber, ctaLabel = "Hubungi Kami", ctaMessage, 
       <div className="mx-auto flex h-16 w-full max-w-[1200px] items-center justify-between gap-8 px-5 sm:h-[72px] sm:px-8">
         <Link href="/" aria-label="EasyOffice — Beranda" className="shrink-0">
           <Image
-             src={normalizeMediaUrl(logoUrl ?? "/images/logo-EO.png")}
+              src={normalizeMediaUrl(logoUrl ?? "https://qbfgapkitvhlylyrbivs.supabase.co/storage/v1/object/public/media/logo-EO.png")}
             alt="EasyOffice"
             width={1418}
             height={1225}
             className="h-10 w-auto sm:h-11"
             priority
+            unoptimized={normalizeMediaUrl(logoUrl ?? "https://qbfgapkitvhlylyrbivs.supabase.co/storage/v1/object/public/media/logo-EO.png").startsWith("https://qbfgapkitvhlylyrbivs.supabase.co/")}
           />
         </Link>
 

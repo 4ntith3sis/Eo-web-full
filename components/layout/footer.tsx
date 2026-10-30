@@ -5,7 +5,7 @@ import { whatsappUrl } from "@/lib/whatsapp";
 import { navItems as defaultNavItems, type NavItem } from "./nav";
 import type { Service } from "@/types";
 
-export function Footer({ site, services, navItems }: { site: { name?: string; tagline?: string; email?: string; phoneDisplay?: string; whatsappNumber?: string; footerDescription?: string; copyrightText?: string; operatingHours?: string; footerServicesTitle?: string; footerCompanyTitle?: string; footerContactTitle?: string }; services: Service[]; navItems?: NavItem[] }) {
+export function Footer({ site, services, navItems }: { site: { name?: string; tagline?: string; email?: string; phoneDisplay?: string; whatsappNumber?: string; logoUrl?: string; footerDescription?: string; copyrightText?: string; operatingHours?: string; footerServicesTitle?: string; footerCompanyTitle?: string; footerContactTitle?: string }; services: Service[]; navItems?: NavItem[] }) {
   const items = navItems?.length ? navItems : defaultNavItems;
   return (
     <footer className="bg-navy-950 text-white">
@@ -13,11 +13,12 @@ export function Footer({ site, services, navItems }: { site: { name?: string; ta
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
             <Image
-              src="/images/logo-EO.png"
+              src={site.logoUrl ?? "https://qbfgapkitvhlylyrbivs.supabase.co/storage/v1/object/public/media/logo-EO.png"}
               alt="EasyOffice"
               width={1418}
               height={1225}
               className="h-12 w-auto rounded-xl bg-white px-2 py-1"
+              unoptimized
             />
             <p className="mt-5 text-sm leading-relaxed text-white/70">
               {site.footerDescription ?? `${site.tagline ?? "Solusi Ruang Kerja Profesional"}. Virtual Office, Coworking Space, dan Meeting Room di Bandung, Jakarta, dan Bekasi.`}
